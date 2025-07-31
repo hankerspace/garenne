@@ -55,3 +55,7 @@ export const getWithdrawalDaysRemaining = (withdrawalUntil?: string): number => 
   const days = differenceInDays(parseISO(withdrawalUntil), new Date());
   return Math.max(0, days);
 };
+
+export const calculateEstimatedWeaningDate = (kindlingDate: string): string => {
+  return addDaysToDate(kindlingDate, 7 * 6); // Standard weaning period
+};

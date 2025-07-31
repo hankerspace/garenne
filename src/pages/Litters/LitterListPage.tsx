@@ -262,10 +262,14 @@ const LitterListPage = () => {
                     </Typography>
                   </Box>
 
-                  {litter.weaningDate && (
+                  {litter.weaningDate ? (
                     <Typography variant="body2" color="text.secondary" gutterBottom>
                       <strong>Sevrage:</strong> {formatDate(litter.weaningDate)}
                       {litter.weanedCount && ` (${litter.weanedCount} sevrés)`}
+                    </Typography>
+                  ) : litter.estimatedWeaningDate && (
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      <strong>Sevrage estimé:</strong> {formatDate(litter.estimatedWeaningDate)}
                     </Typography>
                   )}
 

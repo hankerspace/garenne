@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useAppStore } from '../../state/store';
 import { Animal, Breeding, Sex, Status } from '../../models/types';
-import { formatDate } from '../../utils/dates';
+import { formatDate, calculateEstimatedWeaningDate } from '../../utils/dates';
 
 interface LitterModalProps {
   open: boolean;
@@ -90,6 +90,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
         kindlingDate,
         bornAlive,
         stillborn,
+        estimatedWeaningDate: calculateEstimatedWeaningDate(kindlingDate),
         notes: notes.trim() || undefined,
       });
 

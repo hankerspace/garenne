@@ -65,6 +65,7 @@ export interface Litter {
   stillborn: number;
   weaningDate?: string;
   weanedCount?: number;
+  estimatedWeaningDate?: string; // ISO date string - calculated as kindlingDate + 28 days
   notes?: string;
   createdAt: string;
   updatedAt: string;

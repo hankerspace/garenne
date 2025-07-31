@@ -226,6 +226,12 @@ const LitterDetailPage = () => {
                 <strong>Date de naissance:</strong> {formatDate(litter.kindlingDate)}
               </Typography>
               
+              {litter.estimatedWeaningDate && (
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  <strong>Sevrage estimé:</strong> {formatDate(litter.estimatedWeaningDate)}
+                </Typography>
+              )}
+              
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 <strong>Total né:</strong> {litter.bornAlive + litter.stillborn}
               </Typography>

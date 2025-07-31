@@ -21,10 +21,11 @@ import { Route, Animal } from '../../models/types';
 interface QuickTreatmentModalProps {
   open: boolean;
   onClose: () => void;
+  preselectedAnimal?: Animal;
 }
 
-export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, onClose }) => {
-  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
+export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, onClose, preselectedAnimal }) => {
+  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(preselectedAnimal || null);
   const [product, setProduct] = useState('');
   const [dose, setDose] = useState('');
   const [route, setRoute] = useState<Route>(Route.Oral);
@@ -73,7 +74,7 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
       });
 
       // Reset form
-      setSelectedAnimal(null);
+      setSelectedAnimal(preselectedAnimal || null);
       setProduct('');
       setDose('');
       setRoute(Route.Oral);
@@ -88,7 +89,7 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
   };
 
   const handleClose = () => {
-    setSelectedAnimal(null);
+    setSelectedAnimal(preselectedAnimal || null);
     setProduct('');
     setDose('');
     setRoute(Route.Oral);

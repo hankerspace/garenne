@@ -34,6 +34,8 @@ import { useAppStore } from '../../state/store';
 import { Sex, Status } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
 import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments } from '../../state/selectors';
+import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
+import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -71,6 +73,10 @@ const AnimalDetailPage = () => {
       default: return 0;
     }
   });
+
+  // Modal state
+  const [weightModalOpen, setWeightModalOpen] = useState(false);
+  const [treatmentModalOpen, setTreatmentModalOpen] = useState(false);
 
   const state = useAppStore();
   const animals = state.animals;
@@ -341,6 +347,7 @@ const AnimalDetailPage = () => {
               variant="contained"
               startIcon={<AddIcon />}
               size="small"
+              onClick={() => setWeightModalOpen(true)}
             >
               Nouvelle pesée
             </Button>
@@ -379,6 +386,7 @@ const AnimalDetailPage = () => {
               variant="contained"
               startIcon={<AddIcon />}
               size="small"
+              onClick={() => setTreatmentModalOpen(true)}
             >
               Nouveau traitement
             </Button>
@@ -422,6 +430,18 @@ const AnimalDetailPage = () => {
           )}
         </TabPanel>
       </Paper>
+
+      {/* Modals */}
+      <QuickWeightModal
+        open={weightModalOpen}
+        onClose={() => setWeightModalOpen(false)}
+        preselectedAnimal={animal}
+      />
+      <QuickTreatmentModal
+        open={treatmentModalOpen}
+        onClose={() => setTreatmentModalOpen(false)}
+        preselectedAnimal={animal}
+      />
     </Container>
   );
 };

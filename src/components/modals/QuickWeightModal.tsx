@@ -17,10 +17,11 @@ import { Animal } from '../../models/types';
 interface QuickWeightModalProps {
   open: boolean;
   onClose: () => void;
+  preselectedAnimal?: Animal;
 }
 
-export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClose }) => {
-  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
+export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClose, preselectedAnimal }) => {
+  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(preselectedAnimal || null);
   const [weight, setWeight] = useState('');
   const [notes, setNotes] = useState('');
   const [error, setError] = useState('');
@@ -50,7 +51,7 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
       });
 
       // Reset form
-      setSelectedAnimal(null);
+      setSelectedAnimal(preselectedAnimal || null);
       setWeight('');
       setNotes('');
       setError('');
@@ -61,7 +62,7 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
   };
 
   const handleClose = () => {
-    setSelectedAnimal(null);
+    setSelectedAnimal(preselectedAnimal || null);
     setWeight('');
     setNotes('');
     setError('');

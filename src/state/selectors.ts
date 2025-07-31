@@ -102,18 +102,44 @@ export const getRecentLitters = (state: AppState, days: number = 30) => {
   );
 };
 
+// Breeding-related selectors (added for new functionality)
+export const getBreedingWithAnimals = (state: AppState, breedingId: string) => {
+  const breeding = state.breedings.find(b => b.id === breedingId);
+  if (!breeding) return null;
+  
+  const female = getAnimalById(state, breeding.femaleId);
+  const male = breeding.maleId ? getAnimalById(state, breeding.maleId) : undefined;
+  
+  return { breeding, female, male };
+};
+
+export const getBreedingLitters = (state: AppState, breedingId: string) => {
+  const breeding = state.breedings.find(b => b.id === breedingId);
+  if (!breeding) return [];
+  
+  return state.litters.filter(litter => 
+    litter.motherId === breeding.femaleId && 
+    litter.fatherId === breeding.maleId &&
+    // Check if kindling date is close to expected kindling date (within 5 days)
+    breeding.expectedKindlingDate &&
+    Math.abs(new Date(litter.kindlingDate).getTime() - new Date(breeding.expectedKindlingDate).getTime()) <= 5 * 24 * 60 * 60 * 1000
+  );
+};
+
 // KPI selectors
 export const getKPIs = (state: AppState) => {
   const liveAnimals = getLiveAnimals(state);
   const recentLitters = getRecentLitters(state, 30);
   const activeTreatments = getActiveTreatments(state);
   const recentWeights = getRecentWeights(state, 7);
+  const littersToWean = getLittersToWean(state);
 
   return {
     liveAnimalsCount: liveAnimals.length,
     recentLittersCount: recentLitters.length,
     activeTreatmentsCount: activeTreatments.length,
     recentWeightsCount: recentWeights.length,
+    littersToWeanCount: littersToWean.length,
     femalesCount: liveAnimals.filter(a => a.sex === Sex.Female).length,
     malesCount: liveAnimals.filter(a => a.sex === Sex.Male).length,
     reproducersCount: getReproducers(state).length,
@@ -170,4 +196,49 @@ export const getBreedingStatistics = (state: AppState, femaleId: string) => {
     averageLitterSize,
     totalOffspring: totalBornAlive,
   };
+};
+
+// Additional litter selectors
+export const getLitterWithParents = (state: AppState, litterId: string) => {
+  const litter = state.litters.find(l => l.id === litterId);
+  if (!litter) return null;
+  
+  const mother = getAnimalById(state, litter.motherId);
+  const father = litter.fatherId ? getAnimalById(state, litter.fatherId) : undefined;
+  
+  return { litter, mother, father };
+};
+
+export const getLitterOffspring = (state: AppState, litterId: string) => {
+  const litter = state.litters.find(l => l.id === litterId);
+  if (!litter) return [];
+  
+  return state.animals.filter(animal => 
+    animal.motherId === litter.motherId &&
+    animal.fatherId === litter.fatherId &&
+    animal.birthDate === litter.kindlingDate
+  );
+};
+
+export const getUnweanedLitters = (state: AppState) => {
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - 28); // 4 weeks
+  
+  return state.litters.filter(litter => 
+    !litter.weaningDate && 
+    new Date(litter.kindlingDate) >= cutoffDate
+  );
+};
+
+export const getLittersToWean = (state: AppState) => {
+  const now = new Date();
+  
+  return state.litters.filter(litter => {
+    if (litter.weaningDate) return false; // Already weaned
+    
+    const birth = new Date(litter.kindlingDate);
+    const daysDiff = Math.floor((now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24));
+    
+    return daysDiff >= 28; // 4 weeks or older
+  });
 };

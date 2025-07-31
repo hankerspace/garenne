@@ -20,6 +20,8 @@ import {
   IconButton,
   Card,
   CardContent,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
@@ -29,13 +31,20 @@ import {
   Male as MaleIcon,
   Delete as DeleteIcon,
   Warning as WarningIcon,
+  Favorite as HeartIcon,
+  Pets as PetsIcon,
+  MoreVert as MoreIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
 import { Sex, Status } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
-import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments } from '../../state/selectors';
+import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
 import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
 import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
+import { BreedingModal } from '../../components/modals/BreedingModal';
+import { LitterModal } from '../../components/modals/LitterModal';
+import { MortalityModal } from '../../components/modals/MortalityModal';
+import { WeightChart } from '../../components/charts/WeightChart';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -77,6 +86,14 @@ const AnimalDetailPage = () => {
   // Modal state
   const [weightModalOpen, setWeightModalOpen] = useState(false);
   const [treatmentModalOpen, setTreatmentModalOpen] = useState(false);
+  const [breedingModalOpen, setBreedingModalOpen] = useState(false);
+  const [litterModalOpen, setLitterModalOpen] = useState(false);
+  const [mortalityModalOpen, setMortalityModalOpen] = useState(false);
+  const [selectedBreeding, setSelectedBreeding] = useState<any>(null);
+  
+  // Menu state
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(menuAnchorEl);
 
   const state = useAppStore();
   const animals = state.animals;
@@ -85,6 +102,9 @@ const AnimalDetailPage = () => {
   const weights = getAnimalWeights(state, id || '');
   const treatments = getAnimalTreatments(state, id || '');
   const activeTreatments = getAnimalActiveTreatments(state, id || '');
+  
+  // Get breedings for this animal (female only for now, as males can have many partners)
+  const breedings = animal?.sex === Sex.Female ? getFemaleBreedings(state, id || '') : [];
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -155,15 +175,40 @@ const AnimalDetailPage = () => {
           </Box>
         </Box>
         
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={() => navigate(`/animals/${animal.id}/edit`)}
-          size="small"
-          sx={{ width: { xs: '100%', sm: 'auto' } }}
+        <Box display="flex" alignItems="center" gap={1} sx={{ width: { xs: '100%', sm: 'auto' } }}>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={() => navigate(`/animals/${animal.id}/edit`)}
+            size="small"
+          >
+            Modifier
+          </Button>
+          {animal.status !== Status.Deceased && (
+            <IconButton 
+              onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+              size="small"
+            >
+              <MoreIcon />
+            </IconButton>
+          )}
+        </Box>
+        
+        <Menu
+          anchorEl={menuAnchorEl}
+          open={menuOpen}
+          onClose={() => setMenuAnchorEl(null)}
         >
-          Modifier
-        </Button>
+          <MenuItem 
+            onClick={() => {
+              setMortalityModalOpen(true);
+              setMenuAnchorEl(null);
+            }}
+            sx={{ color: 'error.main' }}
+          >
+            Signaler un décès
+          </MenuItem>
+        </Menu>
       </Box>
 
       {/* Quick Info */}
@@ -322,19 +367,97 @@ const AnimalDetailPage = () => {
         <TabPanel value={tabValue} index={1}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
             <Typography variant="h6">
-              Reproduction
+              Reproduction ({breedings.length})
             </Typography>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              size="small"
-            >
-              Nouvelle saillie
-            </Button>
+            {animal?.sex === Sex.Female && (
+              <Button
+                variant="contained"
+                startIcon={<HeartIcon />}
+                size="small"
+                onClick={() => setBreedingModalOpen(true)}
+              >
+                Nouvelle saillie
+              </Button>
+            )}
           </Box>
-          <Typography variant="body2" color="text.secondary">
-            Fonctionnalité en cours de développement
-          </Typography>
+          
+          {animal?.sex === Sex.Male && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              La reproduction est gérée depuis la fiche de la femelle
+            </Alert>
+          )}
+          
+          {animal?.sex === Sex.Female && breedings.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              Aucune saillie enregistrée
+            </Typography>
+          ) : (
+            <List>
+              {breedings.map((breeding) => {
+                const male = breeding.maleId ? getAnimalById(state, breeding.maleId) : null;
+                const statusColor = breeding.diagnosis === 'PREGNANT' ? 'success' : 
+                                   breeding.diagnosis === 'NOT_PREGNANT' ? 'error' : 'default';
+                const statusLabel = breeding.diagnosis === 'PREGNANT' ? 'Gestante' :
+                                   breeding.diagnosis === 'NOT_PREGNANT' ? 'Non gestante' : 'En attente';
+                
+                return (
+                  <ListItem key={breeding.id} divider>
+                    <ListItemText
+                      primary={
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Typography variant="body1">
+                            Saillie du {formatDate(breeding.date)}
+                          </Typography>
+                          <Chip 
+                            size="small" 
+                            label={statusLabel} 
+                            color={statusColor} 
+                          />
+                        </Box>
+                      }
+                      secondary={
+                        <Box>
+                          <Typography variant="body2" color="text.secondary">
+                            Mâle: {male ? (male.name || 'Sans nom') : 'Non spécifié'}
+                          </Typography>
+                          {breeding.expectedKindlingDate && (
+                            <Typography variant="body2" color="text.secondary">
+                              Mise bas prévue: {formatDate(breeding.expectedKindlingDate)}
+                            </Typography>
+                          )}
+                          {breeding.notes && (
+                            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                              {breeding.notes}
+                            </Typography>
+                          )}
+                        </Box>
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <Box display="flex" gap={1}>
+                        {breeding.diagnosis !== 'PREGNANT' && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<PetsIcon />}
+                            onClick={() => {
+                              setSelectedBreeding(breeding);
+                              setLitterModalOpen(true);
+                            }}
+                          >
+                            Mise bas
+                          </Button>
+                        )}
+                        <IconButton edge="end" size="small">
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          )}
         </TabPanel>
 
         {/* Weights Tab */}
@@ -352,6 +475,13 @@ const AnimalDetailPage = () => {
               Nouvelle pesée
             </Button>
           </Box>
+          
+          {/* Weight Chart */}
+          {weights.length > 0 && (
+            <Box sx={{ mb: 3 }}>
+              <WeightChart weights={weights} />
+            </Box>
+          )}
           
           {weights.length === 0 ? (
             <Typography variant="body2" color="text.secondary">
@@ -442,6 +572,27 @@ const AnimalDetailPage = () => {
         onClose={() => setTreatmentModalOpen(false)}
         preselectedAnimal={animal}
       />
+      <BreedingModal
+        open={breedingModalOpen}
+        onClose={() => setBreedingModalOpen(false)}
+        preselectedFemale={animal?.sex === Sex.Female ? animal : undefined}
+      />
+      <LitterModal
+        open={litterModalOpen}
+        onClose={() => {
+          setLitterModalOpen(false);
+          setSelectedBreeding(null);
+        }}
+        breeding={selectedBreeding}
+        preselectedMother={animal?.sex === Sex.Female ? animal : undefined}
+      />
+      {animal && (
+        <MortalityModal
+          open={mortalityModalOpen}
+          onClose={() => setMortalityModalOpen(false)}
+          animal={animal}
+        />
+      )}
     </Container>
   );
 };

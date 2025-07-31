@@ -22,6 +22,10 @@ import {
   CardContent,
   Menu,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
@@ -416,7 +420,7 @@ const AnimalDetailPage = () => {
                           <Typography variant="body2" color="text.secondary">
                             Mâle: {male ? (male.name || 'Sans nom') : 'Non spécifié'}
                           </Typography>
-                          {breeding.expectedKindlingDate && (
+                          {breeding.expectedKindlingDate && breeding.diagnosis === 'PREGNANT' && (
                             <Typography variant="body2" color="text.secondary">
                               Mise bas prévue: {formatDate(breeding.expectedKindlingDate)}
                             </Typography>
@@ -431,7 +435,7 @@ const AnimalDetailPage = () => {
                     />
                     <ListItemSecondaryAction>
                       <Box display="flex" gap={1}>
-                        {breeding.diagnosis !== 'PREGNANT' && (
+                        {breeding.diagnosis === 'PREGNANT' && (
                           <Button
                             size="small"
                             variant="outlined"

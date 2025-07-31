@@ -3,8 +3,10 @@ import {
   Box,
   Typography,
   Paper,
+  Button,
   Avatar,
   Chip,
+  Divider,
 } from '@mui/material';
 import {
   Female as FemaleIcon,
@@ -149,6 +151,26 @@ export const GenealogyTree: React.FC<GenealogyTreeProps> = ({
     </Paper>
   );
 
+  // Render tree node recursively
+  const renderTreeNode = (node: TreeNode, isRoot: boolean = false): React.ReactNode => {
+    const isHighlighted = node.animal.id === currentAnimal.id;
+    
+    return (
+      <Box key={node.animal.id} display="flex" flexDirection="column" alignItems="center">
+        {renderAnimalCard(node.animal, isHighlighted)}
+        
+        {node.children.length > 0 && (
+          <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center">
+            {node.children.map(child => renderTreeNode(child))}
+          </Box>
+        )}
+      </Box>
+    );
+  };
+
+  // Build trees
+  const ancestorTree = buildAncestorTree(currentAnimal);
+  const descendantTree = buildDescendantTree(currentAnimal);
   
   // Get direct parents and children for simple display
   const mother = currentAnimal.motherId ? allAnimals.find(a => a.id === currentAnimal.motherId) : null;

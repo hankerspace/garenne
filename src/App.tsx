@@ -11,6 +11,7 @@ import {
   BottomNavigationAction,
   Paper,
   useMediaQuery,
+  Container,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -71,18 +72,32 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        minHeight: '100vh',
+        width: '100%',
+        margin: 0,
+        padding: 0,
+      }}>
         {/* Top App Bar */}
-        <AppBar position="sticky" elevation={0}>
-          <Toolbar>
-            <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-              Garenne
-            </Typography>
-          </Toolbar>
+        <AppBar position="sticky" elevation={1}>
+          <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
+            <Toolbar sx={{ px: 0 }}>
+              <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+                Garenne
+              </Typography>
+            </Toolbar>
+          </Container>
         </AppBar>
 
         {/* Main Content */}
-        <Box sx={{ flexGrow: 1, pb: 7 }}>
+        <Box sx={{ 
+          flexGrow: 1, 
+          pb: 7,
+          width: '100%',
+          overflow: 'auto',
+        }}>
           <Outlet />
         </Box>
 

@@ -49,4 +49,21 @@ export default defineConfig({
       }
     })
   ],
+  base: process.env.NODE_ENV === 'production' ? '/garenne/' : '/',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          mui: ['@mui/material', '@mui/icons-material'],
+          utils: ['date-fns', 'zod', 'zustand']
+        }
+      }
+    }
+  }
 })

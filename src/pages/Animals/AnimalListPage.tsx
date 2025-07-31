@@ -90,16 +90,18 @@ const AnimalListPage = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 2 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4" component="h2">
+    <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 }, py: { xs: 2, sm: 3 } }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={{ xs: 2, sm: 3 }}>
+        <Typography variant="h4" component="h2" sx={{
+          fontSize: { xs: '1.75rem', sm: '2.125rem' }
+        }}>
           Animaux ({filteredAnimals.length})
         </Typography>
       </Box>
 
       {/* Search and Filters */}
-      <Box mb={3}>
-        <Grid container spacing={2} alignItems="center">
+      <Box mb={{ xs: 2, sm: 3 }}>
+        <Grid container spacing={{ xs: 2, sm: 2 }} alignItems="center">
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
@@ -107,6 +109,7 @@ const AnimalListPage = () => {
               placeholder="Rechercher par nom, identifiant ou race..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              size="small"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -117,7 +120,7 @@ const AnimalListPage = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth>
+            <FormControl fullWidth size="small">
               <InputLabel>Statut</InputLabel>
               <Select
                 value={statusFilter}
@@ -132,7 +135,7 @@ const AnimalListPage = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth>
+            <FormControl fullWidth size="small">
               <InputLabel>Sexe</InputLabel>
               <Select
                 value={sexFilter}
@@ -149,17 +152,28 @@ const AnimalListPage = () => {
       </Box>
 
       {/* Animals Grid */}
-      <Grid container spacing={2}>
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
         {filteredAnimals.map((animal) => (
-          <Grid item xs={12} sm={6} md={4} key={animal.id}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Grid item xs={12} sm={6} lg={4} xl={3} key={animal.id}>
+            <Card sx={{ 
+              height: '100%', 
+              display: 'flex', 
+              flexDirection: 'column',
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              }
+            }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" alignItems="center" mb={2}>
                   <Avatar sx={{ mr: 2, bgcolor: animal.sex === Sex.Female ? 'pink' : 'lightblue' }}>
                     {animal.sex === Sex.Female ? <FemaleIcon /> : <MaleIcon />}
                   </Avatar>
-                  <Box>
-                    <Typography variant="h6" component="h3">
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="h3" sx={{
+                      fontSize: { xs: '1rem', sm: '1.25rem' }
+                    }}>
                       {animal.name || 'Sans nom'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -167,7 +181,7 @@ const AnimalListPage = () => {
                     </Typography>
                   </Box>
                   {hasActiveWithdrawal(animal.id) && (
-                    <WarningIcon color="warning" sx={{ ml: 'auto' }} />
+                    <WarningIcon color="warning" />
                   )}
                 </Box>
 
@@ -217,17 +231,22 @@ const AnimalListPage = () => {
                 )}
               </CardContent>
               
-              <CardActions>
+              <CardActions sx={{ 
+                flexWrap: { xs: 'wrap', sm: 'nowrap' },
+                gap: { xs: 0.5, sm: 1 }
+              }}>
                 <Button 
                   size="small" 
                   onClick={() => navigate(`/animals/${animal.id}`)}
+                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
-                  Voir détails
+                  Détails
                 </Button>
                 <Button 
                   size="small" 
                   color="secondary"
                   onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
+                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
                   Peser
                 </Button>
@@ -235,6 +254,7 @@ const AnimalListPage = () => {
                   size="small" 
                   color="primary"
                   onClick={() => navigate(`/animals/${animal.id}/edit`)}
+                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
                   Modifier
                 </Button>
@@ -263,7 +283,12 @@ const AnimalListPage = () => {
       <Fab
         color="primary"
         aria-label="add animal"
-        sx={{ position: 'fixed', bottom: 80, right: 16 }}
+        sx={{ 
+          position: 'fixed', 
+          bottom: { xs: 80, sm: 16 }, 
+          right: 16,
+          zIndex: 1000
+        }}
         onClick={() => navigate('/animals/new')}
       >
         <AddIcon />

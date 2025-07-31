@@ -126,26 +126,29 @@ const AnimalFormPage = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 2 }}>
-      <Box display="flex" alignItems="center" mb={3}>
+    <Container maxWidth="md" sx={{ px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 3 } }}>
+      <Box display="flex" alignItems="center" mb={{ xs: 2, sm: 3 }}>
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/animals')}
           sx={{ mr: 2 }}
+          size="small"
         >
           Retour
         </Button>
-        <Typography variant="h4" component="h1">
+        <Typography variant="h4" component="h1" sx={{
+          fontSize: { xs: '1.5rem', sm: '2.125rem' }
+        }}>
           {isEdit ? `Modifier ${existingAnimal?.name || 'l\'animal'}` : 'Nouvel animal'}
         </Typography>
       </Box>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={3}>
+          <Grid container spacing={{ xs: 2, sm: 3 }}>
             {/* Basic Information */}
             <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1.125rem', sm: '1.25rem' } }}>
                 Informations de base
               </Typography>
               <Divider sx={{ mb: 2 }} />
@@ -272,7 +275,10 @@ const AnimalFormPage = () => {
 
             {/* Origin and Parents */}
             <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+              <Typography variant="h6" gutterBottom sx={{ 
+                mt: { xs: 1, sm: 2 },
+                fontSize: { xs: '1.125rem', sm: '1.25rem' }
+              }}>
                 Origine et parenté
               </Typography>
               <Divider sx={{ mb: 2 }} />
@@ -366,11 +372,14 @@ const AnimalFormPage = () => {
 
             {/* Submit Button */}
             <Grid item xs={12}>
-              <Box display="flex" gap={2} justifyContent="flex-end">
+              <Box display="flex" gap={2} justifyContent="flex-end" sx={{
+                flexDirection: { xs: 'column', sm: 'row' }
+              }}>
                 <Button
                   variant="outlined"
                   onClick={() => navigate('/animals')}
                   disabled={isSubmitting}
+                  sx={{ order: { xs: 2, sm: 1 } }}
                 >
                   Annuler
                 </Button>
@@ -379,6 +388,7 @@ const AnimalFormPage = () => {
                   variant="contained"
                   startIcon={<SaveIcon />}
                   disabled={isSubmitting}
+                  sx={{ order: { xs: 1, sm: 2 } }}
                 >
                   {isSubmitting ? 'Sauvegarde...' : 'Sauvegarder'}
                 </Button>

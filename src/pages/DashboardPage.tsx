@@ -103,8 +103,11 @@ const DashboardPage = () => {
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 2 }}>
-      <Typography variant="h4" component="h2" gutterBottom>
+    <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 }, py: { xs: 2, sm: 3 } }}>
+      <Typography variant="h4" component="h2" gutterBottom sx={{ 
+        fontSize: { xs: '1.75rem', sm: '2.125rem' },
+        mb: { xs: 2, sm: 3 }
+      }}>
         Tableau de bord
       </Typography>
 
@@ -138,18 +141,30 @@ const DashboardPage = () => {
         </Box>
       )}
 
-      <Grid container spacing={2}>
+      <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 3, sm: 4 } }}>
         {kpiCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card sx={{ height: '100%' }}>
+          <Grid item xs={12} sm={6} lg={2.4} key={index}>
+            <Card sx={{ 
+              height: '100%',
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              }
+            }}>
               <CardContent>
                 <Box display="flex" alignItems="center" mb={2}>
                   {card.icon}
-                  <Typography variant="h6" component="h3" sx={{ ml: 1 }}>
+                  <Typography variant="h6" component="h3" sx={{ 
+                    ml: 1,
+                    fontSize: { xs: '1rem', sm: '1.25rem' }
+                  }}>
                     {card.title}
                   </Typography>
                 </Box>
-                <Typography variant="h3" component="div" color="primary">
+                <Typography variant="h3" component="div" color="primary" sx={{
+                  fontSize: { xs: '1.75rem', sm: '2.125rem' }
+                }}>
                   {card.value}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -167,13 +182,22 @@ const DashboardPage = () => {
       </Grid>
 
       {/* Quick Actions Section */}
-      <Box mt={4}>
-        <Typography variant="h5" component="h3" gutterBottom>
+      <Box mt={{ xs: 3, sm: 4 }}>
+        <Typography variant="h5" component="h3" gutterBottom sx={{
+          fontSize: { xs: '1.25rem', sm: '1.5rem' }
+        }}>
           Actions rapides
         </Typography>
-        <Grid container spacing={2}>
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Card>
+            <Card sx={{
+              height: '100%',
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 2,
+              }
+            }}>
               <CardContent>
                 <PetsIcon color="primary" sx={{ mb: 1 }} />
                 <Typography variant="h6">Nouvel animal</Typography>

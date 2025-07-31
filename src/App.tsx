@@ -11,6 +11,7 @@ import {
   BottomNavigationAction,
   Paper,
   useMediaQuery,
+  Container,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -25,6 +26,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const isMobile = useMediaQuery('(max-width:600px)');
   
   const settings = useAppStore((state) => state.settings);
   const loadData = useAppStore((state) => state.loadData);
@@ -71,49 +73,65 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        minHeight: '100vh',
+        width: '100%',
+        margin: 0,
+        padding: 0,
+      }}>
         {/* Top App Bar */}
-        <AppBar position="sticky" elevation={0}>
-          <Toolbar>
-            <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-              Garenne
-            </Typography>
-          </Toolbar>
+        <AppBar position="sticky" elevation={1}>
+          <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
+            <Toolbar sx={{ px: 0 }}>
+              <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+                Garenne
+              </Typography>
+            </Toolbar>
+          </Container>
         </AppBar>
 
         {/* Main Content */}
-        <Box sx={{ flexGrow: 1, pb: 7 }}>
+        <Box sx={{ 
+          flexGrow: 1, 
+          pb: { xs: 7, sm: 0 },
+          width: '100%',
+          overflow: 'auto',
+        }}>
           <Outlet />
         </Box>
 
-        {/* Bottom Navigation */}
-        <Paper 
-          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} 
-          elevation={3}
-        >
-          <BottomNavigation
-            value={navigationValue}
-            onChange={handleNavigationChange}
-            showLabels
+        {/* Bottom Navigation - Mobile Only */}
+        {isMobile && (
+          <Paper 
+            sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} 
+            elevation={3}
           >
-            <BottomNavigationAction 
-              label="Accueil" 
-              icon={<HomeIcon />} 
-            />
-            <BottomNavigationAction 
-              label="Animaux" 
-              icon={<PetsIcon />} 
-            />
-            <BottomNavigationAction 
-              label="Portées" 
-              icon={<FamilyIcon />} 
-            />
-            <BottomNavigationAction 
-              label="Paramètres" 
-              icon={<SettingsIcon />} 
-            />
-          </BottomNavigation>
-        </Paper>
+            <BottomNavigation
+              value={navigationValue}
+              onChange={handleNavigationChange}
+              showLabels
+            >
+              <BottomNavigationAction 
+                label="Accueil" 
+                icon={<HomeIcon />} 
+              />
+              <BottomNavigationAction 
+                label="Animaux" 
+                icon={<PetsIcon />} 
+              />
+              <BottomNavigationAction 
+                label="Portées" 
+                icon={<FamilyIcon />} 
+              />
+              <BottomNavigationAction 
+                label="Paramètres" 
+                icon={<SettingsIcon />} 
+              />
+            </BottomNavigation>
+          </Paper>
+        )}
       </Box>
     </ThemeProvider>
   );

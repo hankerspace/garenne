@@ -117,23 +117,29 @@ const AnimalDetailPage = () => {
   const father = animal.fatherId ? animals.find(a => a.id === animal.fatherId) : null;
 
   return (
-    <Container maxWidth="lg" sx={{ py: 2 }}>
+    <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 }, py: { xs: 2, sm: 3 } }}>
       {/* Header */}
-      <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
-        <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" justifyContent="space-between" mb={{ xs: 2, sm: 3 }} sx={{
+        flexDirection: { xs: 'column', sm: 'row' },
+        gap: { xs: 2, sm: 0 }
+      }}>
+        <Box display="flex" alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
             startIcon={<ArrowBackIcon />}
             onClick={() => navigate('/animals')}
             sx={{ mr: 2 }}
+            size="small"
           >
             Retour
           </Button>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
             <Avatar sx={{ mr: 2, bgcolor: animal.sex === Sex.Female ? 'pink' : 'lightblue' }}>
               {animal.sex === Sex.Female ? <FemaleIcon /> : <MaleIcon />}
             </Avatar>
             <Box>
-              <Typography variant="h4" component="h1">
+              <Typography variant="h4" component="h1" sx={{
+                fontSize: { xs: '1.5rem', sm: '2.125rem' }
+              }}>
                 {animal.name || 'Animal sans nom'}
               </Typography>
               <Typography variant="subtitle1" color="text.secondary">
@@ -147,15 +153,17 @@ const AnimalDetailPage = () => {
           variant="contained"
           startIcon={<EditIcon />}
           onClick={() => navigate(`/animals/${animal.id}/edit`)}
+          size="small"
+          sx={{ width: { xs: '100%', sm: 'auto' } }}
         >
           Modifier
         </Button>
       </Box>
 
       {/* Quick Info */}
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
+      <Paper sx={{ p: { xs: 2, sm: 3 }, mb: { xs: 2, sm: 3 } }}>
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
+          <Grid item xs={6} sm={3}>
             <Typography variant="subtitle2" color="text.secondary">
               Statut
             </Typography>
@@ -165,7 +173,7 @@ const AnimalDetailPage = () => {
               size="small"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={3}>
             <Typography variant="subtitle2" color="text.secondary">
               Race
             </Typography>
@@ -173,7 +181,7 @@ const AnimalDetailPage = () => {
               {animal.breed || 'Non spécifiée'}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={3}>
             <Typography variant="subtitle2" color="text.secondary">
               Âge
             </Typography>
@@ -181,7 +189,7 @@ const AnimalDetailPage = () => {
               {animal.birthDate ? calculateAgeText(animal.birthDate) : 'Inconnu'}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={3}>
             <Typography variant="subtitle2" color="text.secondary">
               Cage
             </Typography>

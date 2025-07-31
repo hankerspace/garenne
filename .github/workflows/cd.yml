@@ -1,49 +1,17 @@
-name: CI/CD Pipeline
+name: CD - Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
+  workflow_run:
+    workflows: ["CI - Tests and Build"]
+    types:
+      - completed
     branches: [ main ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    name: Test and Lint
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run linting
-      run: npm run lint
-      
-    - name: Run tests
-      run: npm run test:run
-      
-    - name: Build application
-      run: npm run build
-      
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist
-        path: dist/
-
   deploy:
-    needs: test
     runs-on: ubuntu-latest
     name: Deploy to GitHub Pages
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.event.workflow_run.conclusion == 'success'
     
     permissions:
       contents: read

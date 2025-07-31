@@ -33,6 +33,7 @@ import { Sex, Status } from '../../models/types';
 import { calculateAgeText } from '../../utils/dates';
 import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
 import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
+import QRCodeDisplay from '../../components/QRCodeDisplay';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ const AnimalListPage = () => {
 
   const state = useAppStore();
   const animals = getLiveAnimals(state);
+  const settings = state.settings;
 
   // Filter animals based on search and filters
   const filteredAnimals = animals.filter((animal) => {
@@ -204,8 +206,13 @@ const AnimalListPage = () => {
                       {animal.identifier || 'Pas d\'identifiant'}
                     </Typography>
                   </Box>
+                  {settings.enableQR && (
+                    <Box ml={1}>
+                      <QRCodeDisplay animal={animal} size="small" />
+                    </Box>
+                  )}
                   {hasActiveWithdrawal(animal.id) && (
-                    <WarningIcon color="warning" />
+                    <WarningIcon color="warning" sx={{ ml: 1 }} />
                   )}
                 </Box>
 

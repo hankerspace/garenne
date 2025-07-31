@@ -38,6 +38,8 @@ import {
   Favorite as HeartIcon,
   Pets as PetsIcon,
   MoreVert as MoreIcon,
+  Print as PrintIcon,
+  QrCode as QrCodeIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
 import { Sex, Status, Breeding } from '../../models/types';
@@ -50,6 +52,8 @@ import { LitterModal } from '../../components/modals/LitterModal';
 import { MortalityModal } from '../../components/modals/MortalityModal';
 import { WeightChart } from '../../components/charts/WeightChart';
 import { GenealogyTree } from '../../components/GenealogyTree';
+import QRCodeDisplay from '../../components/QRCodeDisplay';
+import PrintableRabbitSheet from '../../components/PrintableRabbitSheet';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -94,6 +98,7 @@ const AnimalDetailPage = () => {
   const [breedingModalOpen, setBreedingModalOpen] = useState(false);
   const [litterModalOpen, setLitterModalOpen] = useState(false);
   const [mortalityModalOpen, setMortalityModalOpen] = useState(false);
+  const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const [selectedBreeding, setSelectedBreeding] = useState<Breeding | null>(null);
   const [breedingToDelete, setBreedingToDelete] = useState<Breeding | null>(null);
   const [breedingMenuAnchor, setBreedingMenuAnchor] = useState<null | HTMLElement>(null);
@@ -105,6 +110,7 @@ const AnimalDetailPage = () => {
 
   const state = useAppStore();
   const animals = state.animals;
+  const settings = state.settings;
   const animal = animals.find(a => a.id === id);
   const deleteBreeding = useAppStore((state) => state.deleteBreeding);
   const updateBreeding = useAppStore((state) => state.updateBreeding);
@@ -168,6 +174,17 @@ const AnimalDetailPage = () => {
     handleBreedingMenuClose();
   };
 
+  const handlePrint = () => {
+    setPrintDialogOpen(true);
+  };
+
+  const handlePrintConfirm = () => {
+    setPrintDialogOpen(false);
+    setTimeout(() => {
+      window.print();
+    }, 100);
+  };
+
   if (!animal) {
     return (
       <Container maxWidth="lg" sx={{ py: 2 }}>
@@ -222,6 +239,16 @@ const AnimalDetailPage = () => {
           >
             Modifier
           </Button>
+          {settings.enableQR && (
+            <Button
+              variant="outlined"
+              startIcon={<PrintIcon />}
+              onClick={handlePrint}
+              size="small"
+            >
+              Imprimer fiche
+            </Button>
+          )}
           {animal.status !== Status.Deceased && (
             <IconButton 
               onClick={(e) => setMenuAnchorEl(e.currentTarget)}
@@ -353,6 +380,22 @@ const AnimalDetailPage = () => {
                 </Box>
               )}
             </Grid>
+
+            {settings.enableQR && (
+              <Grid item xs={12} md={6}>
+                <Typography variant="h6" gutterBottom>
+                  Code QR
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+                
+                <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+                  <QRCodeDisplay animal={animal} size="medium" />
+                  <Typography variant="body2" color="text.secondary" textAlign="center">
+                    Scannez ce code QR pour accéder rapidement à cette fiche
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
 
             <Grid item xs={12}>
               <GenealogyTree 
@@ -643,6 +686,71 @@ const AnimalDetailPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Print Dialog */}
+      <Dialog
+        open={printDialogOpen}
+        onClose={() => setPrintDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>
+          <Box display="flex" alignItems="center" gap={1}>
+            <PrintIcon />
+            Aperçu de la fiche à imprimer
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          <PrintableRabbitSheet animal={animal} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPrintDialogOpen(false)}>
+            Annuler
+          </Button>
+          <Button onClick={handlePrintConfirm} variant="contained" startIcon={<PrintIcon />}>
+            Imprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Print styles */}
+      <style>
+        {`
+          @media print {
+            /* Hide everything except the dialog content when printing */
+            body * {
+              visibility: hidden;
+            }
+            
+            .MuiDialog-paper, .MuiDialog-paper * {
+              visibility: visible;
+            }
+            
+            .MuiDialog-paper {
+              position: absolute !important;
+              left: 0 !important;
+              top: 0 !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              min-height: initial !important;
+              box-shadow: none !important;
+              width: 100% !important;
+              max-width: 100% !important;
+            }
+            
+            /* Hide dialog title and actions during print */
+            .MuiDialogTitle-root,
+            .MuiDialogActions-root {
+              display: none !important;
+            }
+            
+            .MuiDialogContent-root {
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+          }
+        `}
+      </style>
     </Container>
   );
 };

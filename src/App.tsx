@@ -21,6 +21,7 @@ import {
 } from '@mui/icons-material';
 import { lightTheme, darkTheme } from './utils/theme';
 import { useAppStore } from './state/store';
+import logo from './assets/icon.png';
 
 function App() {
   const location = useLocation();
@@ -84,9 +85,23 @@ function App() {
         <AppBar position="sticky" elevation={1}>
           <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 } }}>
             <Toolbar sx={{ px: 0 }}>
-              <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-                Garenne
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+                <img 
+                  src={logo}
+                  alt="Garenne Logo" 
+                  style={{ 
+                    height: '40px', 
+                    marginRight: '12px',
+                    objectFit: 'contain',
+                      backgroundColor: 'white',
+                      borderRadius: '50%',
+                      padding: '2px',
+                  }} 
+                />
+                <Typography variant="h6" component="h1">
+                  Garenne
+                </Typography>
+              </Box>
             </Toolbar>
           </Container>
         </AppBar>

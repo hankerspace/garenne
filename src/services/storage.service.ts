@@ -36,7 +36,7 @@ export class LocalStorageService implements StorageService {
         return defaultState;
       }
 
-      let parsed: any;
+      let parsed: unknown;
       
       // Try to parse as compressed data first
       try {
@@ -104,7 +104,7 @@ export class LocalStorageService implements StorageService {
 
 // Migration service for handling schema changes
 export class MigrationService {
-  static migrate(state: any): AppState {
+  static migrate(state: unknown): AppState {
     // Handle migrations from older schema versions
     if (!state.settings?.schemaVersion) {
       // Migration from v0 to v1

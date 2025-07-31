@@ -79,7 +79,6 @@ const AnimalFormPage = () => {
   });
 
   const selectedOrigin = watch('origin');
-  const selectedSex = watch('sex');
 
   // Get available parents
   const availableParents = animals.filter(animal => 
@@ -94,7 +93,7 @@ const AnimalFormPage = () => {
       
       // Clean up empty strings and ensure required fields are present
       const cleanedData = Object.fromEntries(
-        Object.entries(data).filter(([_, value]) => value !== '')
+        Object.entries(data).filter(([, value]) => value !== '')
       ) as Partial<AnimalFormData>;
 
       // Ensure required fields are present

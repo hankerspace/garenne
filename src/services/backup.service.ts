@@ -5,7 +5,7 @@ import { formatDate } from '../utils/dates';
 export interface BackupService {
   exportData(state: AppState): void;
   importData(file: File): Promise<BackupFile>;
-  validateBackupFile(data: any): BackupFile;
+  validateBackupFile(data: unknown): BackupFile;
 }
 
 export class LocalBackupService implements BackupService {
@@ -54,7 +54,7 @@ export class LocalBackupService implements BackupService {
     });
   }
 
-  validateBackupFile(data: any): BackupFile {
+  validateBackupFile(data: unknown): BackupFile {
     // Basic structure validation
     if (!data || typeof data !== 'object') {
       throw new Error('Format de fichier invalide');

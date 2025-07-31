@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardActions,
   Button,
   Grid,
   FormControl,
@@ -19,7 +18,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Alert,
   Snackbar,
   List,
@@ -162,7 +160,7 @@ const SettingsPage = () => {
                 <FormLabel component="legend">Thème</FormLabel>
                 <RadioGroup
                   value={settings.theme}
-                  onChange={(e) => updateSettings({ theme: e.target.value as any })}
+                  onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' | 'system' })}
                 >
                   <FormControlLabel value="light" control={<Radio />} label="Clair" />
                   <FormControlLabel value="dark" control={<Radio />} label="Sombre" />
@@ -186,7 +184,7 @@ const SettingsPage = () => {
                 <FormLabel component="legend">Unité de poids</FormLabel>
                 <RadioGroup
                   value={settings.weightUnit}
-                  onChange={(e) => updateSettings({ weightUnit: e.target.value as any })}
+                  onChange={(e) => updateSettings({ weightUnit: e.target.value as 'g' | 'kg' })}
                 >
                   <FormControlLabel value="g" control={<Radio />} label="Grammes (g)" />
                   <FormControlLabel value="kg" control={<Radio />} label="Kilogrammes (kg)" />

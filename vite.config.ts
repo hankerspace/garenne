@@ -16,8 +16,8 @@ export default defineConfig({
         theme_color: '#1976d2',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: '/garenne/',
+        start_url: '/garenne/',
         icons: [
           {
             src: 'pwa-192x192.png',

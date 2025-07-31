@@ -136,7 +136,7 @@ const LitterDetailPage = () => {
     if (editingField === 'weaning') {
       updateLitter(litter.id, {
         weaningDate: weaningDate || undefined,
-        weanedCount: weanedCount > 0 ? weanedCount : undefined,
+        weanedCount: weanedCount >= 0 ? weanedCount : undefined,
       });
     } else if (editingField === 'notes') {
       updateLitter(litter.id, {
@@ -235,7 +235,7 @@ const LitterDetailPage = () => {
                   <Typography variant="body2" color="text.secondary" gutterBottom>
                     <strong>Date de sevrage:</strong> {formatDate(litter.weaningDate)}
                   </Typography>
-                  {litter.weanedCount && (
+                  {litter.weanedCount !== undefined && (
                     <Typography variant="body2" color="text.secondary" gutterBottom>
                       <strong>Nombre sevré:</strong> {litter.weanedCount}
                     </Typography>

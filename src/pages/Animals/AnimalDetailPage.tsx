@@ -36,7 +36,7 @@ import {
   MoreVert as MoreIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
-import { Sex, Status } from '../../models/types';
+import { Sex, Status, Breeding } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
 import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
 import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
@@ -45,6 +45,7 @@ import { BreedingModal } from '../../components/modals/BreedingModal';
 import { LitterModal } from '../../components/modals/LitterModal';
 import { MortalityModal } from '../../components/modals/MortalityModal';
 import { WeightChart } from '../../components/charts/WeightChart';
+import { GenealogyTree } from '../../components/GenealogyTree';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -89,7 +90,10 @@ const AnimalDetailPage = () => {
   const [breedingModalOpen, setBreedingModalOpen] = useState(false);
   const [litterModalOpen, setLitterModalOpen] = useState(false);
   const [mortalityModalOpen, setMortalityModalOpen] = useState(false);
-  const [selectedBreeding, setSelectedBreeding] = useState<any>(null);
+  const [selectedBreeding, setSelectedBreeding] = useState<Breeding | null>(null);
+  const [breedingToDelete, setBreedingToDelete] = useState<Breeding | null>(null);
+  const [breedingMenuAnchor, setBreedingMenuAnchor] = useState<null | HTMLElement>(null);
+  const [selectedBreedingForMenu, setSelectedBreedingForMenu] = useState<Breeding | null>(null);
   
   // Menu state
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -98,6 +102,8 @@ const AnimalDetailPage = () => {
   const state = useAppStore();
   const animals = state.animals;
   const animal = animals.find(a => a.id === id);
+  const deleteBreeding = useAppStore((state) => state.deleteBreeding);
+  const updateBreeding = useAppStore((state) => state.updateBreeding);
   
   const weights = getAnimalWeights(state, id || '');
   const treatments = getAnimalTreatments(state, id || '');
@@ -128,6 +134,34 @@ const AnimalDetailPage = () => {
       case Status.Deceased: return 'Décédé';
       default: return status;
     }
+  };
+
+  // Breeding management handlers
+  const handleBreedingMenuOpen = (event: React.MouseEvent<HTMLElement>, breeding: Breeding) => {
+    setBreedingMenuAnchor(event.currentTarget);
+    setSelectedBreedingForMenu(breeding);
+  };
+
+  const handleBreedingMenuClose = () => {
+    setBreedingMenuAnchor(null);
+    setSelectedBreedingForMenu(null);
+  };
+
+  const handleDeleteBreeding = (breeding: Breeding) => {
+    setBreedingToDelete(breeding);
+    handleBreedingMenuClose();
+  };
+
+  const confirmDeleteBreeding = () => {
+    if (breedingToDelete) {
+      deleteBreeding(breedingToDelete.id);
+      setBreedingToDelete(null);
+    }
+  };
+
+  const handleUpdateBreedingStatus = (breeding: Breeding, diagnosis: 'PREGNANT' | 'NOT_PREGNANT' | 'UNKNOWN') => {
+    updateBreeding(breeding.id, { diagnosis });
+    handleBreedingMenuClose();
   };
 
   if (!animal) {
@@ -316,49 +350,11 @@ const AnimalDetailPage = () => {
               )}
             </Grid>
 
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" gutterBottom>
-                Parenté
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              
-              <Box mb={2}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  Mère
-                </Typography>
-                <Typography variant="body2">
-                  {mother ? (
-                    <Button
-                      variant="text"
-                      size="small"
-                      onClick={() => navigate(`/animals/${mother.id}`)}
-                    >
-                      {mother.name || mother.identifier || mother.id}
-                    </Button>
-                  ) : (
-                    'Non renseignée'
-                  )}
-                </Typography>
-              </Box>
-
-              <Box mb={2}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  Père
-                </Typography>
-                <Typography variant="body2">
-                  {father ? (
-                    <Button
-                      variant="text"
-                      size="small"
-                      onClick={() => navigate(`/animals/${father.id}`)}
-                    >
-                      {father.name || father.identifier || father.id}
-                    </Button>
-                  ) : (
-                    'Non renseigné'
-                  )}
-                </Typography>
-              </Box>
+            <Grid item xs={12}>
+              <GenealogyTree 
+                currentAnimal={animal}
+                allAnimals={animals}
+              />
             </Grid>
           </Grid>
         </TabPanel>
@@ -448,8 +444,12 @@ const AnimalDetailPage = () => {
                             Mise bas
                           </Button>
                         )}
-                        <IconButton edge="end" size="small">
-                          <DeleteIcon />
+                        <IconButton 
+                          edge="end" 
+                          size="small"
+                          onClick={(e) => handleBreedingMenuOpen(e, breeding)}
+                        >
+                          <MoreIcon />
                         </IconButton>
                       </Box>
                     </ListItemSecondaryAction>
@@ -593,6 +593,52 @@ const AnimalDetailPage = () => {
           animal={animal}
         />
       )}
+
+      {/* Breeding Menu */}
+      <Menu
+        anchorEl={breedingMenuAnchor}
+        open={Boolean(breedingMenuAnchor)}
+        onClose={handleBreedingMenuClose}
+      >
+        <MenuItem onClick={() => selectedBreedingForMenu && handleUpdateBreedingStatus(selectedBreedingForMenu, 'PREGNANT')}>
+          Marquer comme gestante
+        </MenuItem>
+        <MenuItem onClick={() => selectedBreedingForMenu && handleUpdateBreedingStatus(selectedBreedingForMenu, 'NOT_PREGNANT')}>
+          Marquer comme non gestante
+        </MenuItem>
+        <MenuItem onClick={() => selectedBreedingForMenu && handleUpdateBreedingStatus(selectedBreedingForMenu, 'UNKNOWN')}>
+          Marquer comme en attente
+        </MenuItem>
+        <Divider />
+        <MenuItem 
+          onClick={() => selectedBreedingForMenu && handleDeleteBreeding(selectedBreedingForMenu)}
+          sx={{ color: 'error.main' }}
+        >
+          Supprimer la saillie
+        </MenuItem>
+      </Menu>
+
+      {/* Breeding Deletion Confirmation Dialog */}
+      <Dialog
+        open={Boolean(breedingToDelete)}
+        onClose={() => setBreedingToDelete(null)}
+      >
+        <DialogTitle>Confirmer la suppression</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Êtes-vous sûr de vouloir supprimer cette saillie du {breedingToDelete ? formatDate(breedingToDelete.date) : ''} ?
+            Cette action est irréversible.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setBreedingToDelete(null)}>
+            Annuler
+          </Button>
+          <Button onClick={confirmDeleteBreeding} color="error" variant="contained">
+            Supprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

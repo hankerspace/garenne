@@ -40,34 +40,44 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
   return (
     <Paper 
       sx={{ 
-        p: 3, 
+        p: 2, 
         maxWidth: '210mm', 
-        minHeight: '297mm',
+        maxHeight: '297mm',
         margin: 'auto',
         backgroundColor: 'white',
         color: 'black',
+        overflow: 'hidden',
         '@media print': {
           boxShadow: 'none',
           margin: 0,
-          padding: 2,
-          fontSize: '12pt'
+          padding: '1cm',
+          fontSize: '11pt',
+          maxHeight: 'none',
+          pageBreakInside: 'avoid'
         }
       }}
     >
       {/* Header */}
-      <Box textAlign="center" mb={3}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Box textAlign="center" mb={2} sx={{ '@media print': { mb: 1 } }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ 
+          fontWeight: 'bold',
+          '@media print': { fontSize: '18pt', mb: 0.5 }
+        }}>
           FICHE LAPIN
         </Typography>
-        <Typography variant="h5" component="h2" color="primary" gutterBottom>
+        <Typography variant="h5" component="h2" color="primary" gutterBottom sx={{
+          '@media print': { fontSize: '16pt', mb: 0.5 }
+        }}>
           {animal.name || 'Sans nom'}
         </Typography>
-        <Typography variant="h6" color="text.secondary">
+        <Typography variant="h6" color="text.secondary" sx={{
+          '@media print': { fontSize: '14pt', mb: 1 }
+        }}>
           {animal.identifier || 'Aucun identifiant'}
         </Typography>
       </Box>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={2} sx={{ '@media print': { spacing: 1 } }}>
         {/* Left Column - Animal Information */}
         <Grid item xs={12} md={8}>
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', borderBottom: '2px solid #1976d2', pb: 1 }}>
@@ -154,20 +164,58 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
       <style>
         {`
           @media print {
+            /* Hide all application background */
+            body, html {
+              background: white !important;
+              -webkit-print-color-adjust: exact !important;
+              color-adjust: exact !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            
+            /* Hide all non-printable elements */
+            .MuiDialogTitle-root,
+            .MuiDialogActions-root,
+            .MuiAppBar-root,
+            .MuiDrawer-root,
+            nav,
+            header,
+            footer {
+              display: none !important;
+            }
+            
+            /* Ensure dialog and paper take full space */
+            .MuiDialog-paper,
+            .MuiDialogContent-root,
             .MuiPaper-root {
               box-shadow: none !important;
               margin: 0 !important;
-              padding: 16px !important;
+              padding: 0 !important;
+              background: white !important;
+              max-width: none !important;
+              max-height: none !important;
+              width: 100% !important;
+              height: auto !important;
             }
             
+            /* Page setup for A4 single page */
             @page {
-              margin: 2cm;
+              margin: 1.5cm;
               size: A4;
+              background: white;
             }
             
-            body {
-              -webkit-print-color-adjust: exact !important;
-              color-adjust: exact !important;
+            /* Ensure content fits on one page */
+            * {
+              page-break-inside: avoid !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Override any container backgrounds */
+            .MuiContainer-root,
+            .MuiBox-root,
+            div {
+              background: transparent !important;
             }
           }
         `}

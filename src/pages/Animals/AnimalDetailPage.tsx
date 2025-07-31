@@ -179,9 +179,11 @@ const AnimalDetailPage = () => {
   };
 
   const handlePrintConfirm = () => {
-    setPrintDialogOpen(false);
+    // Don't close the dialog immediately, let the print happen first
     setTimeout(() => {
       window.print();
+      // Close dialog after printing
+      setPrintDialogOpen(false);
     }, 100);
   };
 
@@ -713,44 +715,7 @@ const AnimalDetailPage = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Print styles */}
-      <style>
-        {`
-          @media print {
-            /* Hide everything except the dialog content when printing */
-            body * {
-              visibility: hidden;
-            }
-            
-            .MuiDialog-paper, .MuiDialog-paper * {
-              visibility: visible;
-            }
-            
-            .MuiDialog-paper {
-              position: absolute !important;
-              left: 0 !important;
-              top: 0 !important;
-              margin: 0 !important;
-              padding: 0 !important;
-              min-height: initial !important;
-              box-shadow: none !important;
-              width: 100% !important;
-              max-width: 100% !important;
-            }
-            
-            /* Hide dialog title and actions during print */
-            .MuiDialogTitle-root,
-            .MuiDialogActions-root {
-              display: none !important;
-            }
-            
-            .MuiDialogContent-root {
-              padding: 0 !important;
-              margin: 0 !important;
-            }
-          }
-        `}
-      </style>
+
     </Container>
   );
 };

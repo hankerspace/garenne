@@ -1,4 +1,4 @@
-import { AppState, Animal, Sex, Status, BreedingMethod } from '../models/types.ts';
+import { AppState, Animal, Sex, Status, BreedingMethod, Route } from '../models/types.ts';
 import { generateId, generateTimestamp } from '../services/id.service.ts';
 import { addDaysToDate, toISODate } from '../utils/dates.ts';
 
@@ -177,7 +177,7 @@ export const createSeedData = (): AppState => {
       product: 'Baycox',
       lotNumber: 'LOT2024-001',
       dose: '1ml',
-      route: 'ORAL' as const,
+      route: Route.Oral,
       reason: 'Prévention coccidiose',
       withdrawalUntil: addDaysToDate(toISODate(now), 10), // Active withdrawal
       notes: 'Traitement préventif post-partum',

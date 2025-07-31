@@ -96,9 +96,16 @@ function App() {
                       backgroundColor: 'white',
                       borderRadius: '50%',
                       padding: '2px',
+                      cursor: 'pointer',
                   }} 
+                  onClick={() => navigate('/')}
                 />
-                <Typography variant="h6" component="h1">
+                <Typography 
+                  variant="h6" 
+                  component="h1"
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => navigate('/')}
+                >
                   Garenne
                 </Typography>
               </Box>

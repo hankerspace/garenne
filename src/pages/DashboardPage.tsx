@@ -292,7 +292,12 @@ const DashboardPage = () => {
       <Fab
         color="primary"
         aria-label="add"
-        sx={{ position: 'fixed', bottom: 80, right: 16 }}
+        sx={{ 
+          position: 'fixed', 
+          bottom: { xs: 80, sm: 16 }, 
+          right: 16,
+          zIndex: 1000
+        }}
         onClick={handleFabClick}
       >
         <AddIcon />

@@ -33,6 +33,10 @@ const DashboardPage = () => {
   
   const state = useAppStore();
   const kpis = getKPIs(state);
+  const loadSeedData = useAppStore((state) => state.loadSeedData);
+
+  // Show sample data button only if no data exists
+  const hasData = state.animals.length > 0 || state.litters.length > 0 || state.treatments.length > 0;
 
   const handleFabClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -103,6 +107,36 @@ const DashboardPage = () => {
       <Typography variant="h4" component="h2" gutterBottom>
         Tableau de bord
       </Typography>
+
+      {!hasData && (
+        <Box mb={3}>
+          <Card sx={{ bgcolor: 'info.main', color: 'info.contrastText' }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Bienvenue dans Garenne !
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                Votre élevage semble vide. Voulez-vous charger des données d'exemple pour découvrir l'application ?
+              </Typography>
+              <Button 
+                variant="contained" 
+                color="secondary"
+                onClick={loadSeedData}
+                sx={{ mr: 1 }}
+              >
+                Charger des données d'exemple
+              </Button>
+              <Button 
+                variant="outlined" 
+                color="inherit"
+                onClick={() => navigate('/animals?new=true')}
+              >
+                Créer mon premier animal
+              </Button>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
 
       <Grid container spacing={2}>
         {kpiCards.map((card, index) => (

@@ -3,11 +3,13 @@ import { subscribeWithSelector } from 'zustand/middleware';
 import { AppState, Animal, Breeding, Litter, WeightRecord, Treatment, Mortality, Status } from '../models/types';
 import { storageService } from '../services/storage.service';
 import { generateId, generateTimestamp } from '../services/id.service';
+import { createSeedData } from '../utils/seedData';
 
 interface AppStore extends AppState {
   // Actions
   loadData: () => void;
   saveData: () => void;
+  loadSeedData: () => void;
   
   // Animal actions
   addAnimal: (animal: Omit<Animal, 'id' | 'createdAt' | 'updatedAt'>) => Animal;
@@ -73,8 +75,15 @@ export const useAppStore = create<AppStore>()(
     // Save data to storage
     saveData: () => {
       const state = get();
-      const { loadData, saveData, ...dataToSave } = state;
+      const { loadData, saveData, loadSeedData, ...dataToSave } = state;
       storageService.save(dataToSave);
+    },
+
+    // Load seed data for testing
+    loadSeedData: () => {
+      const seedData = createSeedData();
+      set(seedData);
+      get().saveData();
     },
 
     // Animal actions

@@ -68,7 +68,7 @@ const TabPanel = (props: TabPanelProps) => {
       aria-labelledby={`animal-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 };
@@ -416,21 +416,21 @@ const AnimalDetailPage = () => {
                         </Box>
                       }
                       secondary={
-                        <Box>
-                          <Typography variant="body2" color="text.secondary">
+                        <>
+                          <Typography variant="body2" color="text.secondary" component="span" display="block">
                             Mâle: {male ? (male.name || 'Sans nom') : 'Non spécifié'}
                           </Typography>
                           {breeding.expectedKindlingDate && breeding.diagnosis === 'PREGNANT' && (
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" color="text.secondary" component="span" display="block">
                               Mise bas prévue: {formatDate(breeding.expectedKindlingDate)}
                             </Typography>
                           )}
                           {breeding.notes && (
-                            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                            <Typography variant="body2" color="text.secondary" component="span" display="block" sx={{ fontStyle: 'italic' }}>
                               {breeding.notes}
                             </Typography>
                           )}
-                        </Box>
+                        </>
                       }
                     />
                     <ListItemSecondaryAction>

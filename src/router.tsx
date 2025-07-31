@@ -3,6 +3,7 @@ import App from './App.tsx';
 import DashboardPage from './pages/DashboardPage.tsx';
 import AnimalListPage from './pages/Animals/AnimalListPage.tsx';
 import AnimalDetailPage from './pages/Animals/AnimalDetailPage.tsx';
+import AnimalFormPage from './pages/Animals/AnimalFormPage.tsx';
 import LitterListPage from './pages/Litters/LitterListPage.tsx';
 import LitterDetailPage from './pages/Litters/LitterDetailPage.tsx';
 import SettingsPage from './pages/Settings/SettingsPage.tsx';
@@ -19,6 +20,14 @@ export const router = createBrowserRouter([
       {
         path: 'animals',
         element: <AnimalListPage />,
+      },
+      {
+        path: 'animals/new',
+        element: <AnimalFormPage />,
+      },
+      {
+        path: 'animals/:id/edit',
+        element: <AnimalFormPage />,
       },
       {
         path: 'animals/:id',

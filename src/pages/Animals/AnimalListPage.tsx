@@ -231,6 +231,13 @@ const AnimalListPage = () => {
                 >
                   Peser
                 </Button>
+                <Button 
+                  size="small" 
+                  color="primary"
+                  onClick={() => navigate(`/animals/${animal.id}/edit`)}
+                >
+                  Modifier
+                </Button>
               </CardActions>
             </Card>
           </Grid>

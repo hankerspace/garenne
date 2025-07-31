@@ -60,32 +60,34 @@ export class LocalBackupService implements BackupService {
       throw new Error('Format de fichier invalide');
     }
 
+    const dataObj = data as Record<string, any>;
+
     const requiredFields = ['schemaVersion', 'exportedAt', 'animals', 'breedings', 'litters', 'weights', 'treatments', 'mortalities', 'settings'];
     for (const field of requiredFields) {
-      if (!(field in data)) {
+      if (!(field in dataObj)) {
         throw new Error(`Champ manquant: ${field}`);
       }
     }
 
     // Validate schema version
-    if (typeof data.schemaVersion !== 'number' || data.schemaVersion < 1) {
+    if (typeof dataObj.schemaVersion !== 'number' || dataObj.schemaVersion < 1) {
       throw new Error('Version de schéma invalide');
     }
 
     // Validate arrays
     const arrayFields = ['animals', 'breedings', 'litters', 'weights', 'treatments', 'mortalities'];
     for (const field of arrayFields) {
-      if (!Array.isArray(data[field])) {
+      if (!Array.isArray(dataObj[field])) {
         throw new Error(`${field} doit être un tableau`);
       }
     }
 
     // Validate export date
-    if (!data.exportedAt || isNaN(Date.parse(data.exportedAt))) {
+    if (!dataObj.exportedAt || isNaN(Date.parse(dataObj.exportedAt))) {
       throw new Error('Date d\'export invalide');
     }
 
-    return data as BackupFile;
+    return dataObj as BackupFile;
   }
 
   generateImportSummary(backupData: BackupFile, currentState: AppState): ImportSummary {

@@ -587,7 +587,7 @@ const AnimalDetailPage = () => {
           setLitterModalOpen(false);
           setSelectedBreeding(null);
         }}
-        breeding={selectedBreeding}
+        breeding={selectedBreeding || undefined}
         preselectedMother={animal?.sex === Sex.Female ? animal : undefined}
       />
       {animal && (

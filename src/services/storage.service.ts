@@ -53,12 +53,13 @@ export class LocalStorageService implements StorageService {
       }
 
       // Merge with default state to handle schema changes
+      const parsedState = parsed as Record<string, any>;
       return {
         ...defaultState,
-        ...parsed,
+        ...(parsedState && typeof parsedState === 'object' ? parsedState : {}),
         settings: {
           ...defaultSettings,
-          ...parsed.settings,
+          ...(parsedState?.settings && typeof parsedState.settings === 'object' ? parsedState.settings : {}),
         },
       };
     } catch (error) {
@@ -105,21 +106,24 @@ export class LocalStorageService implements StorageService {
 // Migration service for handling schema changes
 export class MigrationService {
   static migrate(state: unknown): AppState {
+    const stateObj = state as Record<string, any>;
+    
     // Handle migrations from older schema versions
-    if (!state.settings?.schemaVersion) {
+    if (!stateObj?.settings?.schemaVersion) {
       // Migration from v0 to v1
-      state = {
+      const migratedState = {
         ...defaultState,
-        ...state,
+        ...(stateObj && typeof stateObj === 'object' ? stateObj : {}),
         settings: {
           ...defaultSettings,
-          ...state.settings,
+          ...(stateObj?.settings && typeof stateObj.settings === 'object' ? stateObj.settings : {}),
           schemaVersion: 1,
         },
       };
+      return migratedState;
     }
     
-    return state;
+    return stateObj as AppState;
   }
 }
 

@@ -168,7 +168,7 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
                   y={firstWeight} 
                   stroke="#666" 
                   strokeDasharray="2 2" 
-                  label={{ value: "Poids initial", position: "topLeft" }}
+                  label={{ value: "Poids initial" }}
                 />
               )}
             </LineChart>

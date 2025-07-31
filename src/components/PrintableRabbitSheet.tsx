@@ -104,22 +104,6 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  Âge
-                </TableCell>
-                <TableCell>
-                  {animal.birthDate ? calculateAgeText(animal.birthDate) : 'Inconnu'}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  Origine
-                </TableCell>
-                <TableCell>
-                  {animal.origin === 'BORN_HERE' ? 'Né ici' : animal.origin === 'PURCHASED' ? 'Acheté' : 'Non renseignée'}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
                   Cage
                 </TableCell>
                 <TableCell>{animal.cage || 'Non renseignée'}</TableCell>

@@ -56,11 +56,13 @@ export const PopulationChart: React.FC = () => {
 
   // Monthly births data (last 6 months)
   const monthlyBirths = [];
+  const today = new Date();
+  
   for (let i = 5; i >= 0; i--) {
-    const date = new Date();
-    date.setMonth(date.getMonth() - i);
-    const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
-    const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    // Create a date for the first day of the target month
+    const targetDate = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    const monthStart = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1);
+    const monthEnd = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0);
     
     const birthsInMonth = liveAnimals.filter(animal => {
       if (!animal.birthDate) return false;
@@ -69,7 +71,7 @@ export const PopulationChart: React.FC = () => {
     }).length;
 
     monthlyBirths.push({
-      month: date.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
+      month: targetDate.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
       births: birthsInMonth,
     });
   }

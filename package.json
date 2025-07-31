@@ -1,17 +1,21 @@
 {
   "name": "garenne",
+  "description": "Application moderne de gestion d'élevage de lapins avec React, TypeScript et Material-UI",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.8.0-beta",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "analyze": "npm run build -- --mode analyze"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

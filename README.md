@@ -6,7 +6,7 @@
 [![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=flat&logo=material-ui&logoColor=white)](https://mui.com/)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-blue?style=flat)](https://web.dev/progressive-web-apps/)
 
-![Garenne Dashboard](https://github.com/user-attachments/assets/0bdaeae5-688f-4941-9bd9-8ec4230c4fa4)
+![Garenne Dashboard](https://github.com/user-attachments/assets/ceb9cc80-78c9-43af-8e95-01c2d2f81a37)
 
 **Garenne** est une application web moderne et complète pour la gestion d'élevage de lapins, développée avec React 19, TypeScript, et Material-UI v5. Elle offre aux éleveurs une solution professionnelle pour gérer efficacement leurs animaux, portées, pesées, traitements et bien plus encore, le tout en mode hors-ligne avec stockage local sécurisé.
 
@@ -105,12 +105,14 @@ Pour déployer l'application, consultez notre [Guide de Déploiement](DEPLOYMENT
 ### Gestion des Animaux
 
 #### Créer un Animal
-1. Cliquez sur le bouton "+" en bas à droite
+1. Cliquez sur le bouton "+" en bas à droite ou "Créer mon premier animal"
 2. Remplissez les informations de base (nom, identifiant, sexe, etc.)
 3. Définissez l'origine (né ici/acheté) et la parenté si applicable
 4. Sauvegardez
 
-![Formulaire Animal](https://github.com/user-attachments/assets/3257e878-4427-4423-b7c9-c3ec1212cf14)
+La liste des animaux affiche toutes les informations essentielles avec des options de recherche et filtrage :
+
+![Liste des Animaux](https://github.com/user-attachments/assets/d998702f-0fa7-4b61-8357-0231d08e1630)
 
 #### Consulter les Détails
 1. Cliquez sur "Détails" sur la carte d'un animal
@@ -120,7 +122,15 @@ Pour déployer l'application, consultez notre [Guide de Déploiement](DEPLOYMENT
    - **Pesées** : Suivi du poids
    - **Santé** : Traitements et délais d'attente
 
-![Détails Animal](https://github.com/user-attachments/assets/c730bcf3-5282-4619-991f-987d57bdc042)
+![Détails Animal](https://github.com/user-attachments/assets/a34455a6-b394-4ffe-a734-6be646fc9b02)
+
+#### Suivi des Pesées
+1. Dans les détails d'un animal, cliquez sur l'onglet "Pesées"
+2. Visualisez l'évolution du poids avec graphiques interactifs
+3. Ajoutez de nouvelles pesées avec le bouton "Nouvelle pesée"
+4. Consultez les statistiques (poids actuel, gain total, gain moyen par jour)
+
+![Suivi des Pesées](https://github.com/user-attachments/assets/2cb433f0-b524-4ebd-bd78-0d9540b44312)
 
 #### Modifier un Animal
 1. Cliquez sur "Modifier" sur la carte ou dans les détails

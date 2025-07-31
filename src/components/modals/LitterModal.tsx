@@ -10,11 +10,10 @@ import {
   Alert,
   Typography,
   Grid,
-  InputAdornment,
 } from '@mui/material';
 import { useAppStore } from '../../state/store';
 import { Animal, Breeding, Sex, Status } from '../../models/types';
-import { formatDate, addDaysToDate } from '../../utils/dates';
+import { formatDate } from '../../utils/dates';
 
 interface LitterModalProps {
   open: boolean;
@@ -36,7 +35,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
   const [femalesToCreate, setFemalesToCreate] = useState<number>(0);
   const [notes, setNotes] = useState('');
   const [error, setError] = useState('');
-  const [createOffspring, setCreateOffspring] = useState(true);
+  const createOffspring = true;
 
   const state = useAppStore();
   const addLitter = useAppStore((state) => state.addLitter);
@@ -85,7 +84,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
 
     try {
       // Create the litter
-      const litter = addLitter({
+      addLitter({
         motherId: mother.id,
         fatherId: father?.id,
         kindlingDate,
@@ -146,7 +145,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
       setError('');
       
       onClose();
-    } catch (err) {
+    } catch (_) {
       setError('Erreur lors de l\'enregistrement de la portée');
     }
   };

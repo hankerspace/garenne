@@ -85,7 +85,7 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
       setError('');
       
       onClose();
-    } catch (err) {
+    } catch (_) {
       setError('Erreur lors de l\'enregistrement de la saillie');
     }
   };

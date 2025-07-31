@@ -59,7 +59,17 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
     avgDailyGain = daysDiff > 0 ? totalGain / daysDiff : 0;
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      payload: {
+        fullDate: string;
+        weight: number;
+      };
+    }>;
+  }
+
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
@@ -158,7 +168,7 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
                   y={firstWeight} 
                   stroke="#666" 
                   strokeDasharray="2 2" 
-                  label={{ value: "Poids initial", position: "topLeft" as any }}
+                  label={{ value: "Poids initial", position: "topLeft" }}
                 />
               )}
             </LineChart>

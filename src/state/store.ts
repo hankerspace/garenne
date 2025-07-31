@@ -75,7 +75,7 @@ export const useAppStore = create<AppStore>()(
     // Save data to storage
     saveData: () => {
       const state = get();
-      const { loadData, saveData, loadSeedData, ...dataToSave } = state;
+      const { loadData: _loadData, saveData: _saveData, loadSeedData: _loadSeedData, ...dataToSave } = state;
       storageService.save(dataToSave);
     },
 

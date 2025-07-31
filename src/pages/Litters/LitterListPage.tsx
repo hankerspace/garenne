@@ -24,14 +24,10 @@ import {
   Search as SearchIcon,
   Add as AddIcon,
   FamilyRestroom as FamilyIcon,
-  Female as FemaleIcon,
-  Male as MaleIcon,
-  CalendarToday as CalendarIcon,
-  ChildCare as BabyIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
 import { getLitters, getAnimalById } from '../../state/selectors';
-import { formatDate, calculateAgeText } from '../../utils/dates';
+import { formatDate } from '../../utils/dates';
 import { LitterModal } from '../../components/modals/LitterModal';
 
 const LitterListPage = () => {
@@ -117,7 +113,12 @@ const LitterListPage = () => {
     return `${Math.floor(daysDiff / 30)} mois`;
   };
 
-  const getWeaningStatus = (litter: any) => {
+  interface LitterWithWeaningInfo {
+    weaningDate?: string;
+    kindlingDate: string;
+  }
+
+  const getWeaningStatus = (litter: LitterWithWeaningInfo) => {
     if (litter.weaningDate) {
       return { status: 'Sevrée', color: 'success' as const };
     }

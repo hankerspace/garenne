@@ -77,7 +77,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
       setError('');
       
       onClose();
-    } catch (err) {
+    } catch (_) {
       setError('Erreur lors de l\'enregistrement du décès');
     }
   };

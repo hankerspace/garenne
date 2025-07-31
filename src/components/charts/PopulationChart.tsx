@@ -13,7 +13,7 @@ import {
 import { Box, Typography, Card, CardContent, Grid } from '@mui/material';
 import { useAppStore } from '../../state/store';
 import { getKPIs } from '../../state/selectors';
-import { Sex, Status } from '../../models/types';
+import { Status } from '../../models/types';
 
 const COLORS = {
   male: '#1976d2',
@@ -74,7 +74,15 @@ export const PopulationChart: React.FC = () => {
     });
   }
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      name: string;
+      value: number;
+    }>;
+  }
+
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0];
       return (

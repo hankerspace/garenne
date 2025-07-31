@@ -19,7 +19,6 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Alert,
-  Paper,
   TextField,
   Dialog,
   DialogTitle,
@@ -33,13 +32,10 @@ import {
   Female as FemaleIcon,
   Male as MaleIcon,
   ChildCare as BabyIcon,
-  CalendarToday as CalendarIcon,
-  Pets as PetsIcon,
   Add as AddIcon,
-  Delete as DeleteIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
-import { getAnimalById, getAnimalChildren } from '../../state/selectors';
+import { getAnimalById } from '../../state/selectors';
 import { formatDate, calculateAgeText } from '../../utils/dates';
 import { Sex, Status } from '../../models/types';
 
@@ -54,7 +50,6 @@ const LitterDetailPage = () => {
 
   const state = useAppStore();
   const updateLitter = useAppStore((state) => state.updateLitter);
-  const deleteLitter = useAppStore((state) => state.deleteLitter);
   const addAnimal = useAppStore((state) => state.addAnimal);
 
   // Find the litter

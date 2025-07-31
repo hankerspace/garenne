@@ -9,7 +9,7 @@ describe('Animal Store', () => {
   })
 
   it('should add an animal', () => {
-    const { addAnimal, animals } = useAppStore.getState()
+    const { addAnimal } = useAppStore.getState()
     
     const animalData = {
       name: 'Test Animal',

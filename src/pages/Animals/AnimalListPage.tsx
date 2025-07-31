@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -31,12 +31,36 @@ import { useAppStore } from '../../state/store';
 import { getLiveAnimals, getAnimalActiveTreatments } from '../../state/selectors';
 import { Sex, Status } from '../../models/types';
 import { calculateAgeText } from '../../utils/dates';
+import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
+import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<Status | 'ALL'>('ALL');
   const [sexFilter, setSexFilter] = useState<Sex | 'ALL'>('ALL');
+  const [showQuickWeight, setShowQuickWeight] = useState(false);
+  const [showQuickTreatment, setShowQuickTreatment] = useState(false);
+
+  // Handle URL parameters for quick actions
+  useEffect(() => {
+    if (searchParams.get('quickWeight') === 'true') {
+      setShowQuickWeight(true);
+      // Clean up URL
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('quickWeight');
+      setSearchParams(newParams, { replace: true });
+    }
+    
+    if (searchParams.get('quickTreatment') === 'true') {
+      setShowQuickTreatment(true);
+      // Clean up URL
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('quickTreatment');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const state = useAppStore();
   const animals = getLiveAnimals(state);
@@ -293,6 +317,16 @@ const AnimalListPage = () => {
       >
         <AddIcon />
       </Fab>
+
+      {/* Quick Action Modals */}
+      <QuickWeightModal 
+        open={showQuickWeight} 
+        onClose={() => setShowQuickWeight(false)} 
+      />
+      <QuickTreatmentModal 
+        open={showQuickTreatment} 
+        onClose={() => setShowQuickTreatment(false)} 
+      />
     </Container>
   );
 };

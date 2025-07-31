@@ -26,7 +26,6 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const isMobile = useMediaQuery('(max-width:600px)');
   
   const settings = useAppStore((state) => state.settings);
   const loadData = useAppStore((state) => state.loadData);
@@ -95,43 +94,41 @@ function App() {
         {/* Main Content */}
         <Box sx={{ 
           flexGrow: 1, 
-          pb: { xs: 7, sm: 0 },
+          pb: 7,
           width: '100%',
           overflow: 'auto',
         }}>
           <Outlet />
         </Box>
 
-        {/* Bottom Navigation - Mobile Only */}
-        {isMobile && (
-          <Paper 
-            sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} 
-            elevation={3}
+        {/* Bottom Navigation */}
+        <Paper 
+          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} 
+          elevation={3}
+        >
+          <BottomNavigation
+            value={navigationValue}
+            onChange={handleNavigationChange}
+            showLabels
           >
-            <BottomNavigation
-              value={navigationValue}
-              onChange={handleNavigationChange}
-              showLabels
-            >
-              <BottomNavigationAction 
-                label="Accueil" 
-                icon={<HomeIcon />} 
-              />
-              <BottomNavigationAction 
-                label="Animaux" 
-                icon={<PetsIcon />} 
-              />
-              <BottomNavigationAction 
-                label="Portées" 
-                icon={<FamilyIcon />} 
-              />
-              <BottomNavigationAction 
-                label="Paramètres" 
-                icon={<SettingsIcon />} 
-              />
-            </BottomNavigation>
-          </Paper>
-        )}
+            <BottomNavigationAction 
+              label="Accueil" 
+              icon={<HomeIcon />} 
+            />
+            <BottomNavigationAction 
+              label="Animaux" 
+              icon={<PetsIcon />} 
+            />
+            <BottomNavigationAction 
+              label="Portées" 
+              icon={<FamilyIcon />} 
+            />
+            <BottomNavigationAction 
+              label="Paramètres" 
+              icon={<SettingsIcon />} 
+            />
+          </BottomNavigation>
+        </Paper>
       </Box>
     </ThemeProvider>
   );

@@ -26,6 +26,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../state/store';
 import { getKPIs } from '../state/selectors';
+import { PopulationChart } from '../components/charts/PopulationChart';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -180,6 +181,18 @@ const DashboardPage = () => {
           </Grid>
         ))}
       </Grid>
+
+      {/* Charts Section */}
+      {hasData && (
+        <Box mt={{ xs: 3, sm: 4 }}>
+          <Typography variant="h5" component="h3" gutterBottom sx={{
+            fontSize: { xs: '1.25rem', sm: '1.5rem' }
+          }}>
+            Vue d'ensemble
+          </Typography>
+          <PopulationChart />
+        </Box>
+      )}
 
       {/* Quick Actions Section */}
       <Box mt={{ xs: 3, sm: 4 }}>

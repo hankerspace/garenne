@@ -102,6 +102,30 @@ export const getRecentLitters = (state: AppState, days: number = 30) => {
   );
 };
 
+// Breeding-related selectors (added for new functionality)
+export const getBreedingWithAnimals = (state: AppState, breedingId: string) => {
+  const breeding = state.breedings.find(b => b.id === breedingId);
+  if (!breeding) return null;
+  
+  const female = getAnimalById(state, breeding.femaleId);
+  const male = breeding.maleId ? getAnimalById(state, breeding.maleId) : undefined;
+  
+  return { breeding, female, male };
+};
+
+export const getBreedingLitters = (state: AppState, breedingId: string) => {
+  const breeding = state.breedings.find(b => b.id === breedingId);
+  if (!breeding) return [];
+  
+  return state.litters.filter(litter => 
+    litter.motherId === breeding.femaleId && 
+    litter.fatherId === breeding.maleId &&
+    // Check if kindling date is close to expected kindling date (within 5 days)
+    breeding.expectedKindlingDate &&
+    Math.abs(new Date(litter.kindlingDate).getTime() - new Date(breeding.expectedKindlingDate).getTime()) <= 5 * 24 * 60 * 60 * 1000
+  );
+};
+
 // KPI selectors
 export const getKPIs = (state: AppState) => {
   const liveAnimals = getLiveAnimals(state);

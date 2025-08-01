@@ -193,12 +193,21 @@ export const createSeedData = (): AppState => {
     weights,
     treatments,
     mortalities: [],
+    cages: [],
+    tags: [],
+    performanceMetrics: [],
     settings: {
       theme: 'light',
       weightUnit: 'g',
       enableQR: false,
       locale: 'fr-FR',
-      schemaVersion: 1,
+      schemaVersion: 2,
+      gestationDuration: 31,
+      weaningDuration: 28,
+      reproductionReadyDuration: 90,
+      slaughterReadyDuration: 70,
+      exportFormat: 'json',
+      includeImages: false,
     },
   };
 };

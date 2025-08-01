@@ -17,7 +17,9 @@ import {
   Home as HomeIcon,
   Pets as PetsIcon,
   FamilyRestroom as FamilyIcon,
+  Assessment as StatsIcon,
   Settings as SettingsIcon,
+  MoreHoriz as MoreIcon,
 } from '@mui/icons-material';
 import { lightTheme, darkTheme } from './utils/theme';
 import { useAppStore } from './state/store';
@@ -49,7 +51,9 @@ function App() {
     if (location.pathname === '/') return 0;
     if (location.pathname.startsWith('/animals')) return 1;
     if (location.pathname.startsWith('/litters')) return 2;
-    if (location.pathname.startsWith('/settings')) return 3;
+    if (location.pathname.startsWith('/statistics')) return 3;
+    if (location.pathname.startsWith('/settings')) return 4;
+    if (location.pathname.startsWith('/cages') || location.pathname.startsWith('/tags')) return 4;
     return 0;
   }, [location.pathname]);
 
@@ -65,6 +69,9 @@ function App() {
         navigate('/litters');
         break;
       case 3:
+        navigate('/statistics');
+        break;
+      case 4:
         navigate('/settings');
         break;
     }
@@ -144,6 +151,10 @@ function App() {
             <BottomNavigationAction 
               label="Portées" 
               icon={<FamilyIcon />} 
+            />
+            <BottomNavigationAction 
+              label="Stats" 
+              icon={<StatsIcon />} 
             />
             <BottomNavigationAction 
               label="Paramètres" 

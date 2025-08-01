@@ -19,6 +19,9 @@ export class LocalBackupService implements BackupService {
       weights: state.weights,
       treatments: state.treatments,
       mortalities: state.mortalities,
+      cages: state.cages,
+      tags: state.tags,
+      performanceMetrics: state.performanceMetrics,
       settings: state.settings,
     };
 
@@ -122,6 +125,9 @@ export class LocalBackupService implements BackupService {
     const existingWeights = new Map(currentState.weights.map(w => [w.id, w]));
     const existingTreatments = new Map(currentState.treatments.map(t => [t.id, t]));
     const existingMortalities = new Map(currentState.mortalities.map(m => [m.id, m]));
+    const existingCages = new Map(currentState.cages.map(c => [c.id, c]));
+    const existingTags = new Map(currentState.tags.map(t => [t.id, t]));
+    const existingPerformanceMetrics = new Map(currentState.performanceMetrics.map(pm => [pm.id, pm]));
 
     // Merge animals (update existing, add new)
     backupData.animals.forEach(animal => {
@@ -149,6 +155,19 @@ export class LocalBackupService implements BackupService {
       existingMortalities.set(mortality.id, mortality);
     });
 
+    // Merge new arrays (with fallback for older backups)
+    (backupData.cages || []).forEach(cage => {
+      existingCages.set(cage.id, cage);
+    });
+
+    (backupData.tags || []).forEach(tag => {
+      existingTags.set(tag.id, tag);
+    });
+
+    (backupData.performanceMetrics || []).forEach(metrics => {
+      existingPerformanceMetrics.set(metrics.id, metrics);
+    });
+
     return {
       animals: Array.from(existingAnimals.values()),
       breedings: Array.from(existingBreedings.values()),
@@ -156,6 +175,9 @@ export class LocalBackupService implements BackupService {
       weights: Array.from(existingWeights.values()),
       treatments: Array.from(existingTreatments.values()),
       mortalities: Array.from(existingMortalities.values()),
+      cages: Array.from(existingCages.values()),
+      tags: Array.from(existingTags.values()),
+      performanceMetrics: Array.from(existingPerformanceMetrics.values()),
       settings: {
         ...currentState.settings,
         ...backupData.settings,
@@ -172,6 +194,9 @@ export class LocalBackupService implements BackupService {
       weights: backupData.weights,
       treatments: backupData.treatments,
       mortalities: backupData.mortalities,
+      cages: backupData.cages || [],
+      tags: backupData.tags || [],
+      performanceMetrics: backupData.performanceMetrics || [],
       settings: backupData.settings,
     };
   }

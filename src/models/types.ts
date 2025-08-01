@@ -10,7 +10,8 @@ export enum Status {
   Reproducer = 'REPRO',
   Grow = 'GROW',
   Retired = 'RETIRED',
-  Deceased = 'DEAD'
+  Deceased = 'DEAD',
+  Consumed = 'CONSUMED' // For animals slaughtered for consumption
 }
 
 export enum BreedingMethod {
@@ -38,6 +39,9 @@ export interface Animal {
   cage?: string;
   status: Status;
   notes?: string;
+  tags?: string[]; // System for custom labels/tags
+  consumedDate?: string; // Date when animal was consumed (if status is CONSUMED)
+  consumedWeight?: number; // Weight at consumption (grams)
   createdAt: string;
   updatedAt: string;
 }
@@ -107,12 +111,55 @@ export interface Mortality {
   updatedAt: string;
 }
 
+export interface Cage {
+  id: UUID;
+  name: string;
+  description?: string;
+  capacity?: number;
+  location?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Tag {
+  id: UUID;
+  name: string;
+  color?: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PerformanceMetrics {
+  id: UUID;
+  animalId: UUID;
+  period: string; // Format: YYYY-MM for monthly metrics
+  totalLitters?: number;
+  totalOffspring?: number;
+  survivingOffspring?: number;
+  averageLitterSize?: number;
+  survivalRate?: number;
+  averageWeightAtWeaning?: number;
+  reproductionEfficiency?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   weightUnit: 'g' | 'kg';
   enableQR: boolean;
-  locale: 'fr-FR';
+  locale: 'fr-FR' | 'en-US' | 'es-ES';
   schemaVersion: number;
+  // Customizable durations (in days)
+  gestationDuration: number; // Default: 31 days
+  weaningDuration: number; // Default: 28 days
+  reproductionReadyDuration: number; // Default: 90 days (after birth)
+  slaughterReadyDuration: number; // Default: 70 days (for meat rabbits)
+  // Export/Import preferences
+  exportFormat: 'json' | 'csv' | 'excel';
+  includeImages: boolean;
 }
 
 export interface BackupFile {
@@ -124,6 +171,9 @@ export interface BackupFile {
   weights: WeightRecord[];
   treatments: Treatment[];
   mortalities: Mortality[];
+  cages: Cage[];
+  tags: Tag[];
+  performanceMetrics: PerformanceMetrics[];
   settings: AppSettings;
 }
 
@@ -135,5 +185,8 @@ export interface AppState {
   weights: WeightRecord[];
   treatments: Treatment[];
   mortalities: Mortality[];
+  cages: Cage[];
+  tags: Tag[];
+  performanceMetrics: PerformanceMetrics[];
   settings: AppSettings;
 }

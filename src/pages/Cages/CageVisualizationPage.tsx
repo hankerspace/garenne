@@ -12,11 +12,25 @@ import {
   Badge,
   Snackbar,
   Alert,
+  Container,
+  Fab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import {
   Home as CageIcon,
   Pets as AnimalIcon,
   Add as AddIcon,
+  Edit as EditIcon,
+  Visibility as ViewIcon,
+  Settings as SettingsIcon,
+  DragIndicator as DragIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../state/store';
@@ -25,16 +39,36 @@ import { useTranslation } from '../../hooks/useTranslation';
 
 const CageVisualizationPage: React.FC = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { t } = useTranslation();
-  const { cages, animals } = useAppStore();
+  const { cages, animals, tags } = useAppStore();
   const updateAnimal = useAppStore((state) => state.updateAnimal);
   
   const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
+  const [dragOverCage, setDragOverCage] = useState<string | null>(null);
+  const [selectedAnimal, setSelectedAnimal] = useState<string | null>(null);
   const [notification, setNotification] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
     open: false,
     message: '',
     severity: 'success',
   });
+
+  // Statistics
+  const stats = useMemo(() => {
+    const totalCages = cages.length;
+    const liveAnimals = animals.filter(a => a.status !== Status.Deceased && a.status !== Status.Consumed);
+    const totalAnimals = liveAnimals.length;
+    const occupiedCages = cages.filter(cage => animalsByCage[cage.id]?.length > 0).length;
+    const uncagedAnimals = animalsByCage['uncaged']?.length || 0;
+    
+    return {
+      totalCages,
+      totalAnimals,
+      occupiedCages,
+      uncagedAnimals,
+    };
+  }, [cages, animals, animalsByCage]);
 
   // Group animals by cage
   const animalsByCage = useMemo(() => {
@@ -83,20 +117,35 @@ const CageVisualizationPage: React.FC = () => {
     }
   };
 
-  // Drag and drop handlers
+  // Drag and drop handlers with mobile support
   const handleDragStart = (e: React.DragEvent, animalId: string) => {
     setDraggedAnimal(animalId);
     e.dataTransfer.setData('text/plain', animalId);
     e.dataTransfer.effectAllowed = 'move';
+    
+    // Add visual feedback
+    if (e.currentTarget instanceof HTMLElement) {
+      e.currentTarget.style.opacity = '0.5';
+    }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent, cageId: string) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
+    setDragOverCage(cageId);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only clear drag over if we're actually leaving the cage area
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setDragOverCage(null);
+    }
   };
 
   const handleDrop = (e: React.DragEvent, targetCageId: string) => {
     e.preventDefault();
+    setDragOverCage(null);
+    
     const animalId = e.dataTransfer.getData('text/plain');
     
     if (animalId && animalId !== draggedAnimal) return; // Safety check
@@ -118,7 +167,7 @@ const CageVisualizationPage: React.FC = () => {
       if (targetCage?.capacity && currentOccupancy >= targetCage.capacity) {
         setNotification({
           open: true,
-          message: t('cages.cageDetails') + ' ' + (targetCage.name || targetCageId) + ' est pleine',
+          message: `${t('cages.title')} ${(targetCage.name || targetCageId)} est pleine`,
           severity: 'error',
         });
         setDraggedAnimal(null);
@@ -131,7 +180,7 @@ const CageVisualizationPage: React.FC = () => {
       cage: targetCageId === 'uncaged' ? undefined : targetCageId 
     });
 
-    const targetCageName = targetCageId === 'uncaged' ? 'Aucune cage' : cages.find(c => c.id === targetCageId)?.name || targetCageId;
+    const targetCageName = targetCageId === 'uncaged' ? t('common.none') : cages.find(c => c.id === targetCageId)?.name || targetCageId;
     setNotification({
       open: true,
       message: `${animal.name || animal.identifier || 'Animal'} déplacé vers ${targetCageName}`,
@@ -141,154 +190,356 @@ const CageVisualizationPage: React.FC = () => {
     setDraggedAnimal(null);
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e: React.DragEvent) => {
     setDraggedAnimal(null);
+    setDragOverCage(null);
+    
+    // Reset visual feedback
+    if (e.currentTarget instanceof HTMLElement) {
+      e.currentTarget.style.opacity = '1';
+    }
   };
 
-  const CageCard: React.FC<{ cageId: string; cageName: string; capacity?: number }> = ({ 
+  // Mobile touch handlers for drag and drop
+  const handleTouchStart = (animalId: string) => {
+    if (isMobile) {
+      setSelectedAnimal(selectedAnimal === animalId ? null : animalId);
+    }
+  };
+
+  const handleCageClick = (cageId: string) => {
+    if (isMobile && selectedAnimal) {
+      const animal = animals.find(a => a.id === selectedAnimal);
+      if (!animal) return;
+
+      // Don't allow moving to the same cage
+      if (animal.cage === cageId || (animal.cage === undefined && cageId === 'uncaged')) {
+        setSelectedAnimal(null);
+        return;
+      }
+
+      // Check capacity for target cage
+      if (cageId !== 'uncaged') {
+        const targetCage = cages.find(c => c.id === cageId);
+        const currentOccupancy = animalsByCage[cageId]?.length || 0;
+        
+        if (targetCage?.capacity && currentOccupancy >= targetCage.capacity) {
+          setNotification({
+            open: true,
+            message: `${t('cages.title')} ${(targetCage.name || cageId)} est pleine`,
+            severity: 'error',
+          });
+          setSelectedAnimal(null);
+          return;
+        }
+      }
+
+      // Update the animal's cage
+      updateAnimal(selectedAnimal, { 
+        cage: cageId === 'uncaged' ? undefined : cageId 
+      });
+
+      const targetCageName = cageId === 'uncaged' ? t('common.none') : cages.find(c => c.id === cageId)?.name || cageId;
+      setNotification({
+        open: true,
+        message: `${animal.name || animal.identifier || 'Animal'} déplacé vers ${targetCageName}`,
+        severity: 'success',
+      });
+
+      setSelectedAnimal(null);
+    }
+  };
+
+  // Enhanced animal component with better mobile support
+  const AnimalChip: React.FC<{ animal: any; isInCage: boolean }> = ({ animal, isInCage }) => {
+    const animalTags = animal.tags?.map((tagId: string) => tags.find(t => t.id === tagId)).filter(Boolean) || [];
+    const isSelected = selectedAnimal === animal.id;
+    const isDragging = draggedAnimal === animal.id;
+    
+    return (
+      <Tooltip 
+        title={
+          <Box>
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              {animal.name || animal.identifier || 'Animal'}
+            </Typography>
+            <Typography variant="caption" display="block">
+              {t(`status.${animal.status}`)} • {t(`sex.${animal.sex}`)}
+            </Typography>
+            {animal.breed && (
+              <Typography variant="caption" display="block">
+                {t('animals.breed')}: {animal.breed}
+              </Typography>
+            )}
+            {animalTags.length > 0 && (
+              <Typography variant="caption" display="block">
+                {t('animals.tags')}: {animalTags.map(tag => tag.name).join(', ')}
+              </Typography>
+            )}
+            {isMobile && isInCage && (
+              <Typography variant="caption" display="block" sx={{ mt: 1, fontStyle: 'italic' }}>
+                Touchez pour sélectionner, puis touchez une cage pour déplacer
+              </Typography>
+            )}
+          </Box>
+        }
+        placement="top"
+      >
+        <Paper
+          draggable={!isMobile}
+          onDragStart={(e) => handleDragStart(e, animal.id)}
+          onDragEnd={handleDragEnd}
+          onClick={() => handleTouchStart(animal.id)}
+          sx={{
+            p: 1,
+            m: 0.5,
+            minHeight: 60,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: isMobile ? 'pointer' : 'grab',
+            opacity: isDragging ? 0.5 : 1,
+            border: isSelected ? 2 : 1,
+            borderColor: isSelected ? 'primary.main' : 'divider',
+            borderStyle: isSelected ? 'solid' : 'solid',
+            backgroundColor: isSelected ? 'primary.light' : 'background.paper',
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              backgroundColor: isSelected ? 'primary.light' : 'action.hover',
+              transform: 'scale(1.05)',
+            },
+            '&:active': {
+              cursor: 'grabbing',
+            },
+          }}
+        >
+          <Avatar
+            sx={{
+              width: 24,
+              height: 24,
+              fontSize: '0.75rem',
+              backgroundColor: getSexColor(animal.sex),
+              color: 'white',
+              mb: 0.5,
+            }}
+          >
+            {getSexIcon(animal.sex)}
+          </Avatar>
+          
+          <Typography
+            variant="caption"
+            sx={{
+              fontSize: '0.6rem',
+              textAlign: 'center',
+              lineHeight: 1.2,
+              maxWidth: '100%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {animal.name || animal.identifier || 'Animal'}
+          </Typography>
+          
+          {/* Show drag indicator on mobile */}
+          {isMobile && (
+            <DragIcon sx={{ fontSize: 12, color: 'text.secondary', mt: 0.5 }} />
+          )}
+          
+          {/* Show first tag if available */}
+          {animalTags.length > 0 && (
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                backgroundColor: animalTags[0].color || '#e0e0e0',
+                mt: 0.5,
+              }}
+            />
+          )}
+        </Paper>
+      </Tooltip>
+    );
+  };
+
+  const CageCard: React.FC<{ cageId: string; cageName: string; capacity?: number; description?: string; location?: string }> = ({ 
     cageId, 
     cageName, 
-    capacity 
+    capacity,
+    description,
+    location 
   }) => {
     const cageAnimals = animalsByCage[cageId] || [];
     const occupancy = cageAnimals.length;
     const isOverCapacity = capacity && occupancy > capacity;
+    const isEmpty = occupancy === 0;
+    const isHighlighted = dragOverCage === cageId;
+    const cage = cages.find(c => c.id === cageId);
 
     return (
       <Card 
         sx={{ 
-          height: 300, 
+          height: isMobile ? 280 : 350, 
           position: 'relative',
-          border: isOverCapacity ? '2px solid' : '1px solid',
-          borderColor: isOverCapacity ? 'error.main' : 'divider',
+          border: 2,
+          borderColor: isHighlighted 
+            ? 'primary.main' 
+            : isOverCapacity 
+              ? 'error.main' 
+              : isEmpty 
+                ? 'divider' 
+                : 'success.main',
+          backgroundColor: isHighlighted 
+            ? 'primary.50' 
+            : isEmpty 
+              ? 'grey.50' 
+              : 'background.paper',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: 4,
+          },
         }}
-        onDragOver={handleDragOver}
+        onDragOver={(e) => handleDragOver(e, cageId)}
+        onDragLeave={handleDragLeave}
         onDrop={(e) => handleDrop(e, cageId)}
+        onClick={() => handleCageClick(cageId)}
       >
-        <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 2 }}>
           {/* Cage Header */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <Badge 
               badgeContent={occupancy} 
-              color={isOverCapacity ? 'error' : 'primary'}
+              color={isOverCapacity ? 'error' : isEmpty ? 'default' : 'primary'}
               max={99}
             >
-              <CageIcon />
+              <CageIcon sx={{ fontSize: 28, color: isEmpty ? 'text.secondary' : 'primary.main' }} />
             </Badge>
-            <Box sx={{ ml: 1, flexGrow: 1 }}>
-              <Typography variant="h6" noWrap>
+            <Box sx={{ ml: 2, flexGrow: 1 }}>
+              <Typography variant="h6" noWrap sx={{ fontWeight: 'bold' }}>
                 {cageName}
               </Typography>
               {capacity && (
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="body2" color="text.secondary">
                   {occupancy}/{capacity}
-                  {isOverCapacity && ' (Suroccupé!)'}
+                  {isOverCapacity && (
+                    <Chip 
+                      label="Suroccupé!" 
+                      color="error" 
+                      size="small" 
+                      sx={{ ml: 1, fontSize: '0.6rem', height: 16 }} 
+                    />
+                  )}
+                </Typography>
+              )}
+              {location && (
+                <Typography variant="caption" color="text.secondary" display="block">
+                  📍 {location}
                 </Typography>
               )}
             </Box>
+            
+            {/* Action buttons */}
+            <Box>
+              <IconButton 
+                size="small" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/cages/${cageId}/edit`);
+                }}
+                sx={{ p: 0.5 }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Box>
           </Box>
 
-          {/* Animals Grid */}
+          {/* Animals Area */}
           <Box sx={{ 
             flexGrow: 1, 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(60px, 1fr))',
-            gap: 1,
-            alignContent: 'start',
-            overflowY: 'auto'
+            border: '1px dashed',
+            borderColor: isHighlighted ? 'primary.main' : 'divider',
+            borderRadius: 1,
+            p: 1,
+            backgroundColor: isHighlighted ? 'primary.50' : 'background.default',
+            minHeight: 120,
+            display: 'flex',
+            flexDirection: 'column',
           }}>
-            {cageAnimals.map(animal => (
-              <Paper
-                key={animal.id}
-                draggable
-                onDragStart={(e) => handleDragStart(e, animal.id)}
-                onDragEnd={handleDragEnd}
-                sx={{
-                  p: 1,
-                  textAlign: 'center',
-                  cursor: 'grab',
-                  '&:hover': {
-                    bgcolor: 'action.hover',
-                  },
-                  '&:active': {
-                    cursor: 'grabbing',
-                  },
-                  minHeight: 60,
-                  display: 'flex',
-                  flexDirection: 'column',
+            {isEmpty ? (
+              <Box 
+                sx={{ 
+                  flexGrow: 1, 
+                  display: 'flex', 
+                  alignItems: 'center', 
                   justifyContent: 'center',
-                  alignItems: 'center',
-                  opacity: draggedAnimal === animal.id ? 0.5 : 1,
-                }}
-                onClick={() => navigate(`/animals/${animal.id}`)}
-              >
-                <Avatar
-                  sx={{ 
-                    width: 24, 
-                    height: 24, 
-                    fontSize: '0.75rem',
-                    bgcolor: getSexColor(animal.sex),
-                    color: 'white',
-                  }}
-                >
-                  {getSexIcon(animal.sex)}
-                </Avatar>
-                <Typography 
-                  variant="caption" 
-                  sx={{ 
-                    mt: 0.5,
-                    fontSize: '0.65rem',
-                    lineHeight: 1.2,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '100%',
-                  }}
-                  title={animal.name || animal.identifier}
-                >
-                  {animal.name || animal.identifier || 'Sans nom'}
-                </Typography>
-              </Paper>
-            ))}
-            
-            {/* Empty slots visualization */}
-            {capacity && Array.from({ length: Math.max(0, capacity - occupancy) }).map((_, index) => (
-              <Paper
-                key={`empty-${index}`}
-                sx={{
-                  p: 1,
+                  color: 'text.secondary',
                   textAlign: 'center',
-                  minHeight: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  bgcolor: 'action.disabledBackground',
-                  opacity: 0.3,
                 }}
               >
-                <Typography variant="caption" color="text.disabled">
-                  Libre
-                </Typography>
-              </Paper>
-            ))}
+                <Box>
+                  <AnimalIcon sx={{ fontSize: 40, opacity: 0.3, mb: 1 }} />
+                  <Typography variant="body2">
+                    {isMobile && selectedAnimal 
+                      ? 'Touchez pour déplacer ici' 
+                      : 'Cage vide'
+                    }
+                  </Typography>
+                  {draggedAnimal && (
+                    <Typography variant="caption" color="primary">
+                      Déposez l'animal ici
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            ) : (
+              <Box sx={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(70px, 1fr))',
+                gap: 0.5,
+                alignContent: 'start',
+              }}>
+                {cageAnimals.map(animal => (
+                  <AnimalChip 
+                    key={animal.id} 
+                    animal={animal} 
+                    isInCage={true}
+                  />
+                ))}
+              </Box>
+            )}
           </Box>
 
-          {/* Cage Actions */}
-          <Box sx={{ mt: 1, display: 'flex', gap: 1 }}>
-            <Button
-              size="small"
-              onClick={() => navigate(`/cages/${cageId}/edit`)}
-              disabled={cageId === 'uncaged'}
+          {/* Cage footer actions */}
+          <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Button 
+              size="small" 
+              startIcon={<AddIcon />}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/animals/new?cage=${cageId}`);
+              }}
+              disabled={isOverCapacity}
             >
-              Modifier
+              Animal
             </Button>
-            <Button
-              size="small"
-              onClick={() => navigate('/animals/new', { 
-                state: { defaultCage: cageId === 'uncaged' ? undefined : cageId }
-              })}
-            >
-              + Animal
-            </Button>
+            
+            {description && (
+              <Tooltip title={description}>
+                <Typography variant="caption" sx={{ 
+                  maxWidth: 100, 
+                  overflow: 'hidden', 
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                  ℹ️ {description}
+                </Typography>
+              </Tooltip>
+            )}
           </Box>
         </CardContent>
       </Card>
@@ -296,81 +547,170 @@ const CageVisualizationPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" component="h1">
-          Visualisation des Cages
+    <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 3 } }}>
+      {/* Header */}
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 3,
+        flexDirection: { xs: 'column', sm: 'row' },
+        gap: { xs: 2, sm: 0 }
+      }}>
+        <Typography variant="h4" component="h1" sx={{ 
+          fontSize: { xs: '1.75rem', sm: '2.125rem' },
+          fontWeight: 'bold',
+          background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}>
+          🏠 {t('cages.title')} - Visualisation
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/cages/new')}
-        >
-          Nouvelle Cage
-        </Button>
+        
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="outlined"
+            startIcon={<ViewIcon />}
+            onClick={() => navigate('/cages')}
+            size={isMobile ? 'small' : 'medium'}
+          >
+            Liste
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/cages/new')}
+            size={isMobile ? 'small' : 'medium'}
+          >
+            {t('cages.addCage')}
+          </Button>
+        </Box>
       </Box>
 
-      {/* Statistics */}
-      <Box sx={{ mb: 3 }}>
+      {/* Mobile instruction */}
+      {isMobile && (
+        <Alert severity="info" sx={{ mb: 3 }}>
+          <Typography variant="body2">
+            💡 Touchez un animal pour le sélectionner, puis touchez une cage pour le déplacer
+          </Typography>
+        </Alert>
+      )}
+
+      {/* Statistics Dashboard */}
+      <Box sx={{ mb: 4 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2, textAlign: 'center' }}>
-              <Typography variant="h6">{cages.length}</Typography>
-              <Typography variant="body2" color="text.secondary">
+          <Grid item xs={6} sm={3}>
+            <Paper sx={{ 
+              p: 2, 
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              borderRadius: 2,
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                {stats.totalCages}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Cages totales
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2, textAlign: 'center' }}>
-              <Typography variant="h6">
-                {Object.values(animalsByCage).reduce((sum, animals) => sum + animals.length, 0)}
+          <Grid item xs={6} sm={3}>
+            <Paper sx={{ 
+              p: 2, 
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+              color: 'white',
+              borderRadius: 2,
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                {stats.totalAnimals}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Animaux actifs
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2, textAlign: 'center' }}>
-              <Typography variant="h6">
-                {cages.filter(cage => animalsByCage[cage.id]?.length > 0).length}
+          <Grid item xs={6} sm={3}>
+            <Paper sx={{ 
+              p: 2, 
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+              color: 'white',
+              borderRadius: 2,
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                {stats.occupiedCages}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Cages occupées
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2, textAlign: 'center' }}>
-              <Typography variant="h6">{animalsByCage['uncaged']?.length || 0}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                Animaux sans cage
+          <Grid item xs={6} sm={3}>
+            <Paper sx={{ 
+              p: 2, 
+              textAlign: 'center',
+              background: stats.uncagedAnimals > 0 
+                ? 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+                : 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+              color: 'white',
+              borderRadius: 2,
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                {stats.uncagedAnimals}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                Sans cage
               </Typography>
             </Paper>
           </Grid>
         </Grid>
       </Box>
 
+      {/* Selected animal indicator */}
+      {selectedAnimal && (
+        <Alert 
+          severity="warning" 
+          sx={{ mb: 3 }}
+          action={
+            <Button 
+              color="inherit" 
+              size="small" 
+              onClick={() => setSelectedAnimal(null)}
+            >
+              Annuler
+            </Button>
+          }
+        >
+          Animal sélectionné: {animals.find(a => a.id === selectedAnimal)?.name || 'Animal'} - 
+          Touchez une cage pour le déplacer
+        </Alert>
+      )}
+
       {/* Cages Grid */}
-      <Grid container spacing={3}>
+      <Grid container spacing={isMobile ? 2 : 3}>
         {/* Registered Cages */}
         {cages.map(cage => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={cage.id}>
+          <Grid item xs={12} sm={6} lg={4} xl={3} key={cage.id}>
             <CageCard
               cageId={cage.id}
               cageName={cage.name}
               capacity={cage.capacity}
+              description={cage.description}
+              location={cage.location}
             />
           </Grid>
         ))}
 
         {/* Uncaged Animals */}
-        {animalsByCage['uncaged']?.length > 0 && (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+        {stats.uncagedAnimals > 0 && (
+          <Grid item xs={12} sm={6} lg={4} xl={3}>
             <CageCard
               cageId="uncaged"
-              cageName="Sans cage"
+              cageName="🏃 Sans cage"
+              description="Animaux non assignés à une cage"
             />
           </Grid>
         )}
@@ -378,18 +718,32 @@ const CageVisualizationPage: React.FC = () => {
         {/* Empty State */}
         {cages.length === 0 && (
           <Grid item xs={12}>
-            <Box sx={{ textAlign: 'center', py: 8 }}>
-              <CageIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-              <Typography variant="h6" color="text.secondary" gutterBottom>
+            <Box sx={{ 
+              textAlign: 'center', 
+              py: 8,
+              background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+              borderRadius: 3,
+              border: '2px dashed',
+              borderColor: 'divider',
+            }}>
+              <CageIcon sx={{ fontSize: 80, color: 'text.secondary', mb: 2 }} />
+              <Typography variant="h5" color="text.secondary" gutterBottom sx={{ fontWeight: 'bold' }}>
                 Aucune cage configurée
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Créez des cages pour organiser vos animaux
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 400, mx: 'auto' }}>
+                Créez des cages pour organiser vos animaux et faciliter la gestion de votre élevage
               </Typography>
               <Button
                 variant="contained"
+                size="large"
                 startIcon={<AddIcon />}
                 onClick={() => navigate('/cages/new')}
+                sx={{ 
+                  px: 4, 
+                  py: 1.5,
+                  borderRadius: 3,
+                  background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                }}
               >
                 Créer ma première cage
               </Button>
@@ -398,32 +752,72 @@ const CageVisualizationPage: React.FC = () => {
         )}
       </Grid>
 
-      {/* Legend */}
-      <Box sx={{ mt: 4, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-        <Typography variant="h6" gutterBottom>
-          Légende
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <Chip
-            avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Female), color: 'white' }}>♀</Avatar>}
-            label="Femelle"
-            size="small"
-          />
-          <Chip
-            avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Male), color: 'white' }}>♂</Avatar>}
-            label="Mâle"
-            size="small"
-          />
-          <Chip
-            avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Unknown), color: 'white' }}>?</Avatar>}
-            label="Sexe inconnu"
-            size="small"
-          />
+      {/* Enhanced Legend */}
+      {cages.length > 0 && (
+        <Box sx={{ 
+          mt: 4, 
+          p: 3, 
+          background: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+        }}>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+            🎯 Guide d'utilisation
+          </Typography>
+          
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
+            <Chip
+              avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Female), color: 'white' }}>♀</Avatar>}
+              label={t('sex.F')}
+              size="small"
+              sx={{ backgroundColor: 'rgba(255,255,255,0.8)' }}
+            />
+            <Chip
+              avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Male), color: 'white' }}>♂</Avatar>}
+              label={t('sex.M')}
+              size="small"
+              sx={{ backgroundColor: 'rgba(255,255,255,0.8)' }}
+            />
+            <Chip
+              avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Unknown), color: 'white' }}>?</Avatar>}
+              label={t('sex.U')}
+              size="small"
+              sx={{ backgroundColor: 'rgba(255,255,255,0.8)' }}
+            />
+          </Box>
+          
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              🖱️ <strong>Desktop:</strong> Glissez-déposez les animaux entre les cages
+            </Typography>
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              📱 <strong>Mobile:</strong> Touchez un animal puis touchez une cage de destination
+            </Typography>
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              🔴 <strong>Couleurs:</strong> Rouge = Suroccupé, Vert = Occupé, Gris = Vide
+            </Typography>
+          </Box>
         </Box>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Glissez-déposez les animaux entre les cages pour les déplacer
-        </Typography>
-      </Box>
+      )}
+
+      {/* Floating Action Button for Mobile */}
+      {isMobile && (
+        <Fab
+          color="primary"
+          aria-label="add cage"
+          sx={{ 
+            position: 'fixed', 
+            bottom: 80, 
+            right: 16,
+            zIndex: 1000,
+            background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+          }}
+          onClick={() => navigate('/cages/new')}
+        >
+          <AddIcon />
+        </Fab>
+      )}
 
       {/* Notification Snackbar */}
       <Snackbar
@@ -440,7 +834,7 @@ const CageVisualizationPage: React.FC = () => {
           {notification.message}
         </Alert>
       </Snackbar>
-    </Box>
+    </Container>
   );
 };
 

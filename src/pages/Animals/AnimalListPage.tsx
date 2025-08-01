@@ -41,9 +41,11 @@ import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
 import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
 import QRCodeDisplay from '../../components/QRCodeDisplay';
 import { SearchService, SearchFilters } from '../../services/search.service';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<Status | 'ALL'>('ALL');
@@ -77,6 +79,7 @@ const AnimalListPage = () => {
   const state = useAppStore();
   const animals = getLiveAnimals(state);
   const settings = state.settings;
+  const tags = state.tags;
   const { markAnimalConsumed } = useAppStore();
 
   // Get filter options and search suggestions
@@ -116,18 +119,7 @@ const AnimalListPage = () => {
   };
 
   const getStatusLabel = (status: Status) => {
-    switch (status) {
-      case Status.Reproducer:
-        return 'Reproducteur';
-      case Status.Grow:
-        return 'Croissance';
-      case Status.Retired:
-        return 'Retraité';
-      case Status.Deceased:
-        return 'Décédé';
-      default:
-        return status;
-    }
+    return t(`status.${status}`);
   };
 
   const hasActiveWithdrawal = (animalId: string) => {
@@ -153,7 +145,7 @@ const AnimalListPage = () => {
         <Typography variant="h4" component="h2" sx={{
           fontSize: { xs: '1.75rem', sm: '2.125rem' }
         }}>
-          Animaux ({filteredAnimals.length})
+          {t('animals.title')} ({filteredAnimals.length})
         </Typography>
       </Box>
 
@@ -171,7 +163,7 @@ const AnimalListPage = () => {
                   {...params}
                   fullWidth
                   variant="outlined"
-                  placeholder="Rechercher par nom, identifiant ou race..."
+                  placeholder={t('common.search') + '...'}
                   size="small"
                   InputProps={{
                     ...params.InputProps,
@@ -187,30 +179,30 @@ const AnimalListPage = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel>Statut</InputLabel>
+              <InputLabel>{t('animals.status')}</InputLabel>
               <Select
                 value={statusFilter}
-                label="Statut"
+                label={t('animals.status')}
                 onChange={(e) => setStatusFilter(e.target.value as Status | 'ALL')}
               >
-                <MenuItem value="ALL">Tous</MenuItem>
-                <MenuItem value={Status.Reproducer}>Reproducteurs</MenuItem>
-                <MenuItem value={Status.Grow}>Croissance</MenuItem>
-                <MenuItem value={Status.Retired}>Retraités</MenuItem>
+                <MenuItem value="ALL">{t('common.all')}</MenuItem>
+                <MenuItem value={Status.Reproducer}>{t('status.REPRO')}</MenuItem>
+                <MenuItem value={Status.Grow}>{t('status.GROW')}</MenuItem>
+                <MenuItem value={Status.Retired}>{t('status.RETIRED')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel>Sexe</InputLabel>
+              <InputLabel>{t('animals.sex')}</InputLabel>
               <Select
                 value={sexFilter}
-                label="Sexe"
+                label={t('animals.sex')}
                 onChange={(e) => setSexFilter(e.target.value as Sex | 'ALL')}
               >
-                <MenuItem value="ALL">Tous</MenuItem>
-                <MenuItem value={Sex.Female}>Femelles</MenuItem>
-                <MenuItem value={Sex.Male}>Mâles</MenuItem>
+                <MenuItem value="ALL">{t('common.all')}</MenuItem>
+                <MenuItem value={Sex.Female}>{t('sex.F')}</MenuItem>
+                <MenuItem value={Sex.Male}>{t('sex.M')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -240,10 +232,10 @@ const AnimalListPage = () => {
                     <Typography variant="h6" component="h3" sx={{
                       fontSize: { xs: '1rem', sm: '1.25rem' }
                     }}>
-                      {animal.name || 'Sans nom'}
+                      {animal.name || t('animals.name')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {animal.identifier || 'Pas d\'identifiant'}
+                      {animal.identifier || t('animals.identifier')}
                     </Typography>
                   </Box>
                   {settings.enableQR && (
@@ -261,14 +253,14 @@ const AnimalListPage = () => {
                     label={getStatusLabel(animal.status)}
                     color={getStatusColor(animal.status)}
                     size="small"
-                    sx={{ mr: 1 }}
+                    sx={{ mr: 1, mb: 1 }}
                   />
                   {animal.sex === Sex.Female && (
                     <Chip
                       label="♀"
                       color="secondary"
                       size="small"
-                      sx={{ mr: 1 }}
+                      sx={{ mr: 1, mb: 1 }}
                     />
                   )}
                   {animal.sex === Sex.Male && (
@@ -276,13 +268,31 @@ const AnimalListPage = () => {
                       label="♂"
                       color="primary"
                       size="small"
-                      sx={{ mr: 1 }}
+                      sx={{ mr: 1, mb: 1 }}
                     />
                   )}
+                  {/* Display animal tags */}
+                  {animal.tags && animal.tags.map((tagId) => {
+                    const tag = tags.find(t => t.id === tagId);
+                    return tag ? (
+                      <Chip
+                        key={tagId}
+                        label={tag.name}
+                        size="small"
+                        sx={{ 
+                          mr: 1, 
+                          mb: 1,
+                          backgroundColor: tag.color || '#e0e0e0',
+                          color: '#fff',
+                          fontWeight: 'bold'
+                        }}
+                      />
+                    ) : null;
+                  })}
                 </Box>
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>Race:</strong> {animal.breed || 'Non spécifiée'}
+                  <strong>{t('animals.breed')}:</strong> {animal.breed || t('common.none')}
                 </Typography>
                 
                 {animal.birthDate && (
@@ -292,7 +302,7 @@ const AnimalListPage = () => {
                 )}
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>Cage:</strong> {animal.cage || 'Non assignée'}
+                  <strong>{t('animals.cage')}:</strong> {animal.cage || t('common.none')}
                 </Typography>
 
                 {animal.notes && (
@@ -327,7 +337,7 @@ const AnimalListPage = () => {
                   onClick={() => navigate(`/animals/${animal.id}/edit`)}
                   sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
-                  Modifier
+                  {t('common.edit')}
                 </Button>
                 {animal.status === Status.Grow && (
                   <Button 
@@ -336,7 +346,7 @@ const AnimalListPage = () => {
                     onClick={() => handleMarkConsumed(animal.id)}
                     sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                   >
-                    Consommer
+                    {t('animals.markConsumed')}
                   </Button>
                 )}
               </CardActions>
@@ -390,25 +400,24 @@ const AnimalListPage = () => {
         open={consumptionDialog.open}
         onClose={() => setConsumptionDialog({ open: false, animalId: null })}
       >
-        <DialogTitle>Confirmer la consommation</DialogTitle>
+        <DialogTitle>{t('animals.confirmConsumption')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Êtes-vous sûr de vouloir marquer cet animal comme consommé ? 
-            Cette action changera définitivement son statut.
+            {t('animals.confirmConsumption')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button 
             onClick={() => setConsumptionDialog({ open: false, animalId: null })}
           >
-            Annuler
+            {t('common.cancel')}
           </Button>
           <Button 
             onClick={confirmConsumption}
             color="error"
             variant="contained"
           >
-            Confirmer
+            {t('common.confirm')}
           </Button>
         </DialogActions>
       </Dialog>

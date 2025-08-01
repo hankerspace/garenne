@@ -71,7 +71,7 @@ function App() {
         navigate('/litters');
         break;
       case 3:
-        navigate('/cages');
+        navigate('/cages/visualization');
         break;
       case 4:
         navigate('/statistics');

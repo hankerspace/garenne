@@ -49,6 +49,7 @@ const LitterDetailPage = () => {
   const [notes, setNotes] = useState('');
 
   const state = useAppStore();
+  const cages = state.cages;
   const updateLitter = useAppStore((state) => state.updateLitter);
   const addAnimal = useAppStore((state) => state.addAnimal);
 
@@ -416,7 +417,7 @@ const LitterDetailPage = () => {
                             {animal.status === Status.Grow ? ' Croissance' :
                              animal.status === Status.Reproducer ? ' Reproducteur' :
                              animal.status === Status.Retired ? ' Retraité' : ' Décédé'}
-                            {animal.cage && ` • Cage ${animal.cage}`}
+                            {animal.cage && ` • Cage ${cages.find(c => c.id === animal.cage)?.name || 'inconnue'}`}
                           </Box>
                         }
                       />

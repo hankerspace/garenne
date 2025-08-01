@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -40,8 +41,11 @@ import { useAppStore } from '../../state/store';
 import { backupService, ImportSummary } from '../../services/backup.service';
 import { BackupFile } from '../../models/types';
 import { formatDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const SettingsPage = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const [importSummary, setImportSummary] = useState<ImportSummary | null>(null);
@@ -63,13 +67,13 @@ const SettingsPage = () => {
       backupService.exportData(state);
       setSnackbar({
         open: true,
-        message: 'Export réussi ! Le fichier a été téléchargé.',
+        message: t('messages.dataExported'),
         severity: 'success',
       });
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Erreur lors de l\'export : ' + (error as Error).message,
+        message: t('messages.operationFailed') + ': ' + (error as Error).message,
         severity: 'error',
       });
     }
@@ -89,7 +93,7 @@ const SettingsPage = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Erreur lors de la lecture du fichier : ' + (error as Error).message,
+        message: t('messages.invalidFile') + ': ' + (error as Error).message,
         severity: 'error',
       });
     }
@@ -112,7 +116,7 @@ const SettingsPage = () => {
 
       setSnackbar({
         open: true,
-        message: 'Import réussi !',
+        message: t('messages.dataImported'),
         severity: 'success',
       });
       setImportDialogOpen(false);
@@ -121,7 +125,7 @@ const SettingsPage = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Erreur lors de l\'import : ' + (error as Error).message,
+        message: t('messages.operationFailed') + ': ' + (error as Error).message,
         severity: 'error',
       });
     }
@@ -131,7 +135,7 @@ const SettingsPage = () => {
     clearAllData();
     setSnackbar({
       open: true,
-      message: 'Toutes les données ont été supprimées.',
+      message: t('messages.dataCleared'),
       severity: 'success',
     });
     setClearDialogOpen(false);
@@ -143,7 +147,7 @@ const SettingsPage = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 2 }}>
       <Typography variant="h4" component="h2" gutterBottom>
-        Paramètres
+        {t('settings.title')}
       </Typography>
 
       <Grid container spacing={3}>
@@ -153,11 +157,11 @@ const SettingsPage = () => {
             <CardContent>
               <Box display="flex" alignItems="center" mb={2}>
                 <PaletteIcon sx={{ mr: 1 }} />
-                <Typography variant="h6">Apparence</Typography>
+                <Typography variant="h6">{t('settings.appearance')}</Typography>
               </Box>
               
               <FormControl component="fieldset">
-                <FormLabel component="legend">Thème</FormLabel>
+                <FormLabel component="legend">{t('settings.theme')}</FormLabel>
                 <RadioGroup
                   value={settings.theme}
                   onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' | 'system' })}
@@ -225,12 +229,205 @@ const SettingsPage = () => {
                 <Typography variant="h6">Langue</Typography>
               </Box>
               
-              <Typography variant="body2" color="text.secondary">
-                Interface en français (fr-FR)
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Langue de l'interface</FormLabel>
+                <RadioGroup
+                  value={settings.locale}
+                  onChange={(e) => updateSettings({ locale: e.target.value as 'fr-FR' | 'en-US' | 'es-ES' })}
+                >
+                  <FormControlLabel value="fr-FR" control={<Radio />} label="Français" />
+                  <FormControlLabel value="en-US" control={<Radio />} label="English" />
+                  <FormControlLabel value="es-ES" control={<Radio />} label="Español" />
+                </RadioGroup>
+              </FormControl>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Breeding Settings */}
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Configuration de l'élevage
               </Typography>
-              <Typography variant="caption" color="text.secondary">
-                D'autres langues pourront être ajoutées dans les futures versions.
+              
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6} md={3}>
+                  <FormControl fullWidth>
+                    <FormLabel component="legend">Durée de gestation (jours)</FormLabel>
+                    <input
+                      type="number"
+                      value={settings.gestationDuration}
+                      onChange={(e) => updateSettings({ gestationDuration: parseInt(e.target.value) || 31 })}
+                      min="28"
+                      max="35"
+                      style={{
+                        padding: '8px',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        fontSize: '16px',
+                        marginTop: '8px'
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+                
+                <Grid item xs={12} sm={6} md={3}>
+                  <FormControl fullWidth>
+                    <FormLabel component="legend">Durée de sevrage (jours)</FormLabel>
+                    <input
+                      type="number"
+                      value={settings.weaningDuration}
+                      onChange={(e) => updateSettings({ weaningDuration: parseInt(e.target.value) || 28 })}
+                      min="21"
+                      max="42"
+                      style={{
+                        padding: '8px',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        fontSize: '16px',
+                        marginTop: '8px'
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+                
+                <Grid item xs={12} sm={6} md={3}>
+                  <FormControl fullWidth>
+                    <FormLabel component="legend">Prêt pour reproduction (jours)</FormLabel>
+                    <input
+                      type="number"
+                      value={settings.reproductionReadyDuration}
+                      onChange={(e) => updateSettings({ reproductionReadyDuration: parseInt(e.target.value) || 90 })}
+                      min="70"
+                      max="120"
+                      style={{
+                        padding: '8px',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        fontSize: '16px',
+                        marginTop: '8px'
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+                
+                <Grid item xs={12} sm={6} md={3}>
+                  <FormControl fullWidth>
+                    <FormLabel component="legend">Prêt pour abattage (jours)</FormLabel>
+                    <input
+                      type="number"
+                      value={settings.slaughterReadyDuration}
+                      onChange={(e) => updateSettings({ slaughterReadyDuration: parseInt(e.target.value) || 70 })}
+                      min="50"
+                      max="100"
+                      style={{
+                        padding: '8px',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        fontSize: '16px',
+                        marginTop: '8px'
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+              
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>
+                Ces durées sont utilisées pour calculer automatiquement les dates importantes et générer des alertes.
               </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Export/Import Settings */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Préférences d'export
+              </Typography>
+              
+              <FormControl component="fieldset" sx={{ mb: 2 }}>
+                <FormLabel component="legend">Format d'export par défaut</FormLabel>
+                <RadioGroup
+                  value={settings.exportFormat}
+                  onChange={(e) => updateSettings({ exportFormat: e.target.value as 'json' | 'csv' | 'excel' })}
+                >
+                  <FormControlLabel value="json" control={<Radio />} label="JSON (complet)" />
+                  <FormControlLabel value="csv" control={<Radio />} label="CSV (tableaux)" />
+                  <FormControlLabel value="excel" control={<Radio />} label="Excel (à venir)" />
+                </RadioGroup>
+              </FormControl>
+              
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={settings.includeImages}
+                    onChange={(e) => updateSettings({ includeImages: e.target.checked })}
+                  />
+                }
+                label="Inclure les images dans l'export"
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Quick Access to New Features */}
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Nouvelles fonctionnalités (Version 1.0)
+              </Typography>
+              
+              <Grid container spacing={2} mt={1}>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/cages')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>🏠</Box>
+                    <Typography variant="body2">Cages</Typography>
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/tags')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>🏷️</Box>
+                    <Typography variant="body2">Étiquettes</Typography>
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/statistics')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>📊</Box>
+                    <Typography variant="body2">Statistiques</Typography>
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/cages/visualization')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>🖼️</Box>
+                    <Typography variant="body2">Vue Cages</Typography>
+                  </Button>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

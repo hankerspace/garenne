@@ -15,7 +15,13 @@ const defaultSettings: AppSettings = {
   weightUnit: 'g',
   enableQR: false,
   locale: 'fr-FR',
-  schemaVersion: 1,
+  schemaVersion: 2,
+  gestationDuration: 31,
+  weaningDuration: 28,
+  reproductionReadyDuration: 90,
+  slaughterReadyDuration: 70,
+  exportFormat: 'json',
+  includeImages: false,
 };
 
 const defaultState: AppState = {
@@ -25,6 +31,9 @@ const defaultState: AppState = {
   weights: [],
   treatments: [],
   mortalities: [],
+  cages: [],
+  tags: [],
+  performanceMetrics: [],
   settings: defaultSettings,
 };
 
@@ -109,15 +118,26 @@ export class MigrationService {
     const stateObj = state as Record<string, any>;
     
     // Handle migrations from older schema versions
-    if (!stateObj?.settings?.schemaVersion) {
-      // Migration from v0 to v1
+    if (!stateObj?.settings?.schemaVersion || stateObj.settings.schemaVersion < 2) {
+      // Migration from v0/v1 to v2 - add new arrays and settings
       const migratedState = {
         ...defaultState,
         ...(stateObj && typeof stateObj === 'object' ? stateObj : {}),
+        // Ensure new arrays exist
+        cages: stateObj?.cages || [],
+        tags: stateObj?.tags || [],
+        performanceMetrics: stateObj?.performanceMetrics || [],
         settings: {
           ...defaultSettings,
           ...(stateObj?.settings && typeof stateObj.settings === 'object' ? stateObj.settings : {}),
-          schemaVersion: 1,
+          schemaVersion: 2,
+          // Ensure new settings have defaults
+          gestationDuration: stateObj?.settings?.gestationDuration || 31,
+          weaningDuration: stateObj?.settings?.weaningDuration || 28,
+          reproductionReadyDuration: stateObj?.settings?.reproductionReadyDuration || 90,
+          slaughterReadyDuration: stateObj?.settings?.slaughterReadyDuration || 70,
+          exportFormat: stateObj?.settings?.exportFormat || 'json',
+          includeImages: stateObj?.settings?.includeImages || false,
         },
       };
       return migratedState;

@@ -14,6 +14,8 @@ import {
   MenuItem,
   Alert,
   Divider,
+  Autocomplete,
+  Chip,
 } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, Save as SaveIcon } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
@@ -22,6 +24,7 @@ import { z } from 'zod';
 import { useAppStore } from '../../state/store';
 import { Sex, Status } from '../../models/types';
 import { toISODate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const animalSchema = z.object({
   name: z.string().optional(),
@@ -35,6 +38,9 @@ const animalSchema = z.object({
   cage: z.string().optional(),
   status: z.nativeEnum(Status),
   notes: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  consumedDate: z.string().optional(),
+  consumedWeight: z.number().optional(),
 });
 
 type AnimalFormData = z.infer<typeof animalSchema>;
@@ -43,8 +49,11 @@ const AnimalFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = id !== 'new' && id !== undefined;
+  const { t } = useTranslation();
   
   const animals = useAppStore((state) => state.animals);
+  const cages = useAppStore((state) => state.cages);
+  const tags = useAppStore((state) => state.tags);
   const addAnimal = useAppStore((state) => state.addAnimal);
   const updateAnimal = useAppStore((state) => state.updateAnimal);
   
@@ -71,14 +80,19 @@ const AnimalFormPage = () => {
       cage: existingAnimal.cage || '',
       status: existingAnimal.status,
       notes: existingAnimal.notes || '',
+      tags: existingAnimal.tags || [],
+      consumedDate: existingAnimal.consumedDate || '',
+      consumedWeight: existingAnimal.consumedWeight || undefined,
     } : {
       sex: Sex.Female,
       status: Status.Grow,
       origin: 'PURCHASED',
+      tags: [],
     },
   });
 
   const selectedOrigin = watch('origin');
+  const selectedStatus = watch('status');
 
   // Get available parents
   const availableParents = animals.filter(animal => 
@@ -111,7 +125,7 @@ const AnimalFormPage = () => {
       
       navigate('/animals');
     } catch (error) {
-      setSubmitError('Erreur lors de la sauvegarde de l\'animal');
+      setSubmitError(t('messages.operationFailed'));
       console.error('Error saving animal:', error);
     }
   };
@@ -119,7 +133,7 @@ const AnimalFormPage = () => {
   if (isEdit && !existingAnimal) {
     return (
       <Container maxWidth="md" sx={{ py: 2 }}>
-        <Alert severity="error">Animal non trouvé</Alert>
+        <Alert severity="error">{t('messages.operationFailed')}</Alert>
       </Container>
     );
   }
@@ -133,12 +147,12 @@ const AnimalFormPage = () => {
           sx={{ mr: 2 }}
           size="small"
         >
-          Retour
+          {t('common.cancel')}
         </Button>
         <Typography variant="h4" component="h1" sx={{
           fontSize: { xs: '1.5rem', sm: '2.125rem' }
         }}>
-          {isEdit ? `Modifier ${existingAnimal?.name || 'l\'animal'}` : 'Nouvel animal'}
+          {isEdit ? t('animals.editAnimal') : t('animals.addAnimal')}
         </Typography>
       </Box>
 
@@ -148,7 +162,7 @@ const AnimalFormPage = () => {
             {/* Basic Information */}
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1.125rem', sm: '1.25rem' } }}>
-                Informations de base
+                {t('animals.animalDetails')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
@@ -160,7 +174,7 @@ const AnimalFormPage = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Nom"
+                    label={t('animals.name')}
                     fullWidth
                     error={!!errors.name}
                     helperText={errors.name?.message}
@@ -176,7 +190,7 @@ const AnimalFormPage = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Identifiant / Tatouage"
+                    label={t('animals.identifier')}
                     fullWidth
                     error={!!errors.identifier}
                     helperText={errors.identifier?.message}
@@ -191,11 +205,11 @@ const AnimalFormPage = () => {
                 control={control}
                 render={({ field }) => (
                   <FormControl fullWidth error={!!errors.sex}>
-                    <InputLabel>Sexe</InputLabel>
-                    <Select {...field} label="Sexe">
-                      <MenuItem value={Sex.Female}>Femelle</MenuItem>
-                      <MenuItem value={Sex.Male}>Mâle</MenuItem>
-                      <MenuItem value={Sex.Unknown}>Inconnu</MenuItem>
+                    <InputLabel>{t('animals.sex')}</InputLabel>
+                    <Select {...field} label={t('animals.sex')}>
+                      <MenuItem value={Sex.Female}>{t('sex.F')}</MenuItem>
+                      <MenuItem value={Sex.Male}>{t('sex.M')}</MenuItem>
+                      <MenuItem value={Sex.Unknown}>{t('sex.U')}</MenuItem>
                     </Select>
                   </FormControl>
                 )}
@@ -208,11 +222,13 @@ const AnimalFormPage = () => {
                 control={control}
                 render={({ field }) => (
                   <FormControl fullWidth error={!!errors.status}>
-                    <InputLabel>Statut</InputLabel>
-                    <Select {...field} label="Statut">
-                      <MenuItem value={Status.Grow}>Croissance</MenuItem>
-                      <MenuItem value={Status.Reproducer}>Reproducteur</MenuItem>
-                      <MenuItem value={Status.Retired}>Retraité</MenuItem>
+                    <InputLabel>{t('animals.status')}</InputLabel>
+                    <Select {...field} label={t('animals.status')}>
+                      <MenuItem value={Status.Grow}>{t('status.GROW')}</MenuItem>
+                      <MenuItem value={Status.Reproducer}>{t('status.REPRO')}</MenuItem>
+                      <MenuItem value={Status.Retired}>{t('status.RETIRED')}</MenuItem>
+                      <MenuItem value={Status.Deceased}>{t('status.DEAD')}</MenuItem>
+                      <MenuItem value={Status.Consumed}>{t('status.CONSUMED')}</MenuItem>
                     </Select>
                   </FormControl>
                 )}
@@ -226,7 +242,7 @@ const AnimalFormPage = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Race"
+                    label={t('animals.breed')}
                     fullWidth
                     error={!!errors.breed}
                     helperText={errors.breed?.message}
@@ -242,7 +258,7 @@ const AnimalFormPage = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Date de naissance"
+                    label={t('animals.birthDate')}
                     type="date"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -261,16 +277,64 @@ const AnimalFormPage = () => {
                 name="cage"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Cage"
-                    fullWidth
-                    error={!!errors.cage}
-                    helperText={errors.cage?.message}
-                  />
+                  <FormControl fullWidth error={!!errors.cage}>
+                    <InputLabel>{t('animals.cage')}</InputLabel>
+                    <Select {...field} label={t('animals.cage')}>
+                      <MenuItem value="">{t('common.none')}</MenuItem>
+                      {cages.map(cage => (
+                        <MenuItem key={cage.id} value={cage.id}>
+                          {cage.name} ({cage.location || 'N/A'})
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 )}
               />
             </Grid>
+
+            {/* Consumption details if status is CONSUMED */}
+            {selectedStatus === Status.Consumed && (
+              <>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="consumedDate"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label={t('animals.consumedDate')}
+                        type="date"
+                        fullWidth
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                          max: toISODate(new Date()),
+                        }}
+                        error={!!errors.consumedDate}
+                        helperText={errors.consumedDate?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="consumedWeight"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label={t('animals.consumedWeight')}
+                        type="number"
+                        fullWidth
+                        inputProps={{ min: 0, step: 50 }}
+                        error={!!errors.consumedWeight}
+                        helperText={errors.consumedWeight?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </>
+            )}
 
             {/* Origin and Parents */}
             <Grid item xs={12}>
@@ -278,7 +342,7 @@ const AnimalFormPage = () => {
                 mt: { xs: 1, sm: 2 },
                 fontSize: { xs: '1.125rem', sm: '1.25rem' }
               }}>
-                Origine et parenté
+                {t('animals.origin')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
@@ -289,10 +353,10 @@ const AnimalFormPage = () => {
                 control={control}
                 render={({ field }) => (
                   <FormControl fullWidth error={!!errors.origin}>
-                    <InputLabel>Origine</InputLabel>
-                    <Select {...field} label="Origine">
-                      <MenuItem value="BORN_HERE">Né ici</MenuItem>
-                      <MenuItem value="PURCHASED">Acheté</MenuItem>
+                    <InputLabel>{t('animals.origin')}</InputLabel>
+                    <Select {...field} label={t('animals.origin')}>
+                      <MenuItem value="BORN_HERE">{t('origin.BORN_HERE')}</MenuItem>
+                      <MenuItem value="PURCHASED">{t('origin.PURCHASED')}</MenuItem>
                     </Select>
                   </FormControl>
                 )}
@@ -307,9 +371,9 @@ const AnimalFormPage = () => {
                     control={control}
                     render={({ field }) => (
                       <FormControl fullWidth error={!!errors.motherId}>
-                        <InputLabel>Mère</InputLabel>
-                        <Select {...field} label="Mère">
-                          <MenuItem value="">Aucune</MenuItem>
+                        <InputLabel>{t('animals.mother')}</InputLabel>
+                        <Select {...field} label={t('animals.mother')}>
+                          <MenuItem value="">{t('common.none')}</MenuItem>
                           {availableMothers.map(mother => (
                             <MenuItem key={mother.id} value={mother.id}>
                               {mother.name || mother.identifier || mother.id}
@@ -327,9 +391,9 @@ const AnimalFormPage = () => {
                     control={control}
                     render={({ field }) => (
                       <FormControl fullWidth error={!!errors.fatherId}>
-                        <InputLabel>Père</InputLabel>
-                        <Select {...field} label="Père">
-                          <MenuItem value="">Aucun</MenuItem>
+                        <InputLabel>{t('animals.father')}</InputLabel>
+                        <Select {...field} label={t('animals.father')}>
+                          <MenuItem value="">{t('common.none')}</MenuItem>
                           {availableFathers.map(father => (
                             <MenuItem key={father.id} value={father.id}>
                               {father.name || father.identifier || father.id}
@@ -343,6 +407,62 @@ const AnimalFormPage = () => {
               </>
             )}
 
+            {/* Tags */}
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom sx={{ 
+                mt: { xs: 1, sm: 2 },
+                fontSize: { xs: '1.125rem', sm: '1.25rem' }
+              }}>
+                {t('animals.tags')}
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Controller
+                name="tags"
+                control={control}
+                render={({ field }) => (
+                  <Autocomplete
+                    multiple
+                    options={tags.map(tag => tag.id)}
+                    getOptionLabel={(tagId) => {
+                      const tag = tags.find(t => t.id === tagId);
+                      return tag?.name || tagId;
+                    }}
+                    value={field.value || []}
+                    onChange={(_, newValue) => field.onChange(newValue)}
+                    renderTags={(value, getTagProps) =>
+                      value.map((tagId, index) => {
+                        const tag = tags.find(t => t.id === tagId);
+                        const tagProps = getTagProps({ index });
+                        return (
+                          <Chip
+                            {...tagProps}
+                            key={tagId}
+                            label={tag?.name || tagId}
+                            style={{
+                              backgroundColor: tag?.color || '#gray',
+                              color: 'white'
+                            }}
+                          />
+                        );
+                      })
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t('animals.tags')}
+                        placeholder={t('animals.tags')}
+                        error={!!errors.tags}
+                        helperText={errors.tags?.message}
+                      />
+                    )}
+                  />
+                )}
+              />
+            </Grid>
+
             {/* Notes */}
             <Grid item xs={12}>
               <Controller
@@ -351,7 +471,7 @@ const AnimalFormPage = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Notes"
+                    label={t('animals.notes')}
                     multiline
                     rows={3}
                     fullWidth
@@ -380,7 +500,7 @@ const AnimalFormPage = () => {
                   disabled={isSubmitting}
                   sx={{ order: { xs: 2, sm: 1 } }}
                 >
-                  Annuler
+                  {t('common.cancel')}
                 </Button>
                 <Button
                   type="submit"
@@ -389,7 +509,7 @@ const AnimalFormPage = () => {
                   disabled={isSubmitting}
                   sx={{ order: { xs: 1, sm: 2 } }}
                 >
-                  {isSubmitting ? 'Sauvegarde...' : 'Sauvegarder'}
+                  {isSubmitting ? t('common.loading') : t('common.save')}
                 </Button>
               </Box>
             </Grid>

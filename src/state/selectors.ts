@@ -12,13 +12,13 @@ export const getSettings = (state: AppState) => state.settings;
 
 // Animal selectors
 export const getLiveAnimals = (state: AppState) =>
-  state.animals.filter(animal => animal.status !== Status.Deceased);
+  state.animals.filter(animal => animal.status !== Status.Deceased && animal.status !== Status.Consumed);
 
 export const getFemales = (state: AppState) =>
-  state.animals.filter(animal => animal.sex === Sex.Female && animal.status !== Status.Deceased);
+  state.animals.filter(animal => animal.sex === Sex.Female && animal.status !== Status.Deceased && animal.status !== Status.Consumed);
 
 export const getMales = (state: AppState) =>
-  state.animals.filter(animal => animal.sex === Sex.Male && animal.status !== Status.Deceased);
+  state.animals.filter(animal => animal.sex === Sex.Male && animal.status !== Status.Deceased && animal.status !== Status.Consumed);
 
 export const getReproducers = (state: AppState) =>
   state.animals.filter(animal => animal.status === Status.Reproducer);

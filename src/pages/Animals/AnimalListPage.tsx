@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Container,
@@ -18,6 +18,12 @@ import {
   Select,
   MenuItem,
   Fab,
+  Autocomplete,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -34,15 +40,22 @@ import { calculateAgeText } from '../../utils/dates';
 import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
 import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
 import QRCodeDisplay from '../../components/QRCodeDisplay';
+import { SearchService, SearchFilters } from '../../services/search.service';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<Status | 'ALL'>('ALL');
   const [sexFilter, setSexFilter] = useState<Sex | 'ALL'>('ALL');
   const [showQuickWeight, setShowQuickWeight] = useState(false);
   const [showQuickTreatment, setShowQuickTreatment] = useState(false);
+  const [consumptionDialog, setConsumptionDialog] = useState<{
+    open: boolean;
+    animalId: string | null;
+  }>({ open: false, animalId: null });
 
   // Handle URL parameters for quick actions
   useEffect(() => {
@@ -66,19 +79,30 @@ const AnimalListPage = () => {
   const state = useAppStore();
   const animals = getLiveAnimals(state);
   const settings = state.settings;
+  const tags = state.tags;
+  const cages = state.cages;
+  const { markAnimalConsumed } = useAppStore();
 
-  // Filter animals based on search and filters
-  const filteredAnimals = animals.filter((animal) => {
-    const matchesSearch = 
-      animal.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      animal.identifier?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      animal.breed?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = statusFilter === 'ALL' || animal.status === statusFilter;
-    const matchesSex = sexFilter === 'ALL' || animal.sex === sexFilter;
-    
-    return matchesSearch && matchesStatus && matchesSex;
-  });
+  // Get filter options and search suggestions
+  const filterOptions = useMemo(() => 
+    SearchService.getFilterOptions(animals), [animals]
+  );
+
+  const searchSuggestions = useMemo(() => 
+    SearchService.getSearchSuggestions(animals, searchQuery), [animals, searchQuery]
+  );
+
+  // Build search filters
+  const searchFilters: SearchFilters = useMemo(() => ({
+    query: searchQuery || undefined,
+    status: statusFilter === 'ALL' ? undefined : [statusFilter],
+    sex: sexFilter === 'ALL' ? undefined : [sexFilter],
+  }), [searchQuery, statusFilter, sexFilter]);
+
+  // Filter animals using intelligent search
+  const filteredAnimals = useMemo(() => 
+    SearchService.searchAnimals(animals, searchFilters), [animals, searchFilters]
+  );
 
   const getStatusColor = (status: Status) => {
     switch (status) {
@@ -96,23 +120,24 @@ const AnimalListPage = () => {
   };
 
   const getStatusLabel = (status: Status) => {
-    switch (status) {
-      case Status.Reproducer:
-        return 'Reproducteur';
-      case Status.Grow:
-        return 'Croissance';
-      case Status.Retired:
-        return 'Retraité';
-      case Status.Deceased:
-        return 'Décédé';
-      default:
-        return status;
-    }
+    return t(`status.${status}`);
   };
 
   const hasActiveWithdrawal = (animalId: string) => {
     const treatments = getAnimalActiveTreatments(state, animalId);
     return treatments.length > 0;
+  };
+
+  const handleMarkConsumed = (animalId: string) => {
+    setConsumptionDialog({ open: true, animalId });
+  };
+
+  const confirmConsumption = () => {
+    if (consumptionDialog.animalId) {
+      const today = new Date().toISOString().split('T')[0];
+      markAnimalConsumed(consumptionDialog.animalId, today);
+      setConsumptionDialog({ open: false, animalId: null });
+    }
   };
 
   return (
@@ -121,7 +146,7 @@ const AnimalListPage = () => {
         <Typography variant="h4" component="h2" sx={{
           fontSize: { xs: '1.75rem', sm: '2.125rem' }
         }}>
-          Animaux ({filteredAnimals.length})
+          {t('animals.title')} ({filteredAnimals.length})
         </Typography>
       </Box>
 
@@ -129,48 +154,56 @@ const AnimalListPage = () => {
       <Box mb={{ xs: 2, sm: 3 }}>
         <Grid container spacing={{ xs: 2, sm: 2 }} alignItems="center">
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Rechercher par nom, identifiant ou race..."
+            <Autocomplete
+              freeSolo
+              options={searchSuggestions}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              size="small"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
+              onInputChange={(_, newValue) => setSearchQuery(newValue || '')}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  variant="outlined"
+                  placeholder={t('common.search') + '...'}
+                  size="small"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel>Statut</InputLabel>
+              <InputLabel>{t('animals.status')}</InputLabel>
               <Select
                 value={statusFilter}
-                label="Statut"
+                label={t('animals.status')}
                 onChange={(e) => setStatusFilter(e.target.value as Status | 'ALL')}
               >
-                <MenuItem value="ALL">Tous</MenuItem>
-                <MenuItem value={Status.Reproducer}>Reproducteurs</MenuItem>
-                <MenuItem value={Status.Grow}>Croissance</MenuItem>
-                <MenuItem value={Status.Retired}>Retraités</MenuItem>
+                <MenuItem value="ALL">{t('common.all')}</MenuItem>
+                <MenuItem value={Status.Reproducer}>{t('status.REPRO')}</MenuItem>
+                <MenuItem value={Status.Grow}>{t('status.GROW')}</MenuItem>
+                <MenuItem value={Status.Retired}>{t('status.RETIRED')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel>Sexe</InputLabel>
+              <InputLabel>{t('animals.sex')}</InputLabel>
               <Select
                 value={sexFilter}
-                label="Sexe"
+                label={t('animals.sex')}
                 onChange={(e) => setSexFilter(e.target.value as Sex | 'ALL')}
               >
-                <MenuItem value="ALL">Tous</MenuItem>
-                <MenuItem value={Sex.Female}>Femelles</MenuItem>
-                <MenuItem value={Sex.Male}>Mâles</MenuItem>
+                <MenuItem value="ALL">{t('common.all')}</MenuItem>
+                <MenuItem value={Sex.Female}>{t('sex.F')}</MenuItem>
+                <MenuItem value={Sex.Male}>{t('sex.M')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -200,10 +233,10 @@ const AnimalListPage = () => {
                     <Typography variant="h6" component="h3" sx={{
                       fontSize: { xs: '1rem', sm: '1.25rem' }
                     }}>
-                      {animal.name || 'Sans nom'}
+                      {animal.name || t('animals.name')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {animal.identifier || 'Pas d\'identifiant'}
+                      {animal.identifier || t('animals.identifier')}
                     </Typography>
                   </Box>
                   {settings.enableQR && (
@@ -221,14 +254,14 @@ const AnimalListPage = () => {
                     label={getStatusLabel(animal.status)}
                     color={getStatusColor(animal.status)}
                     size="small"
-                    sx={{ mr: 1 }}
+                    sx={{ mr: 1, mb: 1 }}
                   />
                   {animal.sex === Sex.Female && (
                     <Chip
                       label="♀"
                       color="secondary"
                       size="small"
-                      sx={{ mr: 1 }}
+                      sx={{ mr: 1, mb: 1 }}
                     />
                   )}
                   {animal.sex === Sex.Male && (
@@ -236,13 +269,31 @@ const AnimalListPage = () => {
                       label="♂"
                       color="primary"
                       size="small"
-                      sx={{ mr: 1 }}
+                      sx={{ mr: 1, mb: 1 }}
                     />
                   )}
+                  {/* Display animal tags */}
+                  {animal.tags && animal.tags.map((tagId) => {
+                    const tag = tags.find(t => t.id === tagId);
+                    return tag ? (
+                      <Chip
+                        key={tagId}
+                        label={tag.name}
+                        size="small"
+                        sx={{ 
+                          mr: 1, 
+                          mb: 1,
+                          backgroundColor: tag.color || '#e0e0e0',
+                          color: '#fff',
+                          fontWeight: 'bold'
+                        }}
+                      />
+                    ) : null;
+                  })}
                 </Box>
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>Race:</strong> {animal.breed || 'Non spécifiée'}
+                  <strong>{t('animals.breed')}:</strong> {animal.breed || t('common.none')}
                 </Typography>
                 
                 {animal.birthDate && (
@@ -252,7 +303,11 @@ const AnimalListPage = () => {
                 )}
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>Cage:</strong> {animal.cage || 'Non assignée'}
+                  <strong>{t('animals.cage')}:</strong> {
+                    animal.cage 
+                      ? (cages.find(c => c.id === animal.cage)?.name || 'aucun')
+                      : 'aucun'
+                  }
                 </Typography>
 
                 {animal.notes && (
@@ -287,8 +342,18 @@ const AnimalListPage = () => {
                   onClick={() => navigate(`/animals/${animal.id}/edit`)}
                   sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
-                  Modifier
+                  {t('common.edit')}
                 </Button>
+                {animal.status === Status.Grow && (
+                  <Button 
+                    size="small" 
+                    color="error"
+                    onClick={() => handleMarkConsumed(animal.id)}
+                    sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                  >
+                    {t('animals.markConsumed')}
+                  </Button>
+                )}
               </CardActions>
             </Card>
           </Grid>
@@ -334,6 +399,33 @@ const AnimalListPage = () => {
         open={showQuickTreatment} 
         onClose={() => setShowQuickTreatment(false)} 
       />
+
+      {/* Consumption Confirmation Dialog */}
+      <Dialog
+        open={consumptionDialog.open}
+        onClose={() => setConsumptionDialog({ open: false, animalId: null })}
+      >
+        <DialogTitle>{t('animals.confirmConsumption')}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {t('animals.confirmConsumption')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={() => setConsumptionDialog({ open: false, animalId: null })}
+          >
+            {t('common.cancel')}
+          </Button>
+          <Button 
+            onClick={confirmConsumption}
+            color="error"
+            variant="contained"
+          >
+            {t('common.confirm')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

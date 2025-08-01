@@ -1,6 +1,5 @@
 # Garenne - Application de Gestion d'Élevage
 
-[![Build Status](https://github.com/hankerspace/garenne/workflows/CI/badge.svg)](https://github.com/hankerspace/garenne/actions)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=flat&logo=material-ui&logoColor=white)](https://mui.com/)
@@ -484,28 +483,24 @@ Les fichiers seront générés dans le dossier `dist/`.
 - [x] 📱 **PWA complète** installable et fonctionnant hors-ligne
 - [x] 🧪 **Tests automatisés** avec couverture >80%
 
-### Version 1.0 - Production Ready (Q2 2024)
+### Version 1.0 - Production Ready 
 - [ ] 🔄 **Export/Import avancé** : Excel, CSV, formats standards élevage
 - [ ] 📈 **Statistiques avancées** : Graphiques de performance, comparaisons
 - [ ] 🔍 **Recherche intelligente** : Filtres complexes, recherche floue
 - [ ] 🏷️ **Système d'étiquettes** : Organisation personnalisée
-- [ ] 📋 **Templates et modèles** : Configurations prédéfinies par race
-- [ ] 🌐 **Internationalisation** : Support multilingue (FR, EN, ES)
+- [ ] **Visualisation des cages** : représentation graphique des cages avec les animaux dans celles-ci
+- [ ] **Consommation des animaux** : Gestion des animaux "abattus pour consommation" avec statistiques
+- [ ] **Performances des animaux** : Mesures de performance de reproduction, taux de survie de la descendance, statistiques de performance
+- [ ] 🌐 **Internationalisation** : Support multilingue (FR, EN, ES) de l'application et readme
+- [ ] **Personnalisation** : possibilité de configurer précisément dans les paramètres la durée de gestation, durée de sevrage, durée avant reproduction, durée avant abattage, etc.
 
-### Version 1.1 - Fonctionnalités Avancées (Q3 2024)
+### Version 1.1 - Fonctionnalités Avancées 
 - [ ] 🧬 **Généalogie avancée** : Coefficients de consanguinité, lignées
 - [ ] 📅 **Planning reproduction** : Calendrier intelligent, rappels
-- [ ] 📊 **Tableaux de bord personnalisables** : Widgets configurables
-- [ ] 🔔 **Système de notifications** : Alertes personnalisées, rappels
-- [ ] 📦 **Plugin système** : Extensions tierces
 - [ ] 🎯 **Objectifs et suivi** : Goals tracking, métriques cibles
-
-### Version 1.2 - Collaboration (Q4 2024)
 - [ ] ☁️ **Synchronisation cloud** : Backup automatique optionnel
 - [ ] 👥 **Multi-utilisateurs** : Partage familial, permissions
-- [ ] 🔗 **Intégrations** : APIs externes, services vétérinaires
-- [ ] 📱 **App mobile native** : iOS/Android avec synchronisation
-- [ ] 🏪 **Marketplace** : Partage de configurations, templates
+- [ ] **Quick actions PWA** : Ajouter pesée, ajouter traitement, etc.
 
 ### Améliorations Techniques Continues
 - [ ] ⚡ **Performance** : Virtual scrolling, lazy loading amélioré

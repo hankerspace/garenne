@@ -23,6 +23,9 @@ export const getMales = (state: AppState) =>
 export const getReproducers = (state: AppState) =>
   state.animals.filter(animal => animal.status === Status.Reproducer);
 
+export const getActiveBreeders = (state: AppState) =>
+  state.animals.filter(animal => animal.status === Status.Reproducer);
+
 export const getAnimalById = (state: AppState, id: string) =>
   state.animals.find(animal => animal.id === id);
 
@@ -133,6 +136,7 @@ export const getKPIs = (state: AppState) => {
   const activeTreatments = getActiveTreatments(state);
   const recentWeights = getRecentWeights(state, 7);
   const littersToWean = getLittersToWean(state);
+  const activeBreeders = getActiveBreeders(state);
 
   return {
     liveAnimalsCount: liveAnimals.length,
@@ -143,6 +147,7 @@ export const getKPIs = (state: AppState) => {
     femalesCount: liveAnimals.filter(a => a.sex === Sex.Female).length,
     malesCount: liveAnimals.filter(a => a.sex === Sex.Male).length,
     reproducersCount: getReproducers(state).length,
+    activeBreeders: activeBreeders.length,
   };
 };
 

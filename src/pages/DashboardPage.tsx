@@ -21,6 +21,7 @@ import {
   MedicalServices as MedicalIcon,
   TrendingUp,
   Warning,
+  Event as EventIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -81,6 +82,13 @@ const DashboardPage = () => {
       action: () => navigate('/animals?filter=reproducteurs'),
     },
     {
+      title: 'Planning reproduction',
+      value: kpis.activeBreeders || 0,
+      icon: <EventIcon color="success" />,
+      subtitle: 'Calendrier élevage',
+      action: () => navigate('/planning'),
+    },
+    {
       title: 'Portées récentes',
       value: kpis.recentLittersCount,
       icon: <FamilyIcon color="success" />,
@@ -93,13 +101,6 @@ const DashboardPage = () => {
       icon: <Warning color="warning" />,
       subtitle: 'Sous délai d\'attente',
       action: () => navigate('/animals?filter=treatments'),
-    },
-    {
-      title: 'Pesées récentes',
-      value: kpis.recentWeightsCount,
-      icon: <WeightIcon color="info" />,
-      subtitle: 'Derniers 7 jours',
-      action: () => navigate('/animals?tab=weights'),
     },
   ];
 

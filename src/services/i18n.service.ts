@@ -41,7 +41,6 @@ export interface Translations {
     tip3: string;
   };
 
-  // Navigation
   nav: {
     dashboard: string;
     animals: string;
@@ -51,6 +50,7 @@ export interface Translations {
     tags: string;
     statistics: string;
     settings: string;
+    planning: string;
   };
 
   // Animals
@@ -235,6 +235,7 @@ const frTranslations: Translations = {
     tags: 'Étiquettes',
     statistics: 'Statistiques',
     settings: 'Paramètres',
+    planning: 'Planning',
   },
   animals: {
     title: 'Gestion des animaux',
@@ -400,6 +401,7 @@ const enTranslations: Translations = {
     tags: 'Tags',
     statistics: 'Statistics',
     settings: 'Settings',
+    planning: 'Planning',
   },
   animals: {
     title: 'Animal Management',
@@ -565,6 +567,7 @@ const esTranslations: Translations = {
     tags: 'Etiquetas',
     statistics: 'Estadísticas',
     settings: 'Configuración',
+    planning: 'Planificación',
   },
   animals: {
     title: 'Gestión de Animales',

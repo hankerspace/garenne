@@ -12,6 +12,7 @@ import CageVisualizationPage from './pages/Cages/CageVisualizationPage.tsx';
 import TagListPage from './pages/Tags/TagListPage.tsx';
 import StatisticsPage from './pages/Statistics/StatisticsPage.tsx';
 import SettingsPage from './pages/Settings/SettingsPage.tsx';
+import ReproductionPlanningPage from './pages/ReproductionPlanningPage.tsx';
 import { RouterErrorBoundary } from './components/ErrorBoundary.tsx';
 
 export const router = createBrowserRouter([
@@ -53,6 +54,11 @@ export const router = createBrowserRouter([
       {
         path: 'litters/:id',
         element: <LitterDetailPage />,
+        errorElement: <RouterErrorBoundary />,
+      },
+      {
+        path: 'planning',
+        element: <ReproductionPlanningPage />,
         errorElement: <RouterErrorBoundary />,
       },
       {

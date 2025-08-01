@@ -435,11 +435,12 @@ const AnimalFormPage = () => {
                     renderTags={(value, getTagProps) =>
                       value.map((tagId, index) => {
                         const tag = tags.find(t => t.id === tagId);
+                        const tagProps = getTagProps({ index });
                         return (
                           <Chip
+                            {...tagProps}
                             key={tagId}
                             label={tag?.name || tagId}
-                            {...getTagProps({ index })}
                             style={{
                               backgroundColor: tag?.color || '#gray',
                               color: 'white'

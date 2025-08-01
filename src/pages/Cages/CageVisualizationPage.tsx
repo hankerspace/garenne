@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Typography,
@@ -10,6 +10,8 @@ import {
   Avatar,
   Button,
   Badge,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import {
   Home as CageIcon,
@@ -19,10 +21,20 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../state/store';
 import { Status, Sex } from '../../models/types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const CageVisualizationPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { cages, animals } = useAppStore();
+  const updateAnimal = useAppStore((state) => state.updateAnimal);
+  
+  const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
+  const [notification, setNotification] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
 
   // Group animals by cage
   const animalsByCage = useMemo(() => {
@@ -60,17 +72,77 @@ const CageVisualizationPage: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: Status) => {
-    switch (status) {
-      case Status.Reproducer:
-        return 'success';
-      case Status.Grow:
-        return 'info';
-      case Status.Retired:
-        return 'warning';
+  const getSexColor = (sex: Sex) => {
+    switch (sex) {
+      case Sex.Male:
+        return '#1976d2'; // Blue for males
+      case Sex.Female:
+        return '#d32f2f'; // Red for females
       default:
-        return 'default';
+        return '#9e9e9e'; // Grey for unknown
     }
+  };
+
+  // Drag and drop handlers
+  const handleDragStart = (e: React.DragEvent, animalId: string) => {
+    setDraggedAnimal(animalId);
+    e.dataTransfer.setData('text/plain', animalId);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent, targetCageId: string) => {
+    e.preventDefault();
+    const animalId = e.dataTransfer.getData('text/plain');
+    
+    if (animalId && animalId !== draggedAnimal) return; // Safety check
+    
+    const animal = animals.find(a => a.id === animalId);
+    if (!animal) return;
+
+    // Don't allow moving to the same cage
+    if (animal.cage === targetCageId || (animal.cage === undefined && targetCageId === 'uncaged')) {
+      setDraggedAnimal(null);
+      return;
+    }
+
+    // Check capacity for target cage
+    if (targetCageId !== 'uncaged') {
+      const targetCage = cages.find(c => c.id === targetCageId);
+      const currentOccupancy = animalsByCage[targetCageId]?.length || 0;
+      
+      if (targetCage?.capacity && currentOccupancy >= targetCage.capacity) {
+        setNotification({
+          open: true,
+          message: t('cages.cageDetails') + ' ' + (targetCage.name || targetCageId) + ' est pleine',
+          severity: 'error',
+        });
+        setDraggedAnimal(null);
+        return;
+      }
+    }
+
+    // Update the animal's cage
+    updateAnimal(animalId, { 
+      cage: targetCageId === 'uncaged' ? undefined : targetCageId 
+    });
+
+    const targetCageName = targetCageId === 'uncaged' ? 'Aucune cage' : cages.find(c => c.id === targetCageId)?.name || targetCageId;
+    setNotification({
+      open: true,
+      message: `${animal.name || animal.identifier || 'Animal'} déplacé vers ${targetCageName}`,
+      severity: 'success',
+    });
+
+    setDraggedAnimal(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedAnimal(null);
   };
 
   const CageCard: React.FC<{ cageId: string; cageName: string; capacity?: number }> = ({ 
@@ -90,6 +162,8 @@ const CageVisualizationPage: React.FC = () => {
           border: isOverCapacity ? '2px solid' : '1px solid',
           borderColor: isOverCapacity ? 'error.main' : 'divider',
         }}
+        onDragOver={handleDragOver}
+        onDrop={(e) => handleDrop(e, cageId)}
       >
         <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           {/* Cage Header */}
@@ -126,18 +200,25 @@ const CageVisualizationPage: React.FC = () => {
             {cageAnimals.map(animal => (
               <Paper
                 key={animal.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, animal.id)}
+                onDragEnd={handleDragEnd}
                 sx={{
                   p: 1,
                   textAlign: 'center',
-                  cursor: 'pointer',
+                  cursor: 'grab',
                   '&:hover': {
                     bgcolor: 'action.hover',
+                  },
+                  '&:active': {
+                    cursor: 'grabbing',
                   },
                   minHeight: 60,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  opacity: draggedAnimal === animal.id ? 0.5 : 1,
                 }}
                 onClick={() => navigate(`/animals/${animal.id}`)}
               >
@@ -146,9 +227,8 @@ const CageVisualizationPage: React.FC = () => {
                     width: 24, 
                     height: 24, 
                     fontSize: '0.75rem',
-                    bgcolor: getStatusColor(animal.status) === 'success' ? 'success.main' :
-                             getStatusColor(animal.status) === 'info' ? 'info.main' :
-                             getStatusColor(animal.status) === 'warning' ? 'warning.main' : 'grey.500'
+                    bgcolor: getSexColor(animal.sex),
+                    color: 'white',
                   }}
                 >
                   {getSexIcon(animal.sex)}
@@ -325,27 +405,41 @@ const CageVisualizationPage: React.FC = () => {
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <Chip
-            avatar={<Avatar sx={{ bgcolor: 'success.main' }}>♀</Avatar>}
-            label="Reproductrice"
+            avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Female), color: 'white' }}>♀</Avatar>}
+            label="Femelle"
             size="small"
           />
           <Chip
-            avatar={<Avatar sx={{ bgcolor: 'success.main' }}>♂</Avatar>}
-            label="Reproducteur"
+            avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Male), color: 'white' }}>♂</Avatar>}
+            label="Mâle"
             size="small"
           />
           <Chip
-            avatar={<Avatar sx={{ bgcolor: 'info.main' }}>♀</Avatar>}
-            label="En croissance"
-            size="small"
-          />
-          <Chip
-            avatar={<Avatar sx={{ bgcolor: 'warning.main' }}>?</Avatar>}
-            label="Retraité"
+            avatar={<Avatar sx={{ bgcolor: getSexColor(Sex.Unknown), color: 'white' }}>?</Avatar>}
+            label="Sexe inconnu"
             size="small"
           />
         </Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          Glissez-déposez les animaux entre les cages pour les déplacer
+        </Typography>
       </Box>
+
+      {/* Notification Snackbar */}
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={4000}
+        onClose={() => setNotification(prev => ({ ...prev, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setNotification(prev => ({ ...prev, open: false }))}
+          severity={notification.severity}
+          sx={{ width: '100%' }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

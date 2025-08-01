@@ -54,22 +54,6 @@ const CageVisualizationPage: React.FC = () => {
     severity: 'success',
   });
 
-  // Statistics
-  const stats = useMemo(() => {
-    const totalCages = cages.length;
-    const liveAnimals = animals.filter(a => a.status !== Status.Deceased && a.status !== Status.Consumed);
-    const totalAnimals = liveAnimals.length;
-    const occupiedCages = cages.filter(cage => animalsByCage[cage.id]?.length > 0).length;
-    const uncagedAnimals = animalsByCage['uncaged']?.length || 0;
-    
-    return {
-      totalCages,
-      totalAnimals,
-      occupiedCages,
-      uncagedAnimals,
-    };
-  }, [cages, animals, animalsByCage]);
-
   // Group animals by cage
   const animalsByCage = useMemo(() => {
     const grouped: Record<string, typeof animals> = {};
@@ -94,6 +78,22 @@ const CageVisualizationPage: React.FC = () => {
 
     return grouped;
   }, [cages, animals]);
+
+  // Statistics
+  const stats = useMemo(() => {
+    const totalCages = cages.length;
+    const liveAnimals = animals.filter(a => a.status !== Status.Deceased && a.status !== Status.Consumed);
+    const totalAnimals = liveAnimals.length;
+    const occupiedCages = cages.filter(cage => animalsByCage[cage.id]?.length > 0).length;
+    const uncagedAnimals = animalsByCage['uncaged']?.length || 0;
+    
+    return {
+      totalCages,
+      totalAnimals,
+      occupiedCages,
+      uncagedAnimals,
+    };
+  }, [cages, animals, animalsByCage]);
 
   const getSexIcon = (sex: Sex) => {
     switch (sex) {

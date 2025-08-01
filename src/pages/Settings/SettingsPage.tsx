@@ -41,9 +41,11 @@ import { useAppStore } from '../../state/store';
 import { backupService, ImportSummary } from '../../services/backup.service';
 import { BackupFile } from '../../models/types';
 import { formatDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const [importSummary, setImportSummary] = useState<ImportSummary | null>(null);
@@ -65,13 +67,13 @@ const SettingsPage = () => {
       backupService.exportData(state);
       setSnackbar({
         open: true,
-        message: 'Export réussi ! Le fichier a été téléchargé.',
+        message: t('messages.dataExported'),
         severity: 'success',
       });
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Erreur lors de l\'export : ' + (error as Error).message,
+        message: t('messages.operationFailed') + ': ' + (error as Error).message,
         severity: 'error',
       });
     }
@@ -91,7 +93,7 @@ const SettingsPage = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Erreur lors de la lecture du fichier : ' + (error as Error).message,
+        message: t('messages.invalidFile') + ': ' + (error as Error).message,
         severity: 'error',
       });
     }
@@ -114,7 +116,7 @@ const SettingsPage = () => {
 
       setSnackbar({
         open: true,
-        message: 'Import réussi !',
+        message: t('messages.dataImported'),
         severity: 'success',
       });
       setImportDialogOpen(false);
@@ -123,7 +125,7 @@ const SettingsPage = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Erreur lors de l\'import : ' + (error as Error).message,
+        message: t('messages.operationFailed') + ': ' + (error as Error).message,
         severity: 'error',
       });
     }
@@ -133,7 +135,7 @@ const SettingsPage = () => {
     clearAllData();
     setSnackbar({
       open: true,
-      message: 'Toutes les données ont été supprimées.',
+      message: t('messages.dataCleared'),
       severity: 'success',
     });
     setClearDialogOpen(false);
@@ -145,7 +147,7 @@ const SettingsPage = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 2 }}>
       <Typography variant="h4" component="h2" gutterBottom>
-        Paramètres
+        {t('settings.title')}
       </Typography>
 
       <Grid container spacing={3}>
@@ -155,11 +157,11 @@ const SettingsPage = () => {
             <CardContent>
               <Box display="flex" alignItems="center" mb={2}>
                 <PaletteIcon sx={{ mr: 1 }} />
-                <Typography variant="h6">Apparence</Typography>
+                <Typography variant="h6">{t('settings.appearance')}</Typography>
               </Box>
               
               <FormControl component="fieldset">
-                <FormLabel component="legend">Thème</FormLabel>
+                <FormLabel component="legend">{t('settings.theme')}</FormLabel>
                 <RadioGroup
                   value={settings.theme}
                   onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' | 'system' })}

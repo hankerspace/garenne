@@ -19,16 +19,18 @@ import {
   FamilyRestroom as FamilyIcon,
   Assessment as StatsIcon,
   Settings as SettingsIcon,
-  MoreHoriz as MoreIcon,
+  Home as CageIcon,
 } from '@mui/icons-material';
 import { lightTheme, darkTheme } from './utils/theme';
 import { useAppStore } from './state/store';
+import { useTranslation } from './hooks/useTranslation';
 import logo from './assets/icon.png';
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const { t } = useTranslation();
   
   const settings = useAppStore((state) => state.settings);
   const loadData = useAppStore((state) => state.loadData);
@@ -51,9 +53,9 @@ function App() {
     if (location.pathname === '/') return 0;
     if (location.pathname.startsWith('/animals')) return 1;
     if (location.pathname.startsWith('/litters')) return 2;
-    if (location.pathname.startsWith('/statistics')) return 3;
-    if (location.pathname.startsWith('/settings')) return 4;
-    if (location.pathname.startsWith('/cages') || location.pathname.startsWith('/tags')) return 4;
+    if (location.pathname.startsWith('/cages')) return 3;
+    if (location.pathname.startsWith('/statistics')) return 4;
+    if (location.pathname.startsWith('/settings') || location.pathname.startsWith('/tags')) return 5;
     return 0;
   }, [location.pathname]);
 
@@ -69,9 +71,12 @@ function App() {
         navigate('/litters');
         break;
       case 3:
-        navigate('/statistics');
+        navigate('/cages');
         break;
       case 4:
+        navigate('/statistics');
+        break;
+      case 5:
         navigate('/settings');
         break;
     }
@@ -141,23 +146,27 @@ function App() {
             showLabels
           >
             <BottomNavigationAction 
-              label="Accueil" 
+              label={t('nav.dashboard')} 
               icon={<HomeIcon />} 
             />
             <BottomNavigationAction 
-              label="Animaux" 
+              label={t('nav.animals')} 
               icon={<PetsIcon />} 
             />
             <BottomNavigationAction 
-              label="Portées" 
+              label={t('nav.litters')} 
               icon={<FamilyIcon />} 
             />
             <BottomNavigationAction 
-              label="Stats" 
+              label={t('nav.cages')} 
+              icon={<CageIcon />} 
+            />
+            <BottomNavigationAction 
+              label={t('nav.statistics')} 
               icon={<StatsIcon />} 
             />
             <BottomNavigationAction 
-              label="Paramètres" 
+              label={t('nav.settings')} 
               icon={<SettingsIcon />} 
             />
           </BottomNavigation>

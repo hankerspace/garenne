@@ -22,6 +22,7 @@ import {
   TrendingUp,
   Warning,
   Event as EventIcon,
+  Speed as SpeedIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -89,11 +90,11 @@ const DashboardPage = () => {
       action: () => navigate('/planning'),
     },
     {
-      title: 'Objectifs & Suivi',
-      value: '🎯',
-      icon: <EventIcon color="info" />,
-      subtitle: 'Performances & buts',
-      action: () => navigate('/goals'),
+      title: 'Actions rapides',
+      value: '⚡',
+      icon: <SpeedIcon color="warning" />,
+      subtitle: 'Accès rapide terrain',
+      action: () => navigate('/quick'),
     },
     {
       title: 'Traitements actifs',

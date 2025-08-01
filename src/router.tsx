@@ -14,6 +14,7 @@ import StatisticsPage from './pages/Statistics/StatisticsPage.tsx';
 import SettingsPage from './pages/Settings/SettingsPage.tsx';
 import ReproductionPlanningPage from './pages/ReproductionPlanningPage.tsx';
 import GoalsTrackingPage from './pages/GoalsTrackingPage.tsx';
+import QuickActionsPage from './pages/QuickActionsPage.tsx';
 import { RouterErrorBoundary } from './components/ErrorBoundary.tsx';
 
 export const router = createBrowserRouter([
@@ -65,6 +66,11 @@ export const router = createBrowserRouter([
       {
         path: 'goals',
         element: <GoalsTrackingPage />,
+        errorElement: <RouterErrorBoundary />,
+      },
+      {
+        path: 'quick',
+        element: <QuickActionsPage />,
         errorElement: <RouterErrorBoundary />,
       },
       {

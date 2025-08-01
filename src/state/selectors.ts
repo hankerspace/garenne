@@ -1,5 +1,6 @@
 import { AppState, Status, Sex } from '../models/types';
 import { isWithdrawalActive } from '../utils/dates';
+import { calculateBreedingStatus, BreedingStatusInfo } from '../utils/breedingStatus';
 
 // Basic selectors
 export const getAnimals = (state: AppState) => state.animals;
@@ -241,4 +242,49 @@ export const getLittersToWean = (state: AppState) => {
     
     return daysDiff >= 28; // 4 weeks or older
   });
+};
+
+// Breeding status selectors
+export const getAnimalBreedingStatus = (state: AppState, animalId: string): BreedingStatusInfo => {
+  const animal = getAnimalById(state, animalId);
+  if (!animal) {
+    throw new Error(`Animal with id ${animalId} not found`);
+  }
+  
+  return calculateBreedingStatus(
+    animal,
+    state.breedings,
+    state.litters,
+    state.settings.gestationDuration
+  );
+};
+
+export const getAnimalsWaitingForBreeding = (state: AppState) => {
+  return state.animals
+    .filter(animal => animal.status === Status.Reproducer && animal.sex === Sex.Female)
+    .map(animal => ({
+      animal,
+      breedingStatus: calculateBreedingStatus(
+        animal,
+        state.breedings,
+        state.litters,
+        state.settings.gestationDuration
+      )
+    }))
+    .filter(({ breedingStatus }) => breedingStatus.status === 'WAITING_BREEDING');
+};
+
+export const getPregnantAnimals = (state: AppState) => {
+  return state.animals
+    .filter(animal => animal.status === Status.Reproducer && animal.sex === Sex.Female)
+    .map(animal => ({
+      animal,
+      breedingStatus: calculateBreedingStatus(
+        animal,
+        state.breedings,
+        state.litters,
+        state.settings.gestationDuration
+      )
+    }))
+    .filter(({ breedingStatus }) => breedingStatus.status === 'PREGNANT' || breedingStatus.status === 'KINDLING_SOON');
 };

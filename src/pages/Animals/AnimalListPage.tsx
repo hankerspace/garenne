@@ -34,7 +34,7 @@ import {
   Warning as WarningIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
-import { getLiveAnimals, getAnimalActiveTreatments } from '../../state/selectors';
+import { getLiveAnimals, getAnimalActiveTreatments, getAnimalBreedingStatus } from '../../state/selectors';
 import { Sex, Status } from '../../models/types';
 import { calculateAgeText } from '../../utils/dates';
 import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
@@ -42,6 +42,7 @@ import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal
 import QRCodeDisplay from '../../components/QRCodeDisplay';
 import { SearchService, SearchFilters } from '../../services/search.service';
 import { useTranslation } from '../../hooks/useTranslation';
+import { getBreedingStatusLabel, getBreedingStatusColor, BreedingStatus } from '../../utils/breedingStatus';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
@@ -212,152 +213,177 @@ const AnimalListPage = () => {
 
       {/* Animals Grid */}
       <Grid container spacing={{ xs: 2, sm: 3 }}>
-        {filteredAnimals.map((animal) => (
-          <Grid item xs={12} sm={6} lg={4} xl={3} key={animal.id}>
-            <Card sx={{ 
-              height: '100%', 
-              display: 'flex', 
-              flexDirection: 'column',
-              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 4,
-              }
-            }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Box display="flex" alignItems="center" mb={2}>
-                  <Avatar sx={{ mr: 2, bgcolor: animal.sex === Sex.Female ? 'pink' : 'lightblue' }}>
-                    {animal.sex === Sex.Female ? <FemaleIcon /> : <MaleIcon />}
-                  </Avatar>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" component="h3" sx={{
-                      fontSize: { xs: '1rem', sm: '1.25rem' }
-                    }}>
-                      {animal.name || t('animals.name')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {animal.identifier || t('animals.identifier')}
-                    </Typography>
-                  </Box>
-                  {settings.enableQR && (
-                    <Box ml={1}>
-                      <QRCodeDisplay animal={animal} size="small" />
-                    </Box>
-                  )}
-                  {hasActiveWithdrawal(animal.id) && (
-                    <WarningIcon color="warning" sx={{ ml: 1 }} />
-                  )}
-                </Box>
-
-                <Box mb={2}>
-                  <Chip
-                    label={getStatusLabel(animal.status)}
-                    color={getStatusColor(animal.status)}
-                    size="small"
-                    sx={{ mr: 1, mb: 1 }}
-                  />
-                  {animal.sex === Sex.Female && (
-                    <Chip
-                      label="♀"
-                      color="secondary"
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                    />
-                  )}
-                  {animal.sex === Sex.Male && (
-                    <Chip
-                      label="♂"
-                      color="primary"
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                    />
-                  )}
-                  {/* Display animal tags */}
-                  {animal.tags && animal.tags.map((tagId) => {
-                    const tag = tags.find(t => t.id === tagId);
-                    return tag ? (
-                      <Chip
-                        key={tagId}
-                        label={tag.name}
-                        size="small"
-                        sx={{ 
-                          mr: 1, 
-                          mb: 1,
-                          backgroundColor: tag.color || '#e0e0e0',
-                          color: '#fff',
-                          fontWeight: 'bold'
-                        }}
-                      />
-                    ) : null;
-                  })}
-                </Box>
-
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>{t('animals.breed')}:</strong> {animal.breed || t('common.none')}
-                </Typography>
-                
-                {animal.birthDate && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>Âge:</strong> {calculateAgeText(animal.birthDate)}
-                  </Typography>
-                )}
-
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>{t('animals.cage')}:</strong> {
-                    animal.cage 
-                      ? (cages.find(c => c.id === animal.cage)?.name || 'aucun')
-                      : 'aucun'
-                  }
-                </Typography>
-
-                {animal.notes && (
-                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                    {animal.notes}
-                  </Typography>
-                )}
-              </CardContent>
-              
-              <CardActions sx={{ 
-                flexWrap: { xs: 'wrap', sm: 'nowrap' },
-                gap: { xs: 0.5, sm: 1 }
+        {filteredAnimals.map((animal) => {
+          const breedingStatus = animal.status === Status.Reproducer && animal.sex === Sex.Female 
+            ? getAnimalBreedingStatus(state, animal.id)
+            : null;
+          
+          return (
+            <Grid item xs={12} sm={6} lg={4} xl={3} key={animal.id}>
+              <Card sx={{ 
+                height: '100%', 
+                display: 'flex', 
+                flexDirection: 'column',
+                transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: 4,
+                }
               }}>
-                <Button 
-                  size="small" 
-                  onClick={() => navigate(`/animals/${animal.id}`)}
-                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                >
-                  Détails
-                </Button>
-                <Button 
-                  size="small" 
-                  color="secondary"
-                  onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
-                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                >
-                  Peser
-                </Button>
-                <Button 
-                  size="small" 
-                  color="primary"
-                  onClick={() => navigate(`/animals/${animal.id}/edit`)}
-                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                >
-                  {t('common.edit')}
-                </Button>
-                {animal.status === Status.Grow && (
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Avatar sx={{ mr: 2, bgcolor: animal.sex === Sex.Female ? 'pink' : 'lightblue' }}>
+                      {animal.sex === Sex.Female ? <FemaleIcon /> : <MaleIcon />}
+                    </Avatar>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="h6" component="h3" sx={{
+                        fontSize: { xs: '1rem', sm: '1.25rem' }
+                      }}>
+                        {animal.name || t('animals.name')}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {animal.identifier || t('animals.identifier')}
+                      </Typography>
+                    </Box>
+                    {settings.enableQR && (
+                      <Box ml={1}>
+                        <QRCodeDisplay animal={animal} size="small" />
+                      </Box>
+                    )}
+                    {hasActiveWithdrawal(animal.id) && (
+                      <WarningIcon color="warning" sx={{ ml: 1 }} />
+                    )}
+                  </Box>
+
+                  <Box mb={2}>
+                    <Chip
+                      label={getStatusLabel(animal.status)}
+                      color={getStatusColor(animal.status)}
+                      size="small"
+                      sx={{ mr: 1, mb: 1 }}
+                    />
+                    {animal.sex === Sex.Female && (
+                      <Chip
+                        label="♀"
+                        color="secondary"
+                        size="small"
+                        sx={{ mr: 1, mb: 1 }}
+                      />
+                    )}
+                    {animal.sex === Sex.Male && (
+                      <Chip
+                        label="♂"
+                        color="primary"
+                        size="small"
+                        sx={{ mr: 1, mb: 1 }}
+                      />
+                    )}
+                    
+                    {/* Breeding Status Chip */}
+                    {breedingStatus && breedingStatus.status !== BreedingStatus.NOT_REPRODUCTIVE && (
+                      <Chip
+                        label={getBreedingStatusLabel(breedingStatus.status)}
+                        color={getBreedingStatusColor(breedingStatus.status)}
+                        size="small"
+                        sx={{ mr: 1, mb: 1 }}
+                        title={breedingStatus.details}
+                      />
+                    )}
+                    
+                    {/* Display animal tags */}
+                    {animal.tags && animal.tags.map((tagId) => {
+                      const tag = tags.find(t => t.id === tagId);
+                      return tag ? (
+                        <Chip
+                          key={tagId}
+                          label={tag.name}
+                          size="small"
+                          sx={{ 
+                            mr: 1, 
+                            mb: 1,
+                            backgroundColor: tag.color || '#e0e0e0',
+                            color: '#fff',
+                            fontWeight: 'bold'
+                          }}
+                        />
+                      ) : null;
+                    })}
+                  </Box>
+
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <strong>{t('animals.breed')}:</strong> {animal.breed || t('common.none')}
+                  </Typography>
+                  
+                  {animal.birthDate && (
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      <strong>Âge:</strong> {calculateAgeText(animal.birthDate)}
+                    </Typography>
+                  )}
+
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <strong>{t('animals.cage')}:</strong> {
+                      animal.cage 
+                        ? (cages.find(c => c.id === animal.cage)?.name || 'aucun')
+                        : 'aucun'
+                    }
+                  </Typography>
+                  
+                  {/* Breeding Status Details */}
+                  {breedingStatus && breedingStatus.details && breedingStatus.status !== BreedingStatus.NOT_REPRODUCTIVE && (
+                    <Typography variant="body2" color="text.secondary" gutterBottom sx={{ fontStyle: 'italic' }}>
+                      <strong>Reproduction:</strong> {breedingStatus.details}
+                    </Typography>
+                  )}
+
+                  {animal.notes && (
+                    <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                      {animal.notes}
+                    </Typography>
+                  )}
+                </CardContent>
+                
+                <CardActions sx={{ 
+                  flexWrap: { xs: 'wrap', sm: 'nowrap' },
+                  gap: { xs: 0.5, sm: 1 }
+                }}>
                   <Button 
                     size="small" 
-                    color="error"
-                    onClick={() => handleMarkConsumed(animal.id)}
+                    onClick={() => navigate(`/animals/${animal.id}`)}
                     sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                   >
-                    {t('animals.markConsumed')}
+                    Détails
                   </Button>
-                )}
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
+                  <Button 
+                    size="small" 
+                    color="secondary"
+                    onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
+                    sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                  >
+                    Peser
+                  </Button>
+                  <Button 
+                    size="small" 
+                    color="primary"
+                    onClick={() => navigate(`/animals/${animal.id}/edit`)}
+                    sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                  >
+                    {t('common.edit')}
+                  </Button>
+                  {animal.status === Status.Grow && (
+                    <Button 
+                      size="small" 
+                      color="error"
+                      onClick={() => handleMarkConsumed(animal.id)}
+                      sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                    >
+                      {t('animals.markConsumed')}
+                    </Button>
+                  )}
+                </CardActions>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
 
       {filteredAnimals.length === 0 && (

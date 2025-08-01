@@ -8,6 +8,7 @@ import LitterListPage from './pages/Litters/LitterListPage.tsx';
 import LitterDetailPage from './pages/Litters/LitterDetailPage.tsx';
 import CageListPage from './pages/Cages/CageListPage.tsx';
 import CageFormPage from './pages/Cages/CageFormPage.tsx';
+import CageVisualizationPage from './pages/Cages/CageVisualizationPage.tsx';
 import TagListPage from './pages/Tags/TagListPage.tsx';
 import StatisticsPage from './pages/Statistics/StatisticsPage.tsx';
 import SettingsPage from './pages/Settings/SettingsPage.tsx';
@@ -67,6 +68,11 @@ export const router = createBrowserRouter([
       {
         path: 'cages/:id/edit',
         element: <CageFormPage />,
+        errorElement: <RouterErrorBoundary />,
+      },
+      {
+        path: 'cages/visualization',
+        element: <CageVisualizationPage />,
         errorElement: <RouterErrorBoundary />,
       },
       {

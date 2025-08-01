@@ -14,6 +14,8 @@ import {
   MenuItem,
   Alert,
   Divider,
+  Autocomplete,
+  Chip,
 } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, Save as SaveIcon } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
@@ -35,6 +37,7 @@ const animalSchema = z.object({
   cage: z.string().optional(),
   status: z.nativeEnum(Status),
   notes: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 type AnimalFormData = z.infer<typeof animalSchema>;
@@ -45,6 +48,8 @@ const AnimalFormPage = () => {
   const isEdit = id !== 'new' && id !== undefined;
   
   const animals = useAppStore((state) => state.animals);
+  const cages = useAppStore((state) => state.cages);
+  const tags = useAppStore((state) => state.tags);
   const addAnimal = useAppStore((state) => state.addAnimal);
   const updateAnimal = useAppStore((state) => state.updateAnimal);
   
@@ -71,10 +76,12 @@ const AnimalFormPage = () => {
       cage: existingAnimal.cage || '',
       status: existingAnimal.status,
       notes: existingAnimal.notes || '',
+      tags: existingAnimal.tags || [],
     } : {
       sex: Sex.Female,
       status: Status.Grow,
       origin: 'PURCHASED',
+      tags: [],
     },
   });
 

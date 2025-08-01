@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -42,6 +43,7 @@ import { BackupFile } from '../../models/types';
 import { formatDate } from '../../utils/dates';
 
 const SettingsPage = () => {
+  const navigate = useNavigate();
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const [importSummary, setImportSummary] = useState<ImportSummary | null>(null);
@@ -366,6 +368,64 @@ const SettingsPage = () => {
                 }
                 label="Inclure les images dans l'export"
               />
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Quick Access to New Features */}
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Nouvelles fonctionnalités (Version 1.0)
+              </Typography>
+              
+              <Grid container spacing={2} mt={1}>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/cages')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>🏠</Box>
+                    <Typography variant="body2">Cages</Typography>
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/tags')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>🏷️</Box>
+                    <Typography variant="body2">Étiquettes</Typography>
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/statistics')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>📊</Box>
+                    <Typography variant="body2">Statistiques</Typography>
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => navigate('/cages/visualization')}
+                    sx={{ height: 80, flexDirection: 'column', gap: 1 }}
+                  >
+                    <Box sx={{ fontSize: 24 }}>🖼️</Box>
+                    <Typography variant="body2">Vue Cages</Typography>
+                  </Button>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

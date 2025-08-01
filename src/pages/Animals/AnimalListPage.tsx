@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Container,
@@ -18,6 +18,12 @@ import {
   Select,
   MenuItem,
   Fab,
+  Autocomplete,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -34,6 +40,7 @@ import { calculateAgeText } from '../../utils/dates';
 import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
 import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
 import QRCodeDisplay from '../../components/QRCodeDisplay';
+import { SearchService, SearchFilters } from '../../services/search.service';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
@@ -43,6 +50,10 @@ const AnimalListPage = () => {
   const [sexFilter, setSexFilter] = useState<Sex | 'ALL'>('ALL');
   const [showQuickWeight, setShowQuickWeight] = useState(false);
   const [showQuickTreatment, setShowQuickTreatment] = useState(false);
+  const [consumptionDialog, setConsumptionDialog] = useState<{
+    open: boolean;
+    animalId: string | null;
+  }>({ open: false, animalId: null });
 
   // Handle URL parameters for quick actions
   useEffect(() => {
@@ -66,19 +77,28 @@ const AnimalListPage = () => {
   const state = useAppStore();
   const animals = getLiveAnimals(state);
   const settings = state.settings;
+  const { markAnimalConsumed } = useAppStore();
 
-  // Filter animals based on search and filters
-  const filteredAnimals = animals.filter((animal) => {
-    const matchesSearch = 
-      animal.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      animal.identifier?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      animal.breed?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = statusFilter === 'ALL' || animal.status === statusFilter;
-    const matchesSex = sexFilter === 'ALL' || animal.sex === sexFilter;
-    
-    return matchesSearch && matchesStatus && matchesSex;
-  });
+  // Get filter options and search suggestions
+  const filterOptions = useMemo(() => 
+    SearchService.getFilterOptions(animals), [animals]
+  );
+
+  const searchSuggestions = useMemo(() => 
+    SearchService.getSearchSuggestions(animals, searchQuery), [animals, searchQuery]
+  );
+
+  // Build search filters
+  const searchFilters: SearchFilters = useMemo(() => ({
+    query: searchQuery || undefined,
+    status: statusFilter === 'ALL' ? undefined : [statusFilter],
+    sex: sexFilter === 'ALL' ? undefined : [sexFilter],
+  }), [searchQuery, statusFilter, sexFilter]);
+
+  // Filter animals using intelligent search
+  const filteredAnimals = useMemo(() => 
+    SearchService.searchAnimals(animals, searchFilters), [animals, searchFilters]
+  );
 
   const getStatusColor = (status: Status) => {
     switch (status) {
@@ -115,6 +135,18 @@ const AnimalListPage = () => {
     return treatments.length > 0;
   };
 
+  const handleMarkConsumed = (animalId: string) => {
+    setConsumptionDialog({ open: true, animalId });
+  };
+
+  const confirmConsumption = () => {
+    if (consumptionDialog.animalId) {
+      const today = new Date().toISOString().split('T')[0];
+      markAnimalConsumed(consumptionDialog.animalId, today);
+      setConsumptionDialog({ open: false, animalId: null });
+    }
+  };
+
   return (
     <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 }, py: { xs: 2, sm: 3 } }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={{ xs: 2, sm: 3 }}>
@@ -129,20 +161,28 @@ const AnimalListPage = () => {
       <Box mb={{ xs: 2, sm: 3 }}>
         <Grid container spacing={{ xs: 2, sm: 2 }} alignItems="center">
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Rechercher par nom, identifiant ou race..."
+            <Autocomplete
+              freeSolo
+              options={searchSuggestions}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              size="small"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
+              onInputChange={(_, newValue) => setSearchQuery(newValue || '')}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  variant="outlined"
+                  placeholder="Rechercher par nom, identifiant ou race..."
+                  size="small"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -289,6 +329,16 @@ const AnimalListPage = () => {
                 >
                   Modifier
                 </Button>
+                {animal.status === Status.Grow && (
+                  <Button 
+                    size="small" 
+                    color="error"
+                    onClick={() => handleMarkConsumed(animal.id)}
+                    sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                  >
+                    Consommer
+                  </Button>
+                )}
               </CardActions>
             </Card>
           </Grid>
@@ -334,6 +384,34 @@ const AnimalListPage = () => {
         open={showQuickTreatment} 
         onClose={() => setShowQuickTreatment(false)} 
       />
+
+      {/* Consumption Confirmation Dialog */}
+      <Dialog
+        open={consumptionDialog.open}
+        onClose={() => setConsumptionDialog({ open: false, animalId: null })}
+      >
+        <DialogTitle>Confirmer la consommation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Êtes-vous sûr de vouloir marquer cet animal comme consommé ? 
+            Cette action changera définitivement son statut.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={() => setConsumptionDialog({ open: false, animalId: null })}
+          >
+            Annuler
+          </Button>
+          <Button 
+            onClick={confirmConsumption}
+            color="error"
+            variant="contained"
+          >
+            Confirmer
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

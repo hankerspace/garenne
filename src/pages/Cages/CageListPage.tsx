@@ -81,13 +81,21 @@ const CageListPage: React.FC = () => {
         <Typography variant="h4" component="h1">
           Gestion des Cages
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/cages/new')}
-        >
-          Nouvelle Cage
-        </Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="outlined"
+            onClick={() => navigate('/cages/visualization')}
+          >
+            Visualisation
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/cages/new')}
+          >
+            Nouvelle Cage
+          </Button>
+        </Box>
       </Box>
 
       <Box sx={{ mb: 3 }}>

@@ -186,6 +186,96 @@ export const createSeedData = (): AppState => {
     },
   ];
 
+  // Create sample cages
+  const cages = [
+    {
+      id: generateId(),
+      name: 'Cage A1',
+      description: 'Cage reproducteurs - Bâtiment A',
+      capacity: 2,
+      location: 'Bâtiment A, Rangée 1',
+      notes: 'Cage pour reproducteurs',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+    {
+      id: generateId(),
+      name: 'Cage A2',
+      description: 'Cage reproducteurs - Bâtiment A',
+      capacity: 2,
+      location: 'Bâtiment A, Rangée 1',
+      notes: 'Cage pour reproducteurs',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+    {
+      id: generateId(),
+      name: 'Cage B1',
+      description: 'Cage croissance - Bâtiment B',
+      capacity: 4,
+      location: 'Bâtiment B, Rangée 1',
+      notes: 'Cage pour jeunes en croissance',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+    {
+      id: generateId(),
+      name: 'Cage B2',
+      description: 'Cage croissance - Bâtiment B',
+      capacity: 4,
+      location: 'Bâtiment B, Rangée 1',
+      notes: 'Cage pour jeunes en croissance',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+  ];
+
+  // Create sample tags
+  const tags = [
+    {
+      id: generateId(),
+      name: 'Champion',
+      color: '#FFD700',
+      description: 'Animal avec excellentes performances',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+    {
+      id: generateId(),
+      name: 'Réservé',
+      color: '#FF5722',
+      description: 'Animal réservé pour la vente',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+    {
+      id: generateId(),
+      name: 'Lignée Premium',
+      color: '#9C27B0',
+      description: 'Animal de lignée pure',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+    {
+      id: generateId(),
+      name: 'Surveillance',
+      color: '#FF9800',
+      description: 'Animal nécessitant une surveillance particulière',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
+  ];
+
+  // Assign some tags to animals
+  animals[0].tags = [tags[0].id]; // Belle gets Champion tag
+  animals[1].tags = [tags[2].id]; // Cocoa gets Lignée Premium tag
+  animals[2].tags = [tags[1].id, tags[3].id]; // Fluffy gets Réservé and Surveillance tags
+
+  // Assign some cages to animals
+  animals[0].cage = cages[0].id; // Belle in Cage A1
+  animals[1].cage = cages[1].id; // Cocoa in Cage A2
+  animals[2].cage = cages[2].id; // Fluffy in Cage B1
+
   return {
     animals,
     breedings,
@@ -193,8 +283,8 @@ export const createSeedData = (): AppState => {
     weights,
     treatments,
     mortalities: [],
-    cages: [],
-    tags: [],
+    cages,
+    tags,
     performanceMetrics: [],
     settings: {
       theme: 'light',

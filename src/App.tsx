@@ -16,7 +16,6 @@ import {
 import {
   Home as HomeIcon,
   Pets as PetsIcon,
-  FamilyRestroom as FamilyIcon,
   Assessment as StatsIcon,
   Settings as SettingsIcon,
   Home as CageIcon,
@@ -52,10 +51,9 @@ function App() {
   const navigationValue = useMemo(() => {
     if (location.pathname === '/') return 0;
     if (location.pathname.startsWith('/animals')) return 1;
-    if (location.pathname.startsWith('/litters')) return 2;
-    if (location.pathname.startsWith('/cages')) return 3;
-    if (location.pathname.startsWith('/statistics')) return 4;
-    if (location.pathname.startsWith('/settings') || location.pathname.startsWith('/tags')) return 5;
+    if (location.pathname.startsWith('/cages')) return 2;
+    if (location.pathname.startsWith('/statistics')) return 3;
+    if (location.pathname.startsWith('/settings') || location.pathname.startsWith('/tags')) return 4;
     return 0;
   }, [location.pathname]);
 
@@ -68,15 +66,12 @@ function App() {
         navigate('/animals');
         break;
       case 2:
-        navigate('/litters');
-        break;
-      case 3:
         navigate('/cages/visualization');
         break;
-      case 4:
+      case 3:
         navigate('/statistics');
         break;
-      case 5:
+      case 4:
         navigate('/settings');
         break;
     }
@@ -152,10 +147,6 @@ function App() {
             <BottomNavigationAction 
               label={t('nav.animals')} 
               icon={<PetsIcon />} 
-            />
-            <BottomNavigationAction 
-              label={t('nav.litters')} 
-              icon={<FamilyIcon />} 
             />
             <BottomNavigationAction 
               label={t('nav.cages')} 

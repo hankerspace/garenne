@@ -18,6 +18,60 @@ export default defineConfig({
         display: 'standalone',
         scope: '/garenne/',
         start_url: '/garenne/',
+        shortcuts: [
+          {
+            name: 'Actions rapides',
+            short_name: 'Actions',
+            description: 'Accès rapide aux actions courantes',
+            url: '/garenne/quick',
+            icons: [
+              {
+                src: 'pwa-192x192.png',
+                sizes: '192x192',
+                type: 'image/png'
+              }
+            ]
+          },
+          {
+            name: 'Pesée rapide',
+            short_name: 'Pesée',
+            description: 'Ajouter une pesée rapidement',
+            url: '/garenne/animals?quickWeight=true',
+            icons: [
+              {
+                src: 'pwa-192x192.png',
+                sizes: '192x192',
+                type: 'image/png'
+              }
+            ]
+          },
+          {
+            name: 'Traitement rapide',
+            short_name: 'Traitement',
+            description: 'Enregistrer un traitement',
+            url: '/garenne/animals?quickTreatment=true',
+            icons: [
+              {
+                src: 'pwa-192x192.png',
+                sizes: '192x192',
+                type: 'image/png'
+              }
+            ]
+          },
+          {
+            name: 'Planning',
+            short_name: 'Planning',
+            description: 'Voir le planning de reproduction',
+            url: '/garenne/planning',
+            icons: [
+              {
+                src: 'pwa-192x192.png',
+                sizes: '192x192',
+                type: 'image/png'
+              }
+            ]
+          }
+        ],
         icons: [
           {
             src: 'pwa-192x192.png',

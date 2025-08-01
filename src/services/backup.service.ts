@@ -178,6 +178,8 @@ export class LocalBackupService implements BackupService {
       cages: Array.from(existingCages.values()),
       tags: Array.from(existingTags.values()),
       performanceMetrics: Array.from(existingPerformanceMetrics.values()),
+      goals: backupData.goals || [],
+      goalAchievements: backupData.goalAchievements || [],
       settings: {
         ...currentState.settings,
         ...backupData.settings,
@@ -197,6 +199,8 @@ export class LocalBackupService implements BackupService {
       cages: backupData.cages || [],
       tags: backupData.tags || [],
       performanceMetrics: backupData.performanceMetrics || [],
+      goals: backupData.goals || [],
+      goalAchievements: backupData.goalAchievements || [],
       settings: backupData.settings,
     };
   }

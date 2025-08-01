@@ -22,9 +22,25 @@ export interface Translations {
     none: string;
     optional: string;
     required: string;
+    from: string;
+    to: string;
+    min: string;
+    max: string;
   };
 
-  // Navigation
+  // Search
+  search: {
+    intelligentPlaceholder: string;
+    advancedFilters: string;
+    clearFilters: string;
+    birthDateRange: string;
+    weightRange: string;
+    tips: string;
+    tip1: string;
+    tip2: string;
+    tip3: string;
+  };
+
   nav: {
     dashboard: string;
     animals: string;
@@ -34,6 +50,7 @@ export interface Translations {
     tags: string;
     statistics: string;
     settings: string;
+    planning: string;
   };
 
   // Animals
@@ -193,6 +210,21 @@ const frTranslations: Translations = {
     none: 'Aucun',
     optional: 'Optionnel',
     required: 'Obligatoire',
+    from: 'De',
+    to: 'À',
+    min: 'Min',
+    max: 'Max',
+  },
+  search: {
+    intelligentPlaceholder: 'Recherche intelligente : nom, identifiant, race, cage, notes...',
+    advancedFilters: 'Filtres avancés',
+    clearFilters: 'Effacer tous les filtres',
+    birthDateRange: 'Plage de dates de naissance',
+    weightRange: 'Plage de poids',
+    tips: 'Conseils de recherche',
+    tip1: 'La recherche intelligente tolère les fautes de frappe et les correspondances partielles',
+    tip2: 'Combinez les filtres pour affiner vos résultats',
+    tip3: 'Les résultats sont classés par pertinence avec les correspondances exactes en premier',
   },
   nav: {
     dashboard: 'Tableau de bord',
@@ -203,6 +235,7 @@ const frTranslations: Translations = {
     tags: 'Étiquettes',
     statistics: 'Statistiques',
     settings: 'Paramètres',
+    planning: 'Planning',
   },
   animals: {
     title: 'Gestion des animaux',
@@ -343,6 +376,21 @@ const enTranslations: Translations = {
     none: 'None',
     optional: 'Optional',
     required: 'Required',
+    from: 'From',
+    to: 'To',
+    min: 'Min',
+    max: 'Max',
+  },
+  search: {
+    intelligentPlaceholder: 'Intelligent search: name, identifier, breed, cage, notes...',
+    advancedFilters: 'Advanced filters',
+    clearFilters: 'Clear all filters',
+    birthDateRange: 'Birth date range',
+    weightRange: 'Weight range',
+    tips: 'Search tips',
+    tip1: 'Intelligent search tolerates typos and partial matches',
+    tip2: 'Combine filters to refine your results',
+    tip3: 'Results are ranked by relevance with exact matches first',
   },
   nav: {
     dashboard: 'Dashboard',
@@ -353,6 +401,7 @@ const enTranslations: Translations = {
     tags: 'Tags',
     statistics: 'Statistics',
     settings: 'Settings',
+    planning: 'Planning',
   },
   animals: {
     title: 'Animal Management',
@@ -493,6 +542,21 @@ const esTranslations: Translations = {
     none: 'Ninguno',
     optional: 'Opcional',
     required: 'Obligatorio',
+    from: 'Desde',
+    to: 'Hasta',
+    min: 'Mín',
+    max: 'Máx',
+  },
+  search: {
+    intelligentPlaceholder: 'Búsqueda inteligente: nombre, identificador, raza, jaula, notas...',
+    advancedFilters: 'Filtros avanzados',
+    clearFilters: 'Limpiar todos los filtros',
+    birthDateRange: 'Rango de fechas de nacimiento',
+    weightRange: 'Rango de peso',
+    tips: 'Consejos de búsqueda',
+    tip1: 'La búsqueda inteligente tolera errores tipográficos y coincidencias parciales',
+    tip2: 'Combina filtros para refinar tus resultados',
+    tip3: 'Los resultados se clasifican por relevancia con coincidencias exactas primero',
   },
   nav: {
     dashboard: 'Panel de Control',
@@ -503,6 +567,7 @@ const esTranslations: Translations = {
     tags: 'Etiquetas',
     statistics: 'Estadísticas',
     settings: 'Configuración',
+    planning: 'Planificación',
   },
   animals: {
     title: 'Gestión de Animales',

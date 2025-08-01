@@ -34,6 +34,8 @@ const defaultState: AppState = {
   cages: [],
   tags: [],
   performanceMetrics: [],
+  goals: [],
+  goalAchievements: [],
   settings: defaultSettings,
 };
 

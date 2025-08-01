@@ -39,15 +39,15 @@ describe('DashboardPage', () => {
     
     expect(screen.getByText('Animaux vivants')).toBeInTheDocument()
     expect(screen.getByText('Reproducteurs')).toBeInTheDocument()
-    expect(screen.getByText('Portées récentes')).toBeInTheDocument()
+    expect(screen.getByText('Planning reproduction')).toBeInTheDocument()
+    expect(screen.getAllByText('Actions rapides')).toHaveLength(2) // One in KPI card, one in FAB menu
     expect(screen.getByText('Traitements actifs')).toBeInTheDocument()
-    expect(screen.getByText('Pesées récentes')).toBeInTheDocument()
   })
 
   it('displays quick actions section', () => {
     renderWithProviders(<DashboardPage />)
     
-    expect(screen.getByText('Actions rapides')).toBeInTheDocument()
+    expect(screen.getAllByText('Actions rapides')).toHaveLength(2) // One in KPI card, one in FAB menu
     expect(screen.getByText('Nouvel animal')).toBeInTheDocument()
     expect(screen.getByText('Pesée rapide')).toBeInTheDocument()
     expect(screen.getByText('Nouvelle portée')).toBeInTheDocument()

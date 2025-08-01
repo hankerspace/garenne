@@ -41,15 +41,14 @@ import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
 import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
 import QRCodeDisplay from '../../components/QRCodeDisplay';
 import { SearchService, SearchFilters } from '../../services/search.service';
+import { AdvancedSearchFilters } from '../../components/AdvancedSearchFilters';
 import { useTranslation } from '../../hooks/useTranslation';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<Status | 'ALL'>('ALL');
-  const [sexFilter, setSexFilter] = useState<Sex | 'ALL'>('ALL');
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
   const [showQuickWeight, setShowQuickWeight] = useState(false);
   const [showQuickTreatment, setShowQuickTreatment] = useState(false);
   const [consumptionDialog, setConsumptionDialog] = useState<{
@@ -89,15 +88,8 @@ const AnimalListPage = () => {
   );
 
   const searchSuggestions = useMemo(() => 
-    SearchService.getSearchSuggestions(animals, searchQuery), [animals, searchQuery]
+    SearchService.getSearchSuggestions(animals, searchFilters.query || ''), [animals, searchFilters.query]
   );
-
-  // Build search filters
-  const searchFilters: SearchFilters = useMemo(() => ({
-    query: searchQuery || undefined,
-    status: statusFilter === 'ALL' ? undefined : [statusFilter],
-    sex: sexFilter === 'ALL' ? undefined : [sexFilter],
-  }), [searchQuery, statusFilter, sexFilter]);
 
   // Filter animals using intelligent search
   const filteredAnimals = useMemo(() => 
@@ -150,65 +142,13 @@ const AnimalListPage = () => {
         </Typography>
       </Box>
 
-      {/* Search and Filters */}
-      <Box mb={{ xs: 2, sm: 3 }}>
-        <Grid container spacing={{ xs: 2, sm: 2 }} alignItems="center">
-          <Grid item xs={12} md={6}>
-            <Autocomplete
-              freeSolo
-              options={searchSuggestions}
-              value={searchQuery}
-              onInputChange={(_, newValue) => setSearchQuery(newValue || '')}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  variant="outlined"
-                  placeholder={t('common.search') + '...'}
-                  size="small"
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>{t('animals.status')}</InputLabel>
-              <Select
-                value={statusFilter}
-                label={t('animals.status')}
-                onChange={(e) => setStatusFilter(e.target.value as Status | 'ALL')}
-              >
-                <MenuItem value="ALL">{t('common.all')}</MenuItem>
-                <MenuItem value={Status.Reproducer}>{t('status.REPRO')}</MenuItem>
-                <MenuItem value={Status.Grow}>{t('status.GROW')}</MenuItem>
-                <MenuItem value={Status.Retired}>{t('status.RETIRED')}</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>{t('animals.sex')}</InputLabel>
-              <Select
-                value={sexFilter}
-                label={t('animals.sex')}
-                onChange={(e) => setSexFilter(e.target.value as Sex | 'ALL')}
-              >
-                <MenuItem value="ALL">{t('common.all')}</MenuItem>
-                <MenuItem value={Sex.Female}>{t('sex.F')}</MenuItem>
-                <MenuItem value={Sex.Male}>{t('sex.M')}</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Box>
+      {/* Enhanced Search and Filters */}
+      <AdvancedSearchFilters
+        filters={searchFilters}
+        onFiltersChange={setSearchFilters}
+        suggestions={searchSuggestions}
+        filterOptions={filterOptions}
+      />
 
       {/* Animals Grid */}
       <Grid container spacing={{ xs: 2, sm: 3 }}>

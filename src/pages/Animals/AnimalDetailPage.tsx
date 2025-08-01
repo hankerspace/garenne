@@ -110,6 +110,7 @@ const AnimalDetailPage = () => {
 
   const state = useAppStore();
   const animals = state.animals;
+  const cages = state.cages;
   const settings = state.settings;
   const animal = animals.find(a => a.id === id);
   const deleteBreeding = useAppStore((state) => state.deleteBreeding);
@@ -312,7 +313,9 @@ const AnimalDetailPage = () => {
               Cage
             </Typography>
             <Typography variant="body2">
-              {animal.cage || 'Non assignée'}
+              {animal.cage 
+                ? (cages.find(c => c.id === animal.cage)?.name || 'Cage inconnue')
+                : 'Non assignée'}
             </Typography>
           </Grid>
         </Grid>

@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { Animal, Sex, Status } from '../models/types';
 import { formatDate, calculateAgeText } from '../utils/dates';
+import { useAppStore } from '../state/store';
 import QRCodeDisplay from './QRCodeDisplay';
 
 interface PrintableRabbitSheetProps {
@@ -19,6 +20,8 @@ interface PrintableRabbitSheetProps {
 }
 
 const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) => {
+  const cages = useAppStore((state) => state.cages);
+  
   const getSexDisplay = (sex: Sex) => {
     switch (sex) {
       case Sex.Female: return 'Femelle ♀';
@@ -116,7 +119,11 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
                   Cage
                 </TableCell>
-                <TableCell>{animal.cage || 'Non renseignée'}</TableCell>
+                <TableCell>
+                  {animal.cage 
+                    ? (cages.find(c => c.id === animal.cage)?.name || 'Cage inconnue')
+                    : 'Non renseignée'}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

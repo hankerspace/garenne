@@ -286,6 +286,8 @@ export const createSeedData = (): AppState => {
     cages,
     tags,
     performanceMetrics: [],
+    goals: [],
+    goalAchievements: [],
     settings: {
       theme: 'light',
       weightUnit: 'g',

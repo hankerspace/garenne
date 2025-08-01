@@ -13,6 +13,7 @@ import TagListPage from './pages/Tags/TagListPage.tsx';
 import StatisticsPage from './pages/Statistics/StatisticsPage.tsx';
 import SettingsPage from './pages/Settings/SettingsPage.tsx';
 import ReproductionPlanningPage from './pages/ReproductionPlanningPage.tsx';
+import GoalsTrackingPage from './pages/GoalsTrackingPage.tsx';
 import { RouterErrorBoundary } from './components/ErrorBoundary.tsx';
 
 export const router = createBrowserRouter([
@@ -59,6 +60,11 @@ export const router = createBrowserRouter([
       {
         path: 'planning',
         element: <ReproductionPlanningPage />,
+        errorElement: <RouterErrorBoundary />,
+      },
+      {
+        path: 'goals',
+        element: <GoalsTrackingPage />,
         errorElement: <RouterErrorBoundary />,
       },
       {

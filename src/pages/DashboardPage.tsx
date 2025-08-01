@@ -89,11 +89,11 @@ const DashboardPage = () => {
       action: () => navigate('/planning'),
     },
     {
-      title: 'Portées récentes',
-      value: kpis.recentLittersCount,
-      icon: <FamilyIcon color="success" />,
-      subtitle: 'Derniers 30 jours',
-      action: () => navigate('/litters'),
+      title: 'Objectifs & Suivi',
+      value: '🎯',
+      icon: <EventIcon color="info" />,
+      subtitle: 'Performances & buts',
+      action: () => navigate('/goals'),
     },
     {
       title: 'Traitements actifs',

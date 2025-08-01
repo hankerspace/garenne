@@ -146,6 +146,73 @@ export interface PerformanceMetrics {
   updatedAt: string;
 }
 
+export enum GoalType {
+  Production = 'PRODUCTION', // Total animals produced
+  LitterCount = 'LITTER_COUNT', // Number of litters
+  SurvivalRate = 'SURVIVAL_RATE', // Percentage of animals surviving
+  AverageWeight = 'AVERAGE_WEIGHT', // Average weight at specific age
+  ReproductionRate = 'REPRODUCTION_RATE', // Successful breedings/attempts
+  WeaningTime = 'WEANING_TIME', // Average weaning time
+  MortalityRate = 'MORTALITY_RATE', // Maximum mortality percentage
+  Custom = 'CUSTOM' // User-defined goal
+}
+
+export enum GoalPeriod {
+  Daily = 'DAILY',
+  Weekly = 'WEEKLY', 
+  Monthly = 'MONTHLY',
+  Quarterly = 'QUARTERLY',
+  Yearly = 'YEARLY',
+  OneTime = 'ONE_TIME'
+}
+
+export enum GoalStatus {
+  Active = 'ACTIVE',
+  Completed = 'COMPLETED',
+  Paused = 'PAUSED',
+  Failed = 'FAILED'
+}
+
+export interface Goal {
+  id: UUID;
+  title: string;
+  description?: string;
+  type: GoalType;
+  period: GoalPeriod;
+  targetValue: number;
+  targetUnit: string; // e.g., "animals", "litters", "%", "grams"
+  currentValue?: number;
+  startDate: string; // ISO date string
+  endDate: string; // ISO date string
+  status: GoalStatus;
+  priority: 'low' | 'medium' | 'high';
+  category?: string; // Optional grouping
+  notes?: string;
+  milestones?: GoalMilestone[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GoalMilestone {
+  id: UUID;
+  goalId: UUID;
+  title: string;
+  targetValue: number;
+  currentValue?: number;
+  achieved: boolean;
+  achievedDate?: string;
+  notes?: string;
+}
+
+export interface GoalAchievement {
+  id: UUID;
+  goalId: UUID;
+  achievedDate: string;
+  actualValue: number;
+  notes?: string;
+  createdAt: string;
+}
+
 export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   weightUnit: 'g' | 'kg';
@@ -174,6 +241,8 @@ export interface BackupFile {
   cages: Cage[];
   tags: Tag[];
   performanceMetrics: PerformanceMetrics[];
+  goals?: Goal[];
+  goalAchievements?: GoalAchievement[];
   settings: AppSettings;
 }
 
@@ -188,5 +257,7 @@ export interface AppState {
   cages: Cage[];
   tags: Tag[];
   performanceMetrics: PerformanceMetrics[];
+  goals: Goal[];
+  goalAchievements: GoalAchievement[];
   settings: AppSettings;
 }

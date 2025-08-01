@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import { AppState, Animal, Breeding, Litter, WeightRecord, Treatment, Mortality, Cage, Tag, PerformanceMetrics, Status } from '../models/types';
+import { AppState, Animal, Breeding, Litter, WeightRecord, Treatment, Mortality, Cage, Tag, PerformanceMetrics, Goal, GoalAchievement, GoalStatus, Status } from '../models/types';
 import { storageService } from '../services/storage.service';
 import { generateId, generateTimestamp } from '../services/id.service';
 import { createSeedData } from '../utils/seedData';
@@ -58,6 +58,16 @@ interface AppStore extends AppState {
   deletePerformanceMetrics: (id: string) => void;
   calculatePerformanceMetrics: (animalId: string, period: string) => void;
   
+  // Goal actions
+  addGoal: (goal: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>) => Goal;
+  updateGoal: (id: string, updates: Partial<Goal>) => void;
+  deleteGoal: (id: string) => void;
+  updateGoalProgress: (id: string, currentValue: number) => void;
+  completeGoal: (id: string, actualValue: number, notes?: string) => void;
+  
+  // Goal achievement actions
+  addGoalAchievement: (achievement: Omit<GoalAchievement, 'id' | 'createdAt'>) => GoalAchievement;
+  
   // Settings actions
   updateSettings: (updates: Partial<AppState['settings']>) => void;
   
@@ -79,6 +89,8 @@ export const useAppStore = create<AppStore>()(
     cages: [],
     tags: [],
     performanceMetrics: [],
+    goals: [],
+    goalAchievements: [],
     settings: {
       theme: 'light',
       weightUnit: 'g',
@@ -537,6 +549,93 @@ export const useAppStore = create<AppStore>()(
       }
     },
 
+    // Goal actions
+    addGoal: (goalData) => {
+      const now = generateTimestamp();
+      const goal: Goal = {
+        ...goalData,
+        id: generateId(),
+        currentValue: 0,
+        createdAt: now,
+        updatedAt: now,
+      };
+      
+      set((state) => ({
+        goals: [...state.goals, goal],
+      }));
+      
+      get().saveData();
+      return goal;
+    },
+
+    updateGoal: (id, updates) => {
+      set((state) => ({
+        goals: state.goals.map(goal =>
+          goal.id === id 
+            ? { ...goal, ...updates, updatedAt: generateTimestamp() }
+            : goal
+        ),
+      }));
+      get().saveData();
+    },
+
+    deleteGoal: (id) => {
+      set((state) => ({
+        goals: state.goals.filter(goal => goal.id !== id),
+        goalAchievements: state.goalAchievements.filter(achievement => achievement.goalId !== id),
+      }));
+      get().saveData();
+    },
+
+    updateGoalProgress: (id, currentValue) => {
+      set((state) => ({
+        goals: state.goals.map(goal =>
+          goal.id === id 
+            ? { ...goal, currentValue, updatedAt: generateTimestamp() }
+            : goal
+        ),
+      }));
+      get().saveData();
+    },
+
+    completeGoal: (id, actualValue, notes) => {
+      const now = generateTimestamp();
+      
+      set((state) => ({
+        goals: state.goals.map(goal =>
+          goal.id === id 
+            ? { ...goal, status: GoalStatus.Completed, currentValue: actualValue, updatedAt: now }
+            : goal
+        ),
+      }));
+
+      // Add achievement record
+      get().addGoalAchievement({
+        goalId: id,
+        achievedDate: new Date().toISOString().split('T')[0],
+        actualValue,
+        notes,
+      });
+      
+      get().saveData();
+    },
+
+    addGoalAchievement: (achievementData) => {
+      const now = generateTimestamp();
+      const achievement: GoalAchievement = {
+        ...achievementData,
+        id: generateId(),
+        createdAt: now,
+      };
+      
+      set((state) => ({
+        goalAchievements: [...state.goalAchievements, achievement],
+      }));
+      
+      get().saveData();
+      return achievement;
+    },
+
     // Export actions
     exportData: (format = 'json') => {
       const state = get();
@@ -568,6 +667,8 @@ export const useAppStore = create<AppStore>()(
         cages: [],
         tags: [],
         performanceMetrics: [],
+        goals: [],
+        goalAchievements: [],
       });
       get().saveData();
     },

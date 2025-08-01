@@ -15,16 +15,23 @@
 - ✅ **CRUD complet** : Créer, consulter, modifier et supprimer des animaux
 - ✅ **Fiche détaillée** : Vue exhaustive avec onglets (Aperçu, Reproduction, Pesées, Santé)
 - ✅ **Recherche avancée** : Par nom, identifiant, race, statut et sexe avec filtres combinés
-- ✅ **Gestion de la parenté** : Liaison mère/père avec validation automatique et arbre généalogique
-- ✅ **Statuts multiples** : Croissance, Reproducteur, Retraité, Décédé avec transitions automatiques
+- ✅ **Gestion de la parenté** : Liaison mère/père avec validation automatique et arbre généalogique interactif
+- ✅ **Statuts multiples** : Croissance, Reproducteur, Retraité, Décédé, Consommé avec transitions automatiques
 - ✅ **Identifiants uniques** : Support tatouage, QR codes et identifiants personnalisés
+- ✅ **Système d'étiquettes** : Tags personnalisés pour organisation flexible des animaux
+- ✅ **Gestion des cages** : Attribution et suivi des emplacements des animaux
+- ✅ **Fiches imprimables** : Génération de fiches détaillées pour chaque animal avec QR code
+- ✅ **Consommation** : Gestion des animaux abattus avec date et poids de consommation
 
 ### 📊 Suivi des Données de Performance
-- ✅ **Pesées complètes** : Suivi du poids avec historique, graphiques de croissance
-- ✅ **Traitements médicaux** : Gestion des soins avec délais d'attente automatiques
-- ✅ **Portées détaillées** : Enregistrement naissances, sevrage, mortalité
-- ✅ **Statistiques KPI** : Tableaux de bord avec métriques clés
-- ✅ **Export/Import** : Sauvegarde et restauration des données
+- ✅ **Pesées complètes** : Suivi du poids avec historique, graphiques de croissance et saisie rapide
+- ✅ **Traitements médicaux** : Gestion des soins avec délais d'attente automatiques et saisie rapide
+- ✅ **Portées détaillées** : Enregistrement naissances, sevrage automatique estimé (28 jours), mortalité
+- ✅ **Reproduction avancée** : Suivi des saillies, diagnostic de gestation, planning de mise-bas
+- ✅ **Statistiques KPI** : Tableaux de bord avec métriques clés et graphiques de population
+- ✅ **Suivi mortalité** : Enregistrement des décès avec causes suspectées et nécropsie
+- ✅ **Métriques de performance** : Calcul automatique des performances de reproduction et survie
+- ✅ **Export/Import** : Sauvegarde et restauration des données avec formats multiples
 - ✅ **Données d'exemple** : Génération automatique pour découverte rapide
 
 ### 🎨 Interface Utilisateur Moderne
@@ -136,6 +143,26 @@ La liste des animaux affiche toutes les informations essentielles avec des optio
 2. Modifiez les champs souhaités
 3. Sauvegardez les modifications
 
+#### Arbre Généalogique
+1. Dans les détails d'un animal, visualisez l'arbre généalogique interactif
+2. Explorez les relations familiales sur plusieurs générations
+3. Cliquez sur un animal de l'arbre pour naviguer vers ses détails
+
+#### Saisie Rapide
+- **Pesée rapide** : Bouton d'action flottant pour ajouter rapidement une pesée
+- **Traitement rapide** : Saisie express d'un traitement médical
+- **Fiches imprimables** : Génération instantanée d'une fiche animal avec QR code
+
+#### Gestion des Cages
+1. Attribuez des cages aux animaux lors de la création/modification
+2. Suivez l'occupation des cages depuis le tableau de bord
+3. Organisez vos installations d'élevage efficacement
+
+#### Système d'Étiquettes
+1. Créez des tags personnalisés pour organiser vos animaux
+2. Filtrez par étiquettes pour des groupes spécifiques
+3. Utilisez les couleurs pour une identification visuelle rapide
+
 ### Recherche et Filtres
 - **Barre de recherche** : Recherche par nom, identifiant ou race
 - **Filtre par statut** : Tous, Reproducteurs, Croissance, Retraités
@@ -158,12 +185,16 @@ La liste des animaux affiche toutes les informations essentielles avec des optio
 
 ```
 Stockage Local (LocalStorage + LZ-String compression)
-├── animals[]        # Registre des animaux avec généalogie
-├── weights[]        # Historique des pesées  
-├── treatments[]     # Traitements et délais d'attente
-├── litters[]        # Portées et performances reproduction
-├── breedings[]      # Saillies et planning reproduction
-└── settings         # Préférences utilisateur
+├── animals[]           # Registre des animaux avec généalogie et tags
+├── weights[]           # Historique des pesées  
+├── treatments[]        # Traitements et délais d'attente
+├── litters[]           # Portées avec sevrage automatique estimé
+├── breedings[]         # Saillies et planning reproduction
+├── mortalities[]       # Suivi des décès et causes
+├── cages[]             # Gestion des emplacements
+├── tags[]              # Système d'étiquettes personnalisé
+├── performanceMetrics[] # Métriques de performance reproduction
+└── settings            # Préférences utilisateur et durées personnalisables
 ```
 
 ### Structure du Projet
@@ -171,19 +202,29 @@ Stockage Local (LocalStorage + LZ-String compression)
 ```
 src/
 ├── 📁 components/          # Composants réutilisables
-│   ├── forms/             # Formulaires avec validation
-│   ├── charts/            # Graphiques (Recharts)
-│   ├── ui/                # Composants UI de base
-│   └── layout/            # Layout et navigation
+│   ├── charts/             # Graphiques (Recharts) avec PopulationChart
+│   ├── modals/             # Modales spécialisées (QuickWeight, QuickTreatment, Breeding, Mortality)
+│   ├── ErrorBoundary.tsx   # Gestion d'erreurs globale
+│   ├── GenealogyTree.tsx   # Arbre généalogique interactif
+│   ├── PrintableRabbitSheet.tsx # Fiches imprimables avec QR code
+│   └── QRCodeDisplay.tsx   # Affichage de codes QR
 ├── 📁 pages/              # Pages principales de l'application
 │   ├── Animals/           # 🐰 Gestion des animaux
-│   ├── Litters/           # 👶 Gestion des portées  
+│   ├── Litters/           # 👶 Gestion des portées avec sevrage estimé
+│   ├── Statistics/        # 📊 Métriques et performances détaillées
 │   ├── Treatments/        # 💊 Gestion des traitements
-│   └── Settings/          # ⚙️ Configuration
+│   └── Settings/          # ⚙️ Configuration et durées personnalisables
 ├── 📁 services/           # Services métier et génération de données
+│   ├── qrcode.service.ts   # Génération de codes QR
+│   ├── statistics.service.ts # Calculs de performance
+│   ├── search.service.ts   # Recherche avancée
+│   ├── export.service.ts   # Export multi-format
+│   ├── backup.service.ts   # Sauvegarde et restauration
+│   └── i18n.service.ts     # Support multilingue
 ├── 📁 state/             # Store Zustand et sélecteurs
 ├── 📁 utils/             # Utilitaires (dates, validation, storage)
-├── 📁 models/            # Types TypeScript et interfaces
+├── 📁 models/            # Types TypeScript et interfaces étendues
+├── 📁 hooks/             # Hooks personnalisés (useTranslation)
 └── 📁 test/              # Tests unitaires et d'intégration
 ```
 
@@ -397,22 +438,48 @@ describe('AnimalCard', () => {
 ```typescript
 // Gestion des animaux
 const animal = addAnimal({ name: "Fluffy", sex: Sex.Female, status: Status.Grow });
-updateAnimal(animal.id, { status: Status.Reproducer });
+updateAnimal(animal.id, { status: Status.Reproducer, cage: "A1" });
+consumeAnimal(animal.id, { consumedDate: "2024-01-01", consumedWeight: 2500 });
 deleteAnimal(animal.id);
 
-// Pesées
+// Pesées avec saisie rapide
 const weight = addWeight({ animalId: animal.id, weight: 1200, date: "2024-01-01" });
+quickAddWeight(animal.id, 1300); // Saisie rapide avec date actuelle
 
-// Traitements  
+// Traitements avec saisie rapide
 const treatment = addTreatment({
   animalId: animal.id,
-  treatmentType: "Vaccination",
-  waitingPeriod: 28
+  product: "Vaccination RHD",
+  withdrawalUntil: "2024-02-01"
+});
+quickAddTreatment(animal.id, "Vermifuge"); // Saisie rapide
+
+// Portées avec sevrage estimé
+const litter = addLitter({
+  motherId: animal.id,
+  kindlingDate: "2024-01-01",
+  bornAlive: 8,
+  estimatedWeaningDate: "2024-01-29" // Calculé automatiquement
 });
 
-// Export/Import
+// Gestion cages et tags
+const cage = addCage({ name: "A1", capacity: 1, location: "Bâtiment A" });
+const tag = addTag({ name: "Reproducteur Elite", color: "#4CAF50" });
+addTagToAnimal(animal.id, tag.id);
+
+// Mortalité
+const mortality = addMortality({
+  animalId: animal.id,
+  date: "2024-01-01",
+  suspectedCause: "Maladie",
+  necropsy: false
+});
+
+// Export/Import amélioré
 const backup = exportData(); // JSON string
-importData(backup);          // Restore from backup
+const csvData = exportToCSV(animals); // Export CSV
+const excelData = exportToExcel(animals); // Export Excel
+importData(backup); // Restore from backup
 ```
 
 #### Sélecteurs Utiles
@@ -421,11 +488,20 @@ importData(backup);          // Restore from backup
 const kpis = getKPIs(state);              // Métriques principales
 const activeAnimals = getActiveAnimals(); // Animaux vivants  
 const breeders = getBreeders();           // Reproducteurs
+const consumedAnimals = getConsumedAnimals(); // Animaux consommés
 
-// Filtres et recherches
+// Filtres et recherches avancées
 const females = getAnimalsByStatus(Status.Reproducer);
 const recent = getRecentWeights(30);      // 30 derniers jours
 const alerts = getActiveAlerts();         // Délais d'attente actifs
+const cageOccupancy = getCageOccupancy(); // Occupation des cages
+const taggedAnimals = getAnimalsByTag("Reproducteur Elite");
+
+// Métriques de performance
+const performanceMetrics = getPerformanceMetrics(animalId);
+const populationTrends = getPopulationTrends(); // Graphiques de population
+const mortalityStats = getMortalityStatistics(); // Statistiques de mortalité
+const weaningProgress = getWeaningProgress(); // Sevrage en cours
 ```
 
 Pour la documentation complète, consultez [API.md](API.md).
@@ -474,33 +550,42 @@ Les fichiers seront générés dans le dossier `dist/`.
 ## 📝 Roadmap et Évolution
 
 ### Version Actuelle (v0.8-beta)
-- [x] 🐰 **Gestion complète des animaux** avec CRUD, parenté, statuts
-- [x] 📊 **Pesées et courbes de croissance** avec graphiques interactifs  
-- [x] 💊 **Traitements et délais d'attente** avec alertes automatiques
-- [x] 👶 **Portées et reproduction** avec statistiques de performance
+- [x] 🐰 **Gestion complète des animaux** avec CRUD, parenté, statuts et consommation
+- [x] 📊 **Pesées et courbes de croissance** avec graphiques interactifs et saisie rapide
+- [x] 💊 **Traitements et délais d'attente** avec alertes automatiques et saisie rapide
+- [x] 👶 **Portées et reproduction** avec sevrage estimé automatique et saillies
+- [x] 🏷️ **Système d'étiquettes** personnalisé pour organisation flexible
+- [x] 🏠 **Gestion des cages** avec attribution et suivi d'occupation
+- [x] 📊 **Statistiques avancées** avec métriques de performance et graphiques population
+- [x] 🧬 **Arbre généalogique** interactif pour visualiser les relations familiales
+- [x] 📋 **Fiches imprimables** avec QR codes pour chaque animal
+- [x] ⚰️ **Suivi de mortalité** avec causes et nécropsie
+- [x] 🔄 **Export/Import multi-format** : JSON, CSV, Excel
+- [x] 🌐 **Support multilingue** avec service i18n intégré
+- [x] ⚙️ **Personnalisation** : durées configurables (gestation, sevrage, reproduction)
 - [x] 🎨 **Interface responsive** Material Design 3 avec thèmes
 - [x] 💾 **Stockage local robuste** avec compression et validation
 - [x] 📱 **PWA complète** installable et fonctionnant hors-ligne
 - [x] 🧪 **Tests automatisés** avec couverture >80%
 
 ### Version 1.0 - Production Ready 
-- [ ] 🔄 **Export/Import avancé** : Excel, CSV, formats standards élevage
-- [ ] 📈 **Statistiques avancées** : Graphiques de performance, comparaisons
+- [x] 🔄 **Export/Import avancé** : Excel, CSV, formats standards élevage
+- [x] 📈 **Statistiques avancées** : Graphiques de performance, comparaisons
 - [ ] 🔍 **Recherche intelligente** : Filtres complexes, recherche floue
-- [ ] 🏷️ **Système d'étiquettes** : Organisation personnalisée
+- [x] 🏷️ **Système d'étiquettes** : Organisation personnalisée
 - [ ] **Visualisation des cages** : représentation graphique des cages avec les animaux dans celles-ci
-- [ ] **Consommation des animaux** : Gestion des animaux "abattus pour consommation" avec statistiques
-- [ ] **Performances des animaux** : Mesures de performance de reproduction, taux de survie de la descendance, statistiques de performance
-- [ ] 🌐 **Internationalisation** : Support multilingue (FR, EN, ES) de l'application et readme
-- [ ] **Personnalisation** : possibilité de configurer précisément dans les paramètres la durée de gestation, durée de sevrage, durée avant reproduction, durée avant abattage, etc.
+- [x] **Consommation des animaux** : Gestion des animaux "abattus pour consommation" avec statistiques
+- [x] **Performances des animaux** : Mesures de performance de reproduction, taux de survie de la descendance, statistiques de performance
+- [x] 🌐 **Internationalisation** : Support multilingue (FR, EN, ES) de l'application et readme
+- [x] **Personnalisation** : possibilité de configurer précisément dans les paramètres la durée de gestation, durée de sevrage, durée avant reproduction, durée avant abattage, etc.
 
 ### Version 1.1 - Fonctionnalités Avancées 
-- [ ] 🧬 **Généalogie avancée** : Coefficients de consanguinité, lignées
+- [x] 🧬 **Généalogie avancée** : Arbre interactif avec navigation entre générations
 - [ ] 📅 **Planning reproduction** : Calendrier intelligent, rappels
 - [ ] 🎯 **Objectifs et suivi** : Goals tracking, métriques cibles
 - [ ] ☁️ **Synchronisation cloud** : Backup automatique optionnel
 - [ ] 👥 **Multi-utilisateurs** : Partage familial, permissions
-- [ ] **Quick actions PWA** : Ajouter pesée, ajouter traitement, etc.
+- [ ] **Quick actions PWA** : Ajouter pesée, ajouter traitement depuis l'écran d'accueil
 
 ### Améliorations Techniques Continues
 - [ ] ⚡ **Performance** : Virtual scrolling, lazy loading amélioré

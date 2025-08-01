@@ -118,7 +118,7 @@ const GoalsTrackingPage: React.FC = () => {
           ).length;
           break;
           
-        case GoalType.SurvivalRate:
+        case GoalType.SurvivalRate: {
           // Calculate survival rate
           const periodLitters = litters.filter(litter =>
             litter.kindlingDate >= goal.startDate &&
@@ -129,6 +129,7 @@ const GoalsTrackingPage: React.FC = () => {
           const totalWeaned = periodLitters.reduce((sum, l) => sum + (l.weanedCount || 0), 0);
           currentValue = totalBorn > 0 ? Math.round((totalWeaned / totalBorn) * 100) : 0;
           break;
+        }
           
         case GoalType.AverageWeight:
           // This would need weight tracking implementation

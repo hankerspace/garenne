@@ -69,7 +69,10 @@ const CageVisualizationPage: React.FC = () => {
     // Group animals
     animals.filter(a => a.status !== Status.Deceased && a.status !== Status.Consumed)
       .forEach(animal => {
-        const cageId = animal.cage || 'uncaged';
+        // Check if the animal's cage exists, if not treat as uncaged
+        const cageExists = animal.cage && cages.find(c => c.id === animal.cage);
+        const cageId: string = cageExists ? animal.cage! : 'uncaged';
+        
         if (!grouped[cageId]) {
           grouped[cageId] = [];
         }
@@ -159,15 +162,27 @@ const CageVisualizationPage: React.FC = () => {
       return;
     }
 
-    // Check capacity for target cage
+    // Check if target cage exists and capacity
     if (targetCageId !== 'uncaged') {
       const targetCage = cages.find(c => c.id === targetCageId);
-      const currentOccupancy = animalsByCage[targetCageId]?.length || 0;
       
-      if (targetCage?.capacity && currentOccupancy >= targetCage.capacity) {
+      // Validate cage exists
+      if (!targetCage) {
         setNotification({
           open: true,
-          message: `${t('cages.title')} ${(targetCage.name || targetCageId)} est pleine`,
+          message: `La cage ${targetCageId} n'existe pas`,
+          severity: 'error',
+        });
+        setDraggedAnimal(null);
+        return;
+      }
+      
+      const currentOccupancy = animalsByCage[targetCageId]?.length || 0;
+      
+      if (targetCage.capacity && currentOccupancy >= targetCage.capacity) {
+        setNotification({
+          open: true,
+          message: `${t('cages.title')} ${targetCage.name} est pleine`,
           severity: 'error',
         });
         setDraggedAnimal(null);
@@ -218,15 +233,27 @@ const CageVisualizationPage: React.FC = () => {
         return;
       }
 
-      // Check capacity for target cage
+      // Check if target cage exists and capacity
       if (cageId !== 'uncaged') {
         const targetCage = cages.find(c => c.id === cageId);
-        const currentOccupancy = animalsByCage[cageId]?.length || 0;
         
-        if (targetCage?.capacity && currentOccupancy >= targetCage.capacity) {
+        // Validate cage exists
+        if (!targetCage) {
           setNotification({
             open: true,
-            message: `${t('cages.title')} ${(targetCage.name || cageId)} est pleine`,
+            message: `La cage ${cageId} n'existe pas`,
+            severity: 'error',
+          });
+          setSelectedAnimal(null);
+          return;
+        }
+        
+        const currentOccupancy = animalsByCage[cageId]?.length || 0;
+        
+        if (targetCage.capacity && currentOccupancy >= targetCage.capacity) {
+          setNotification({
+            open: true,
+            message: `${t('cages.title')} ${targetCage.name} est pleine`,
             severity: 'error',
           });
           setSelectedAnimal(null);
@@ -273,7 +300,7 @@ const CageVisualizationPage: React.FC = () => {
             )}
             {animalTags.length > 0 && (
               <Typography variant="caption" display="block">
-                {t('animals.tags')}: {animalTags.map(tag => tag.name).join(', ')}
+                {t('animals.tags')}: {animalTags.map((tag: any) => tag.name).join(', ')}
               </Typography>
             )}
             {isMobile && isInCage && (
@@ -523,7 +550,7 @@ const CageVisualizationPage: React.FC = () => {
                 e.stopPropagation();
                 navigate(`/animals/new?cage=${cageId}`);
               }}
-              disabled={isOverCapacity}
+              disabled={!!isOverCapacity}
             >
               Animal
             </Button>
@@ -547,23 +574,19 @@ const CageVisualizationPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 3 } }}>
+    <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 }, py: { xs: 2, sm: 3 } }}>
       {/* Header */}
       <Box sx={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
-        mb: 3,
+        mb: { xs: 2, sm: 3 },
         flexDirection: { xs: 'column', sm: 'row' },
         gap: { xs: 2, sm: 0 }
       }}>
         <Typography variant="h4" component="h1" sx={{ 
           fontSize: { xs: '1.75rem', sm: '2.125rem' },
           fontWeight: 'bold',
-          background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
         }}>
           🏠 {t('cages.title')} - Visualisation
         </Typography>
@@ -599,14 +622,20 @@ const CageVisualizationPage: React.FC = () => {
 
       {/* Statistics Dashboard */}
       <Box sx={{ mb: 4 }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
           <Grid item xs={6} sm={3}>
-            <Paper sx={{ 
+            <Card sx={{ 
               p: 2, 
               textAlign: 'center',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
+              backgroundColor: 'primary.main',
+              color: 'primary.contrastText',
               borderRadius: 2,
+              height: '100%',
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              }
             }}>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 {stats.totalCages}
@@ -614,15 +643,21 @@ const CageVisualizationPage: React.FC = () => {
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Cages totales
               </Typography>
-            </Paper>
+            </Card>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper sx={{ 
+            <Card sx={{ 
               p: 2, 
               textAlign: 'center',
-              background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-              color: 'white',
+              backgroundColor: 'secondary.main',
+              color: 'secondary.contrastText',
               borderRadius: 2,
+              height: '100%',
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              }
             }}>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 {stats.totalAnimals}
@@ -630,15 +665,21 @@ const CageVisualizationPage: React.FC = () => {
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Animaux actifs
               </Typography>
-            </Paper>
+            </Card>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper sx={{ 
+            <Card sx={{ 
               p: 2, 
               textAlign: 'center',
-              background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-              color: 'white',
+              backgroundColor: 'info.main',
+              color: 'info.contrastText',
               borderRadius: 2,
+              height: '100%',
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              }
             }}>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 {stats.occupiedCages}
@@ -646,17 +687,21 @@ const CageVisualizationPage: React.FC = () => {
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Cages occupées
               </Typography>
-            </Paper>
+            </Card>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper sx={{ 
+            <Card sx={{ 
               p: 2, 
               textAlign: 'center',
-              background: stats.uncagedAnimals > 0 
-                ? 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-                : 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-              color: 'white',
+              backgroundColor: stats.uncagedAnimals > 0 ? 'warning.main' : 'success.main',
+              color: stats.uncagedAnimals > 0 ? 'warning.contrastText' : 'success.contrastText',
               borderRadius: 2,
+              height: '100%',
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              }
             }}>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 {stats.uncagedAnimals}
@@ -664,7 +709,7 @@ const CageVisualizationPage: React.FC = () => {
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
                 Sans cage
               </Typography>
-            </Paper>
+            </Card>
           </Grid>
         </Grid>
       </Box>
@@ -721,7 +766,7 @@ const CageVisualizationPage: React.FC = () => {
             <Box sx={{ 
               textAlign: 'center', 
               py: 8,
-              background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+              backgroundColor: 'grey.50',
               borderRadius: 3,
               border: '2px dashed',
               borderColor: 'divider',
@@ -742,7 +787,6 @@ const CageVisualizationPage: React.FC = () => {
                   px: 4, 
                   py: 1.5,
                   borderRadius: 3,
-                  background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
                 }}
               >
                 Créer ma première cage
@@ -757,7 +801,7 @@ const CageVisualizationPage: React.FC = () => {
         <Box sx={{ 
           mt: 4, 
           p: 3, 
-          background: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+          backgroundColor: 'background.paper',
           borderRadius: 2,
           border: '1px solid',
           borderColor: 'divider',

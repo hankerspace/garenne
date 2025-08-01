@@ -80,6 +80,7 @@ const AnimalListPage = () => {
   const animals = getLiveAnimals(state);
   const settings = state.settings;
   const tags = state.tags;
+  const cages = state.cages;
   const { markAnimalConsumed } = useAppStore();
 
   // Get filter options and search suggestions
@@ -302,7 +303,11 @@ const AnimalListPage = () => {
                 )}
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>{t('animals.cage')}:</strong> {animal.cage || t('common.none')}
+                  <strong>{t('animals.cage')}:</strong> {
+                    animal.cage 
+                      ? (cages.find(c => c.id === animal.cage)?.name || 'aucun')
+                      : 'aucun'
+                  }
                 </Typography>
 
                 {animal.notes && (

@@ -57,7 +57,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
     if (animal.birthDate) {
       const birthDate = new Date(animal.birthDate);
       if (deathDate < birthDate) {
-        setError('La date de décès ne peut pas être antérieure à la naissance');
+        setError(t('modals.mortality.errorBeforeBirth'));
         return;
       }
     }
@@ -80,7 +80,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
       
       onClose();
     } catch (_) {
-      setError('Erreur lors de l\'enregistrement du décès');
+      setError(t('modals.mortality.errorSavingDeath'));
     }
   };
 

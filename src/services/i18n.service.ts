@@ -189,6 +189,15 @@ export interface Translations {
     operationFailed: string;
   };
 
+  // Error handling
+  errors: {
+    title: string;
+    unexpected: string;
+    reload: string;
+    goHome: string;
+    developmentDetails: string;
+  };
+
   // Charts
   charts: {
     weightEvolution: string;
@@ -199,6 +208,17 @@ export interface Translations {
     initialWeight: string;
     weight: string;
     weightUnit: string;
+    month: string;
+    births: string;
+  };
+
+  // PrintableSheet
+  printableSheet: {
+    generalInfo: string;
+    generatedOn: string;
+    by: string;
+    unknownCage: string;
+    notSpecified: string;
   };
 
   // Modals
@@ -214,6 +234,8 @@ export interface Translations {
       notesPlaceholder: string;
       errorEnterDate: string;
       errorFutureDate: string;
+      errorBeforeBirth: string;
+      errorSavingDeath: string;
     };
     litter: {
       title: string;
@@ -496,6 +518,15 @@ const frTranslations: Translations = {
     invalidFile: 'Fichier invalide',
     operationFailed: 'Opération échouée',
   },
+
+  // Error handling
+  errors: {
+    title: 'Oups ! Une erreur s\'est produite',
+    unexpected: 'Une erreur inattendue s\'est produite. Veuillez réessayer.',
+    reload: 'Réessayer',
+    goHome: 'Retour à l\'accueil',
+    developmentDetails: 'Détails de l\'erreur (développement uniquement):',
+  },
   charts: {
     weightEvolution: 'Évolution du poids',
     noWeightData: 'Aucune donnée de poids disponible',
@@ -505,6 +536,17 @@ const frTranslations: Translations = {
     initialWeight: 'Poids initial',
     weight: 'Poids',
     weightUnit: 'g',
+    month: 'Mois',
+    births: 'Naissances',
+  },
+
+  // PrintableSheet
+  printableSheet: {
+    generalInfo: 'Informations générales',
+    generatedOn: 'Fiche générée le',
+    by: 'par',
+    unknownCage: 'Cage inconnue',
+    notSpecified: 'Non renseignée',
   },
   modals: {
     mortality: {
@@ -518,6 +560,8 @@ const frTranslations: Translations = {
       notesPlaceholder: 'Circonstances, observations...',
       errorEnterDate: 'Veuillez entrer une date de décès',
       errorFutureDate: 'La date de décès ne peut pas être dans le futur',
+      errorBeforeBirth: 'La date de décès ne peut pas être antérieure à la naissance',
+      errorSavingDeath: 'Erreur lors de l\'enregistrement du décès',
     },
     litter: {
       title: 'Nouvelle portée',
@@ -801,6 +845,15 @@ const enTranslations: Translations = {
     invalidFile: 'Invalid file',
     operationFailed: 'Operation failed',
   },
+
+  // Error handling
+  errors: {
+    title: 'Oops! An error occurred',
+    unexpected: 'An unexpected error occurred. Please try again.',
+    reload: 'Retry',
+    goHome: 'Go Home',
+    developmentDetails: 'Error details (development only):',
+  },
   charts: {
     weightEvolution: 'Weight Evolution',
     noWeightData: 'No weight data available',
@@ -810,6 +863,17 @@ const enTranslations: Translations = {
     initialWeight: 'Initial Weight',
     weight: 'Weight',
     weightUnit: 'g',
+    month: 'Month',
+    births: 'Births',
+  },
+
+  // PrintableSheet
+  printableSheet: {
+    generalInfo: 'General Information',
+    generatedOn: 'Sheet generated on',
+    by: 'by',
+    unknownCage: 'Unknown cage',
+    notSpecified: 'Not specified',
   },
   modals: {
     mortality: {
@@ -823,6 +887,8 @@ const enTranslations: Translations = {
       notesPlaceholder: 'Circumstances, observations...',
       errorEnterDate: 'Please enter a death date',
       errorFutureDate: 'Death date cannot be in the future',
+      errorBeforeBirth: 'Death date cannot be before birth date',
+      errorSavingDeath: 'Error saving death record',
     },
     litter: {
       title: 'New Litter',
@@ -1106,6 +1172,15 @@ const esTranslations: Translations = {
     invalidFile: 'Archivo inválido',
     operationFailed: 'Operación falló',
   },
+
+  // Error handling
+  errors: {
+    title: '¡Ups! Ocurrió un error',
+    unexpected: 'Ocurrió un error inesperado. Por favor, inténtelo de nuevo.',
+    reload: 'Reintentar',
+    goHome: 'Ir al Inicio',
+    developmentDetails: 'Detalles del error (solo desarrollo):',
+  },
   charts: {
     weightEvolution: 'Evolución del Peso',
     noWeightData: 'No hay datos de peso disponibles',
@@ -1115,6 +1190,17 @@ const esTranslations: Translations = {
     initialWeight: 'Peso Inicial',
     weight: 'Peso',
     weightUnit: 'g',
+    month: 'Mes',
+    births: 'Nacimientos',
+  },
+
+  // PrintableSheet
+  printableSheet: {
+    generalInfo: 'Información General',
+    generatedOn: 'Hoja generada el',
+    by: 'por',
+    unknownCage: 'Jaula desconocida',
+    notSpecified: 'No especificado',
   },
   modals: {
     mortality: {
@@ -1128,6 +1214,8 @@ const esTranslations: Translations = {
       notesPlaceholder: 'Circunstancias, observaciones...',
       errorEnterDate: 'Por favor ingrese una fecha de muerte',
       errorFutureDate: 'La fecha de muerte no puede estar en el futuro',
+      errorBeforeBirth: 'La fecha de muerte no puede ser anterior al nacimiento',
+      errorSavingDeath: 'Error al guardar el registro de muerte',
     },
     litter: {
       title: 'Nueva Camada',
@@ -1411,6 +1499,15 @@ const deTranslations: Translations = {
     invalidFile: 'Ungültige Datei',
     operationFailed: 'Operation fehlgeschlagen',
   },
+
+  // Error handling
+  errors: {
+    title: 'Ups! Ein Fehler ist aufgetreten',
+    unexpected: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
+    reload: 'Erneut versuchen',
+    goHome: 'Zur Startseite',
+    developmentDetails: 'Fehlerdetails (nur Entwicklung):',
+  },
   charts: {
     weightEvolution: 'Gewichtsentwicklung',
     noWeightData: 'Keine Gewichtsdaten verfügbar',
@@ -1420,6 +1517,17 @@ const deTranslations: Translations = {
     initialWeight: 'Anfangsgewicht',
     weight: 'Gewicht',
     weightUnit: 'g',
+    month: 'Monat',
+    births: 'Geburten',
+  },
+
+  // PrintableSheet
+  printableSheet: {
+    generalInfo: 'Allgemeine Informationen',
+    generatedOn: 'Blatt erstellt am',
+    by: 'von',
+    unknownCage: 'Unbekannter Käfig',
+    notSpecified: 'Nicht angegeben',
   },
   modals: {
     mortality: {
@@ -1433,6 +1541,8 @@ const deTranslations: Translations = {
       notesPlaceholder: 'Umstände, Beobachtungen...',
       errorEnterDate: 'Bitte geben Sie ein Todesdatum ein',
       errorFutureDate: 'Todesdatum kann nicht in der Zukunft liegen',
+      errorBeforeBirth: 'Todesdatum kann nicht vor dem Geburtsdatum liegen',
+      errorSavingDeath: 'Fehler beim Speichern des Todesdatensatzes',
     },
     litter: {
       title: 'Neuer Wurf',
@@ -1716,6 +1826,15 @@ const ptTranslations: Translations = {
     invalidFile: 'Arquivo inválido',
     operationFailed: 'Operação falhou',
   },
+
+  // Error handling
+  errors: {
+    title: 'Ops! Ocorreu um erro',
+    unexpected: 'Ocorreu um erro inesperado. Por favor, tente novamente.',
+    reload: 'Tentar Novamente',
+    goHome: 'Ir para o Início',
+    developmentDetails: 'Detalhes do erro (apenas desenvolvimento):',
+  },
   charts: {
     weightEvolution: 'Evolução do Peso',
     noWeightData: 'Nenhum dado de peso disponível',
@@ -1725,6 +1844,17 @@ const ptTranslations: Translations = {
     initialWeight: 'Peso Inicial',
     weight: 'Peso',
     weightUnit: 'g',
+    month: 'Mês',
+    births: 'Nascimentos',
+  },
+
+  // PrintableSheet
+  printableSheet: {
+    generalInfo: 'Informações Gerais',
+    generatedOn: 'Folha gerada em',
+    by: 'por',
+    unknownCage: 'Gaiola desconhecida',
+    notSpecified: 'Não especificado',
   },
   modals: {
     mortality: {
@@ -1738,6 +1868,8 @@ const ptTranslations: Translations = {
       notesPlaceholder: 'Circunstâncias, observações...',
       errorEnterDate: 'Por favor, insira uma data de morte',
       errorFutureDate: 'A data da morte não pode estar no futuro',
+      errorBeforeBirth: 'A data da morte não pode ser anterior à data de nascimento',
+      errorSavingDeath: 'Erro ao salvar o registro de morte',
     },
     litter: {
       title: 'Nova Ninhada',

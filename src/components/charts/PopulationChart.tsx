@@ -14,6 +14,7 @@ import { Box, Typography, Card, CardContent, Grid } from '@mui/material';
 import { useAppStore } from '../../state/store';
 import { getKPIs } from '../../state/selectors';
 import { Status } from '../../models/types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const COLORS = {
   male: '#1976d2',
@@ -25,6 +26,7 @@ const COLORS = {
 };
 
 export const PopulationChart: React.FC = () => {
+  const { t } = useTranslation();
   const state = useAppStore();
   const kpis = getKPIs(state);
   const liveAnimals = state.animals.filter(a => a.status !== Status.Deceased);
@@ -223,8 +225,8 @@ export const PopulationChart: React.FC = () => {
                     allowDecimals={false}
                   />
                   <Tooltip 
-                    labelFormatter={(label) => `Mois: ${label}`}
-                    formatter={(value) => [`${value} naissances`, 'Naissances']}
+                    labelFormatter={(label) => `${t('charts.month')}: ${label}`}
+                    formatter={(value) => [`${value} ${t('charts.births')}`, t('charts.births')]}
                   />
                   <Bar 
                     dataKey="births" 

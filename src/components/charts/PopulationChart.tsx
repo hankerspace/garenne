@@ -33,24 +33,24 @@ export const PopulationChart: React.FC = () => {
 
   // Gender distribution data
   const genderData = [
-    { name: 'Mâles', value: kpis.malesCount, color: COLORS.male },
-    { name: 'Femelles', value: kpis.femalesCount, color: COLORS.female },
+    { name: t('charts.males'), value: kpis.malesCount, color: COLORS.male },
+    { name: t('charts.females'), value: kpis.femalesCount, color: COLORS.female },
   ];
 
   // Status distribution data
   const statusData = [
     { 
-      name: 'Reproducteurs', 
+      name: t('status.REPRO'), 
       value: liveAnimals.filter(a => a.status === Status.Reproducer).length, 
       color: COLORS.reproducer 
     },
     { 
-      name: 'Croissance', 
+      name: t('status.GROW'), 
       value: liveAnimals.filter(a => a.status === Status.Grow).length, 
       color: COLORS.grow 
     },
     { 
-      name: 'Retraités', 
+      name: t('status.RETIRED'), 
       value: liveAnimals.filter(a => a.status === Status.Retired).length, 
       color: COLORS.retired 
     },

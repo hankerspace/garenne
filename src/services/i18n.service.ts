@@ -143,6 +143,13 @@ export interface Translations {
     reproductionRate: string;
     survivalRate: string;
     averageLitterSize: string;
+    subtitles: {
+      animalsRegistered: string;
+      littersRegistered: string;
+      littersPerFemalePerYear: string;
+      animals: string;
+      activeAnimals: string;
+    };
   };
 
   // Settings
@@ -210,6 +217,9 @@ export interface Translations {
     weightUnit: string;
     month: string;
     births: string;
+    males: string;
+    females: string;
+    retired: string;
   };
 
   // PrintableSheet
@@ -479,6 +489,13 @@ const frTranslations: Translations = {
     reproductionRate: 'Taux de reproduction',
     survivalRate: 'Taux de survie',
     averageLitterSize: 'Taille moyenne des portées',
+    subtitles: {
+      animalsRegistered: 'animaux enregistrés',
+      littersRegistered: 'portées enregistrées',
+      littersPerFemalePerYear: 'portées/femelle/an',
+      animals: 'animaux',
+      activeAnimals: 'animaux actifs',
+    },
   },
   settings: {
     title: 'Paramètres',
@@ -538,6 +555,9 @@ const frTranslations: Translations = {
     weightUnit: 'g',
     month: 'Mois',
     births: 'Naissances',
+    males: 'Mâles',
+    females: 'Femelles',
+    retired: 'Retraités',
   },
 
   // PrintableSheet
@@ -806,6 +826,13 @@ const enTranslations: Translations = {
     reproductionRate: 'Reproduction Rate',
     survivalRate: 'Survival Rate',
     averageLitterSize: 'Average Litter Size',
+    subtitles: {
+      animalsRegistered: 'animals registered',
+      littersRegistered: 'litters registered',
+      littersPerFemalePerYear: 'litters/female/year',
+      animals: 'animals',
+      activeAnimals: 'active animals',
+    },
   },
   settings: {
     title: 'Settings',
@@ -865,6 +892,9 @@ const enTranslations: Translations = {
     weightUnit: 'g',
     month: 'Month',
     births: 'Births',
+    males: 'Males',
+    females: 'Females',
+    retired: 'Retired',
   },
 
   // PrintableSheet
@@ -1133,6 +1163,13 @@ const esTranslations: Translations = {
     reproductionRate: 'Tasa de Reproducción',
     survivalRate: 'Tasa de Supervivencia',
     averageLitterSize: 'Tamaño Promedio de Camada',
+    subtitles: {
+      animalsRegistered: 'animales registrados',
+      littersRegistered: 'camadas registradas',
+      littersPerFemalePerYear: 'camadas/hembra/año',
+      animals: 'animales',
+      activeAnimals: 'animales activos',
+    },
   },
   settings: {
     title: 'Configuración',
@@ -1192,6 +1229,9 @@ const esTranslations: Translations = {
     weightUnit: 'g',
     month: 'Mes',
     births: 'Nacimientos',
+    males: 'Machos',
+    females: 'Hembras',
+    retired: 'Retirados',
   },
 
   // PrintableSheet
@@ -1460,6 +1500,13 @@ const deTranslations: Translations = {
     reproductionRate: 'Fortpflanzungsrate',
     survivalRate: 'Überlebensrate',
     averageLitterSize: 'Durchschnittliche Wurfgröße',
+    subtitles: {
+      animalsRegistered: 'Tiere registriert',
+      littersRegistered: 'Würfe registriert',
+      littersPerFemalePerYear: 'Würfe/Weibchen/Jahr',
+      animals: 'Tiere',
+      activeAnimals: 'aktive Tiere',
+    },
   },
   settings: {
     title: 'Einstellungen',
@@ -1519,6 +1566,9 @@ const deTranslations: Translations = {
     weightUnit: 'g',
     month: 'Monat',
     births: 'Geburten',
+    males: 'Männchen',
+    females: 'Weibchen',
+    retired: 'Im Ruhestand',
   },
 
   // PrintableSheet
@@ -1787,6 +1837,13 @@ const ptTranslations: Translations = {
     reproductionRate: 'Taxa de Reprodução',
     survivalRate: 'Taxa de Sobrevivência',
     averageLitterSize: 'Tamanho Médio da Ninhada',
+    subtitles: {
+      animalsRegistered: 'animais registrados',
+      littersRegistered: 'ninhadas registradas',
+      littersPerFemalePerYear: 'ninhadas/fêmea/ano',
+      animals: 'animais',
+      activeAnimals: 'animais ativos',
+    },
   },
   settings: {
     title: 'Configurações',
@@ -1846,6 +1903,9 @@ const ptTranslations: Translations = {
     weightUnit: 'g',
     month: 'Mês',
     births: 'Nascimentos',
+    males: 'Machos',
+    females: 'Fêmeas',
+    retired: 'Aposentados',
   },
 
   // PrintableSheet

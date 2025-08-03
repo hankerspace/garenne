@@ -40,12 +40,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 // Router Error Element Component
 export function RouterErrorBoundary() {
   const error = useRouteError();
+  const { t } = useTranslation();
   
-  let errorMessage = 'Une erreur inattendue s\'est produite';
+  let errorMessage = t('errors.unexpected');
   let errorDetails = '';
 
   if (isRouteErrorResponse(error)) {
-    errorMessage = `Erreur ${error.status}: ${error.statusText}`;
+    errorMessage = `${t('common.error')} ${error.status}: ${error.statusText}`;
     errorDetails = error.data?.message || '';
   } else if (error instanceof Error) {
     errorMessage = error.message;

@@ -24,6 +24,7 @@ import {
   Event as EventIcon,
   Speed as SpeedIcon,
   Assessment as StatsIcon,
+  QrCode as QrCodeIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -64,6 +65,9 @@ const DashboardPage = () => {
         break;
       case 'treatment':
         navigate('/animals?quickTreatment=true');
+        break;
+      case 'qr':
+        navigate('/animals?view=qr');
         break;
     }
   };
@@ -260,18 +264,18 @@ const DashboardPage = () => {
           <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardContent>
-                <FamilyIcon color="primary" sx={{ mb: 1 }} />
-                <Typography variant="h6">Nouvelle portée</Typography>
+                <QrCodeIcon color="primary" sx={{ mb: 1 }} />
+                <Typography variant="h6">Codes QR</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Enregistrer une mise bas
+                  Générer les QR codes
                 </Typography>
               </CardContent>
               <CardActions>
                 <Button 
                   size="small" 
-                  onClick={() => handleQuickAction('litter')}
+                  onClick={() => handleQuickAction('qr')}
                 >
-                  Ajouter
+                  Afficher
                 </Button>
               </CardActions>
             </Card>
@@ -344,6 +348,12 @@ const DashboardPage = () => {
             <MedicalIcon />
           </ListItemIcon>
           <ListItemText>Traitement</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => handleQuickAction('qr')}>
+          <ListItemIcon>
+            <QrCodeIcon />
+          </ListItemIcon>
+          <ListItemText>Codes QR</ListItemText>
         </MenuItem>
       </Menu>
     </Container>

@@ -22,6 +22,8 @@ import {
   TrendingUp as TrendingUpIcon,
   FamilyRestroom as FamilyIcon,
   Speed as SpeedIcon,
+  Restaurant as ConsumptionIcon,
+  QrCode as QrCodeIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../state/store';
@@ -106,6 +108,26 @@ const QuickActionsPage: React.FC = () => {
       action: () => navigate('/planning'),
       available: true,
       disabledReason: '',
+    },
+    {
+      id: 'consumption-management',
+      title: 'Gestion consommation',
+      description: 'Voir les animaux consommés',
+      icon: <ConsumptionIcon sx={{ fontSize: 40 }} />,
+      color: 'error',
+      action: () => navigate('/animals?filter=consumed'),
+      available: true,
+      disabledReason: '',
+    },
+    {
+      id: 'qr-codes',
+      title: 'Codes QR',
+      description: 'Générer et gérer les QR codes',
+      icon: <QrCodeIcon sx={{ fontSize: 40 }} />,
+      color: 'secondary',
+      action: () => navigate('/animals?view=qr'),
+      available: liveAnimals.length > 0,
+      disabledReason: 'Aucun animal disponible',
     },
   ];
 

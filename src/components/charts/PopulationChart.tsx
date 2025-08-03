@@ -14,6 +14,8 @@ import { Box, Typography, Card, CardContent, Grid } from '@mui/material';
 import { useAppStore } from '../../state/store';
 import { getKPIs } from '../../state/selectors';
 import { Status } from '../../models/types';
+import { useTranslation } from '../../hooks/useTranslation';
+import { I18nService } from '../../services/i18n.service';
 
 const COLORS = {
   male: '#1976d2',
@@ -25,30 +27,31 @@ const COLORS = {
 };
 
 export const PopulationChart: React.FC = () => {
+  const { t } = useTranslation();
   const state = useAppStore();
   const kpis = getKPIs(state);
   const liveAnimals = state.animals.filter(a => a.status !== Status.Deceased);
 
   // Gender distribution data
   const genderData = [
-    { name: 'Mâles', value: kpis.malesCount, color: COLORS.male },
-    { name: 'Femelles', value: kpis.femalesCount, color: COLORS.female },
+    { name: t('charts.males'), value: kpis.malesCount, color: COLORS.male },
+    { name: t('charts.females'), value: kpis.femalesCount, color: COLORS.female },
   ];
 
   // Status distribution data
   const statusData = [
     { 
-      name: 'Reproducteurs', 
+      name: t('status.REPRO'), 
       value: liveAnimals.filter(a => a.status === Status.Reproducer).length, 
       color: COLORS.reproducer 
     },
     { 
-      name: 'Croissance', 
+      name: t('status.GROW'), 
       value: liveAnimals.filter(a => a.status === Status.Grow).length, 
       color: COLORS.grow 
     },
     { 
-      name: 'Retraités', 
+      name: t('status.RETIRED'), 
       value: liveAnimals.filter(a => a.status === Status.Retired).length, 
       color: COLORS.retired 
     },
@@ -71,7 +74,7 @@ export const PopulationChart: React.FC = () => {
     }).length;
 
     monthlyBirths.push({
-      month: targetDate.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
+      month: I18nService.formatDate(targetDate, { month: 'short', year: '2-digit' }),
       births: birthsInMonth,
     });
   }
@@ -223,8 +226,8 @@ export const PopulationChart: React.FC = () => {
                     allowDecimals={false}
                   />
                   <Tooltip 
-                    labelFormatter={(label) => `Mois: ${label}`}
-                    formatter={(value) => [`${value} naissances`, 'Naissances']}
+                    labelFormatter={(label) => `${t('charts.month')}: ${label}`}
+                    formatter={(value) => [`${value} ${t('charts.births')}`, t('charts.births')]}
                   />
                   <Bar 
                     dataKey="births" 

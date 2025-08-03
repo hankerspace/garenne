@@ -14,30 +14,26 @@ import { Animal, Sex, Status } from '../models/types';
 import { formatDate, calculateAgeText } from '../utils/dates';
 import { useAppStore } from '../state/store';
 import QRCodeDisplay from './QRCodeDisplay';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface PrintableRabbitSheetProps {
   animal: Animal;
 }
 
 const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) => {
+  const { t } = useTranslation();
   const cages = useAppStore((state) => state.cages);
   
   const getSexDisplay = (sex: Sex) => {
     switch (sex) {
-      case Sex.Female: return 'Femelle ♀';
-      case Sex.Male: return 'Mâle ♂';
-      default: return 'Inconnu';
+      case Sex.Female: return `${t('sex.F')} ♀`;
+      case Sex.Male: return `${t('sex.M')} ♂`;
+      default: return t('sex.U');
     }
   };
 
   const getStatusDisplay = (status: Status) => {
-    switch (status) {
-      case Status.Reproducer: return 'Reproducteur';
-      case Status.Grow: return 'Croissance';
-      case Status.Retired: return 'Retraité';
-      case Status.Deceased: return 'Décédé';
-      default: return status;
-    }
+    return t(`status.${status}`);
   };
 
   return (
@@ -84,45 +80,45 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
         {/* Left Column - Animal Information */}
         <Grid item xs={12} md={8}>
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', borderBottom: '2px solid #1976d2', pb: 1 }}>
-            Informations générales
+            {t('printableSheet.generalInfo')}
           </Typography>
           
           <Table sx={{ mt: 2 }}>
             <TableBody>
               <TableRow>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold', width: '40%' }}>
-                  Sexe
+                  {t('animals.sex')}
                 </TableCell>
                 <TableCell>{getSexDisplay(animal.sex)}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  Statut
+                  {t('animals.status')}
                 </TableCell>
                 <TableCell>{getStatusDisplay(animal.status)}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  Race
+                  {t('animals.breed')}
                 </TableCell>
-                <TableCell>{animal.breed || 'Non renseignée'}</TableCell>
+                <TableCell>{animal.breed || t('printableSheet.notSpecified')}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  Date de naissance
+                  {t('animals.birthDate')}
                 </TableCell>
                 <TableCell>
-                  {animal.birthDate ? formatDate(animal.birthDate) : 'Non renseignée'}
+                  {animal.birthDate ? formatDate(animal.birthDate) : t('printableSheet.notSpecified')}
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  Cage
+                  {t('animals.cage')}
                 </TableCell>
                 <TableCell>
                   {animal.cage 
-                    ? (cages.find(c => c.id === animal.cage)?.name || 'Cage inconnue')
-                    : 'Non renseignée'}
+                    ? (cages.find(c => c.id === animal.cage)?.name || t('printableSheet.unknownCage'))
+                    : t('printableSheet.notSpecified')}
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -131,7 +127,7 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
           {animal.notes && (
             <Box mt={3}>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', borderBottom: '2px solid #1976d2', pb: 1 }}>
-                Notes
+                {t('animals.notes')}
               </Typography>
               <Typography variant="body1" sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
                 {animal.notes}
@@ -160,7 +156,7 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
       <Divider sx={{ my: 4 }} />
       <Box textAlign="center">
         <Typography variant="body2" color="text.secondary">
-          Fiche générée le {formatDate(new Date().toISOString())} par Garenne
+          {t('printableSheet.generatedOn')} {formatDate(new Date().toISOString())} {t('printableSheet.by')} Garenne
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Application de gestion d'élevage de lapins

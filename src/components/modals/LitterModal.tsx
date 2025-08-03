@@ -14,6 +14,7 @@ import {
 import { useAppStore } from '../../state/store';
 import { Animal, Breeding, Sex, Status } from '../../models/types';
 import { formatDate, calculateEstimatedWeaningDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface LitterModalProps {
   open: boolean;
@@ -28,6 +29,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
   breeding, 
   preselectedMother 
 }) => {
+  const { t } = useTranslation();
   const [kindlingDate, setKindlingDate] = useState(new Date().toISOString().split('T')[0]);
   const [bornAlive, setBornAlive] = useState<number>(0);
   const [stillborn, setStillborn] = useState<number>(0);
@@ -63,22 +65,22 @@ export const LitterModal: React.FC<LitterModalProps> = ({
 
   const handleSubmit = async () => {
     if (!mother) {
-      setError('Mère non trouvée');
+      setError(t('modals.litter.errorMotherNotFound'));
       return;
     }
 
     if (!kindlingDate) {
-      setError('Veuillez entrer une date de mise bas');
+      setError(t('modals.litter.errorEnterKindlingDate'));
       return;
     }
 
     if (bornAlive < 0 || stillborn < 0) {
-      setError('Les nombres ne peuvent pas être négatifs');
+      setError(t('modals.litter.errorNegativeNumbers'));
       return;
     }
 
     if (createOffspring && (malesToCreate + femalesToCreate) > bornAlive) {
-      setError('Le nombre total de petits à créer ne peut pas dépasser les nés vivants');
+      setError(t('modals.litter.errorTotalExceeds'));
       return;
     }
 
@@ -101,7 +103,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
         // Create males
         for (let i = 0; i < malesToCreate; i++) {
           addAnimal({
-            name: `${mother.name || 'Mère'} - Mâle ${i + 1}`,
+            name: `${mother.name || t('modals.litter.mother')} - ${t('sex.M')} ${i + 1}`,
             sex: Sex.Male,
             birthDate: baseDate,
             origin: 'BORN_HERE',
@@ -115,7 +117,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
         // Create females
         for (let i = 0; i < femalesToCreate; i++) {
           addAnimal({
-            name: `${mother.name || 'Mère'} - Femelle ${i + 1}`,
+            name: `${mother.name || t('modals.litter.mother')} - ${t('sex.F')} ${i + 1}`,
             sex: Sex.Female,
             birthDate: baseDate,
             origin: 'BORN_HERE',
@@ -147,7 +149,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
       
       onClose();
     } catch (_) {
-      setError('Erreur lors de l\'enregistrement de la portée');
+      setError(t('modals.litter.errorSavingLitter'));
     }
   };
 
@@ -167,7 +169,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {breeding ? 'Enregistrer la mise bas' : 'Nouvelle portée'}
+        {breeding ? t('modals.litter.titleRecord') : t('modals.litter.title')}
       </DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
@@ -175,23 +177,23 @@ export const LitterModal: React.FC<LitterModalProps> = ({
           
           {breeding && (
             <Alert severity="info">
-              Saillie du {formatDate(breeding.date)}
+              {t('modals.litter.breedingInfo')} {formatDate(breeding.date)}
               {breeding.expectedKindlingDate && 
-                ` - Mise bas prévue le ${formatDate(breeding.expectedKindlingDate)}`}
+                ` - ${t('modals.litter.expectedKindlingDate')} ${formatDate(breeding.expectedKindlingDate)}`}
             </Alert>
           )}
           
           <Box>
             <Typography variant="subtitle2" gutterBottom>
-              Mère: {mother?.name || 'Non spécifiée'}
+              {t('modals.litter.mother')}: {mother?.name || t('modals.litter.motherNotSpecified')}
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
-              Père: {father?.name || 'Non spécifié'}
+              {t('modals.litter.father')}: {father?.name || t('modals.litter.fatherNotSpecified')}
             </Typography>
           </Box>
 
           <TextField
-            label="Date de mise bas"
+            label={t('modals.litter.kindlingDate')}
             type="date"
             value={kindlingDate}
             onChange={(e) => setKindlingDate(e.target.value)}
@@ -203,7 +205,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                label="Nés vivants"
+                label={t('modals.litter.bornAlive')}
                 type="number"
                 value={bornAlive}
                 onChange={(e) => handleBornAliveChange(Math.max(0, parseInt(e.target.value) || 0))}
@@ -213,7 +215,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Mort-nés"
+                label={t('modals.litter.stillborn')}
                 type="number"
                 value={stillborn}
                 onChange={(e) => setStillborn(Math.max(0, parseInt(e.target.value) || 0))}
@@ -226,12 +228,12 @@ export const LitterModal: React.FC<LitterModalProps> = ({
           {bornAlive > 0 && (
             <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
               <Typography variant="subtitle2" gutterBottom>
-                Créer automatiquement les lapereaux
+                {t('modals.litter.autoCreateRabbits')}
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
-                    label="Mâles à créer"
+                    label={t('modals.litter.malesToCreate')}
                     type="number"
                     value={malesToCreate}
                     onChange={(e) => setMalesToCreate(Math.max(0, Math.min(bornAlive, parseInt(e.target.value) || 0)))}
@@ -242,7 +244,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    label="Femelles à créer"
+                    label={t('modals.litter.femalesToCreate')}
                     type="number"
                     value={femalesToCreate}
                     onChange={(e) => setFemalesToCreate(Math.max(0, Math.min(bornAlive, parseInt(e.target.value) || 0)))}
@@ -253,26 +255,26 @@ export const LitterModal: React.FC<LitterModalProps> = ({
                 </Grid>
               </Grid>
               <Typography variant="caption" color="text.secondary">
-                Total: {malesToCreate + femalesToCreate} / {bornAlive}
+                {t('modals.litter.totalVersus')}: {malesToCreate + femalesToCreate} / {bornAlive}
               </Typography>
             </Box>
           )}
 
           <TextField
-            label="Notes"
+            label={t('modals.litter.notes')}
             multiline
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Observations sur la mise bas, santé des petits..."
+            placeholder={t('modals.litter.notesPlaceholder')}
             fullWidth
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <Button onClick={handleSubmit} variant="contained">
-          Enregistrer la portée
+          {t('modals.litter.saveLitter')}
         </Button>
       </DialogActions>
     </Dialog>

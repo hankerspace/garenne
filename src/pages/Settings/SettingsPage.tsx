@@ -233,11 +233,13 @@ const SettingsPage = () => {
                 <FormLabel component="legend">Langue de l'interface</FormLabel>
                 <RadioGroup
                   value={settings.locale}
-                  onChange={(e) => updateSettings({ locale: e.target.value as 'fr-FR' | 'en-US' | 'es-ES' })}
+                  onChange={(e) => updateSettings({ locale: e.target.value as 'fr-FR' | 'en-US' | 'es-ES' | 'de-DE' | 'pt-PT' })}
                 >
                   <FormControlLabel value="fr-FR" control={<Radio />} label="Français" />
                   <FormControlLabel value="en-US" control={<Radio />} label="English" />
                   <FormControlLabel value="es-ES" control={<Radio />} label="Español" />
+                  <FormControlLabel value="de-DE" control={<Radio />} label="Deutsch" />
+                  <FormControlLabel value="pt-PT" control={<Radio />} label="Português" />
                 </RadioGroup>
               </FormControl>
             </CardContent>

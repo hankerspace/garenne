@@ -13,6 +13,7 @@ import {
 import { useAppStore } from '../../state/store';
 import { getLiveAnimals } from '../../state/selectors';
 import { Animal } from '../../models/types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface QuickWeightModalProps {
   open: boolean;
@@ -21,6 +22,7 @@ interface QuickWeightModalProps {
 }
 
 export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClose, preselectedAnimal }) => {
+  const { t } = useTranslation();
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(preselectedAnimal || null);
   const [weight, setWeight] = useState('');
   const [notes, setNotes] = useState('');
@@ -32,13 +34,13 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
 
   const handleSubmit = () => {
     if (!selectedAnimal) {
-      setError('Veuillez sélectionner un animal');
+      setError(t('modals.treatment.errorSelectAnimal'));
       return;
     }
 
     const weightValue = parseFloat(weight);
     if (!weight || isNaN(weightValue) || weightValue <= 0) {
-      setError('Veuillez entrer un poids valide');
+      setError(t('modals.quickWeight.errorValidWeight'));
       return;
     }
 
@@ -57,7 +59,7 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
       setError('');
       onClose();
     } catch {
-      setError('Erreur lors de l\'enregistrement de la pesée');
+      setError(t('modals.quickWeight.errorSavingWeight'));
     }
   };
 
@@ -71,7 +73,7 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Pesée rapide</DialogTitle>
+      <DialogTitle>{t('modals.quickWeight.title')}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           {error && (
@@ -88,41 +90,41 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Animal"
-                placeholder="Sélectionner un animal"
+                label={t('modals.quickWeight.animal')}
+                placeholder={t('modals.quickWeight.animalPlaceholder')}
                 required
               />
             )}
           />
 
           <TextField
-            label="Poids (en grammes)"
+            label={t('modals.quickWeight.weightGrams')}
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            placeholder="ex: 2500"
+            placeholder={t('modals.quickWeight.weightPlaceholder')}
             required
             inputProps={{ min: 1, step: 1 }}
           />
 
           <TextField
-            label="Notes (optionnel)"
+            label={t('modals.quickWeight.notesOptional')}
             multiline
             rows={2}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Commentaires sur la pesée..."
+            placeholder={t('modals.quickWeight.notesPlaceholder')}
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <Button 
           onClick={handleSubmit} 
           variant="contained"
           disabled={!selectedAnimal || !weight}
         >
-          Enregistrer
+          {t('common.save')}
         </Button>
       </DialogActions>
     </Dialog>

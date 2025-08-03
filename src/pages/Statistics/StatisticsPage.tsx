@@ -15,8 +15,11 @@ import {
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
 import { StatisticsService } from '../../services/statistics.service';
+import { useTranslation } from '../../hooks/useTranslation';
+import { I18nService } from '../../services/i18n.service';
 
 const StatisticsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { animals, litters, weights, treatments, cages } = useAppStore();
 
   const stats = useMemo(() => {
@@ -63,45 +66,45 @@ const StatisticsPage: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        Statistiques
+        {t('statisticsPage.title')}
       </Typography>
 
       {/* Overview Statistics */}
       <Typography variant="h6" sx={{ mb: 2, mt: 3 }}>
-        Vue d'ensemble
+        {t('statisticsPage.overview')}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Total Animaux"
+            title={t('statisticsPage.cards.totalAnimals')}
             value={stats.overview.totalAnimals}
-            subtitle="animaux enregistrés"
+            subtitle={t('statisticsPage.cards.totalAnimalsSubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Animaux Actifs"
+            title={t('statisticsPage.cards.activeAnimals')}
             value={stats.overview.activeAnimals}
-            subtitle="vivants"
+            subtitle={t('statisticsPage.cards.activeAnimalsSubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
             color="success.main"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Reproducteurs"
+            title={t('statisticsPage.cards.reproductors')}
             value={stats.overview.reproductors}
-            subtitle="en reproduction"
+            subtitle={t('statisticsPage.cards.reproductorsSubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
             color="info.main"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="En Croissance"
+            title={t('statisticsPage.cards.growing')}
             value={stats.overview.growing}
-            subtitle="jeunes"
+            subtitle={t('statisticsPage.cards.growingSubtitle')}
             icon={<GrowthIcon sx={{ fontSize: 40 }} />}
             color="warning.main"
           />
@@ -110,39 +113,39 @@ const StatisticsPage: React.FC = () => {
 
       {/* Reproduction Statistics */}
       <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
-        Reproduction
+        {t('statisticsPage.reproduction')}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Total Portées"
+            title={t('statisticsPage.cards.totalLitters')}
             value={stats.reproduction.totalLitters}
-            subtitle="portées enregistrées"
+            subtitle={t('statisticsPage.cards.totalLittersSubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Taille Moyenne"
+            title={t('statisticsPage.cards.averageSize')}
             value={stats.reproduction.averageLitterSize.toFixed(1)}
-            subtitle="lapereaux par portée"
+            subtitle={t('statisticsPage.cards.averageSizeSubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Taux de Survie"
+            title={t('statisticsPage.cards.survivalRate')}
             value={`${stats.reproduction.survivalRate}%`}
-            subtitle="sevrage réussi"
+            subtitle={t('statisticsPage.cards.survivalRateSubtitle')}
             icon={<GrowthIcon sx={{ fontSize: 40 }} />}
             color="success.main"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
-            title="Efficacité"
+            title={t('statisticsPage.cards.efficiency')}
             value={stats.reproduction.reproductionRate.toFixed(1)}
-            subtitle="portées/femelle/an"
+            subtitle={t('statisticsPage.cards.efficiencySubtitle')}
             icon={<GrowthIcon sx={{ fontSize: 40 }} />}
             color="info.main"
           />
@@ -151,32 +154,32 @@ const StatisticsPage: React.FC = () => {
 
       {/* Consumption Statistics */}
       <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
-        Consommation
+        {t('statisticsPage.consumption')}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Total Consommés"
+            title={t('statisticsPage.cards.totalConsumed')}
             value={stats.consumption.totalConsumed}
-            subtitle="animaux"
+            subtitle={t('statisticsPage.cards.totalConsumedSubtitle')}
             icon={<ConsumedIcon sx={{ fontSize: 40 }} />}
             color="error.main"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Poids Total"
+            title={t('statisticsPage.cards.totalWeight')}
             value={`${(stats.consumption.totalWeight / 1000).toFixed(1)} kg`}
-            subtitle="viande produite"
+            subtitle={t('statisticsPage.cards.totalWeightSubtitle')}
             icon={<ConsumedIcon sx={{ fontSize: 40 }} />}
             color="error.main"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Poids Moyen"
+            title={t('statisticsPage.cards.averageWeight')}
             value={`${(stats.consumption.averageConsumptionWeight / 1000).toFixed(1)} kg`}
-            subtitle="par animal"
+            subtitle={t('statisticsPage.cards.averageWeightSubtitle')}
             icon={<ConsumedIcon sx={{ fontSize: 40 }} />}
             color="error.main"
           />
@@ -185,23 +188,23 @@ const StatisticsPage: React.FC = () => {
 
       {/* Health Statistics */}
       <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
-        Santé
+        {t('statisticsPage.health')}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Total Traitements"
+            title={t('statisticsPage.cards.totalTreatments')}
             value={stats.health.totalTreatments}
-            subtitle="enregistrés"
+            subtitle={t('statisticsPage.cards.totalTreatmentsSubtitle')}
             icon={<HealthIcon sx={{ fontSize: 40 }} />}
             color="info.main"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Délais Actifs"
+            title={t('statisticsPage.cards.activeWithdrawals')}
             value={stats.health.activeWithdrawals}
-            subtitle="en cours"
+            subtitle={t('statisticsPage.cards.activeWithdrawalsSubtitle')}
             icon={<HealthIcon sx={{ fontSize: 40 }} />}
             color="warning.main"
           />
@@ -210,7 +213,7 @@ const StatisticsPage: React.FC = () => {
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
-                Traitements Fréquents
+                {t('statisticsPage.cards.commonTreatments')}
               </Typography>
               {stats.health.commonTreatments.slice(0, 3).map((treatment, index) => (
                 <Box key={index}>
@@ -227,30 +230,30 @@ const StatisticsPage: React.FC = () => {
 
       {/* Additional Stats */}
       <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
-        Autres Métriques
+        {t('statisticsPage.otherMetrics')}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Âge Moyen"
+            title={t('statisticsPage.cards.averageAge')}
             value={stats.overview.averageAge}
-            subtitle="jours"
+            subtitle={t('statisticsPage.cards.averageAgeSubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Poids Moyen"
+            title={t('statisticsPage.cards.averageAnimalWeight')}
             value={`${(stats.overview.averageWeight / 1000).toFixed(1)} kg`}
-            subtitle="animaux actifs"
+            subtitle={t('statisticsPage.cards.averageAnimalWeightSubtitle')}
             icon={<GrowthIcon sx={{ fontSize: 40 }} />}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <StatCard
-            title="Occupation Cages"
+            title={t('statisticsPage.cards.cageOccupancy')}
             value={`${stats.overview.cageOccupancy}%`}
-            subtitle="taux d'occupation"
+            subtitle={t('statisticsPage.cards.cageOccupancySubtitle')}
             icon={<AnimalIcon sx={{ fontSize: 40 }} />}
             color="info.main"
           />
@@ -259,7 +262,13 @@ const StatisticsPage: React.FC = () => {
 
       <Box sx={{ mt: 4, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
         <Typography variant="caption" color="text.secondary">
-          Rapport généré le {new Date(stats.generatedAt).toLocaleString('fr-FR')}
+          {t('statisticsPage.reportGenerated')} {I18nService.formatDate(new Date(stats.generatedAt), { 
+            year: 'numeric', 
+            month: 'numeric', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
         </Typography>
       </Box>
     </Box>

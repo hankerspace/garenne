@@ -1,285 +1,254 @@
-# Garenne - Application de Gestion d'Élevage
+# Garenne - Rabbit Breeding Management Application
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=flat&logo=material-ui&logoColor=white)](https://mui.com/)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-blue?style=flat)](https://web.dev/progressive-web-apps/)
 
-![Garenne Dashboard](https://github.com/user-attachments/assets/ceb9cc80-78c9-43af-8e95-01c2d2f81a37)
+![Garenne Dashboard](https://github.com/user-attachments/assets/040a6567-57ff-49d4-bc13-c031b58e8b4b)
 
-**Garenne** est une application web moderne et complète pour la gestion d'élevage de lapins, développée avec React 19, TypeScript, et Material-UI v5. Elle offre aux éleveurs une solution professionnelle pour gérer efficacement leurs animaux, portées, pesées, traitements et bien plus encore, le tout en mode hors-ligne avec stockage local sécurisé.
+**Garenne** is a modern and comprehensive web application for rabbit breeding management, developed with React 19, TypeScript, and Material-UI v5. It provides breeders with a professional solution to efficiently manage their animals, litters, weighings, treatments and much more, all in offline mode with secure local storage.
 
-## 🌟 Fonctionnalités Principales
+## 🌟 Main Features
 
-### 🐰 Gestion Complète des Animaux
-- ✅ **CRUD complet** : Créer, consulter, modifier et supprimer des animaux
-- ✅ **Fiche détaillée** : Vue exhaustive avec onglets (Aperçu, Reproduction, Pesées, Santé)
-- ✅ **Recherche avancée** : Par nom, identifiant, race, statut et sexe avec filtres combinés
-- ✅ **Gestion de la parenté** : Liaison mère/père avec validation automatique et arbre généalogique interactif
-- ✅ **Statuts multiples** : Croissance, Reproducteur, Retraité, Décédé, Consommé avec transitions automatiques
-- ✅ **Identifiants uniques** : Support tatouage, QR codes et identifiants personnalisés
-- ✅ **Système d'étiquettes** : Tags personnalisés pour organisation flexible des animaux
-- ✅ **Gestion des cages** : Attribution et suivi des emplacements des animaux
-- ✅ **Fiches imprimables** : Génération de fiches détaillées pour chaque animal avec QR code
-- ✅ **Consommation** : Gestion des animaux abattus avec date et poids de consommation
+### 🐰 Complete Animal Management
+- ✅ **Full CRUD**: Create, view, edit and delete animals
+- ✅ **Detailed sheets**: Comprehensive view with tabs (Overview, Reproduction, Weighings, Health)
+- ✅ **Advanced search**: By name, identifier, breed, status and sex with combined filters
+- ✅ **Kinship management**: Mother/father linking with automatic validation and interactive family tree
+- ✅ **Multiple statuses**: Growth, Breeder, Retired, Deceased, Consumed with automatic transitions
+- ✅ **Unique identifiers**: Support for tattoos, QR codes and custom identifiers
+- ✅ **Tag system**: Custom tags for flexible animal organization
+- ✅ **Cage management**: Assignment and tracking of animal locations
+- ✅ **Printable sheets**: Generation of detailed sheets for each animal with QR code
+- ✅ **Consumption**: Management of slaughtered animals with date and consumption weight
 
-### 📊 Suivi des Données de Performance
-- ✅ **Pesées complètes** : Suivi du poids avec historique, graphiques de croissance et saisie rapide
-- ✅ **Traitements médicaux** : Gestion des soins avec délais d'attente automatiques et saisie rapide
-- ✅ **Portées détaillées** : Enregistrement naissances, sevrage automatique estimé (28 jours), mortalité
-- ✅ **Reproduction avancée** : Suivi des saillies, diagnostic de gestation, planning de mise-bas
-- ✅ **Statistiques KPI** : Tableaux de bord avec métriques clés et graphiques de population
-- ✅ **Suivi mortalité** : Enregistrement des décès avec causes suspectées et nécropsie
-- ✅ **Métriques de performance** : Calcul automatique des performances de reproduction et survie
-- ✅ **Export/Import** : Sauvegarde et restauration des données avec formats multiples
-- ✅ **Données d'exemple** : Génération automatique pour découverte rapide
+### 📊 Performance Data Tracking
+- ✅ **Complete weighings**: Weight tracking with history, growth charts and quick entry
+- ✅ **Medical treatments**: Care management with automatic withdrawal periods and quick entry
+- ✅ **Detailed litters**: Birth recording, automatic estimated weaning (28 days), mortality
+- ✅ **Advanced reproduction**: Mating tracking, gestation diagnosis, kindling planning
+- ✅ **KPI statistics**: Dashboards with key metrics and population charts
+- ✅ **Mortality tracking**: Death recording with suspected causes and necropsy
+- ✅ **Performance metrics**: Automatic calculation of reproduction and survival performance
+- ✅ **Export/Import**: Data backup and restoration with multiple formats
+- ✅ **Sample data**: Automatic generation for quick discovery
 
-### 🎨 Interface Utilisateur Moderne
-- ✅ **Design responsive** : Optimisé mobile, tablette et desktop
-- ✅ **Material Design 3** : Interface moderne suivant les dernières guidelines
-- ✅ **Thèmes adaptatifs** : Support clair/sombre avec détection système automatique
-- ✅ **Navigation intuitive** : Barre de navigation adaptative avec raccourcis
-- ✅ **PWA complète** : Installable comme application native, fonctionne hors-ligne
-- ✅ **Accessibilité** : Support lecteurs d'écran et navigation clavier
+### 🎨 Modern User Interface
+- ✅ **Responsive design**: Optimized for mobile, tablet and desktop
+- ✅ **Material Design 3**: Modern interface following the latest guidelines
+- ✅ **Adaptive themes**: Light/dark support with automatic system detection
+- ✅ **Intuitive navigation**: Adaptive navigation bar with shortcuts
+- ✅ **Complete PWA**: Installable as native application, works offline
+- ✅ **Accessibility**: Support for screen readers and keyboard navigation
 
-### 🔒 Sécurité et Performance
-- ✅ **Stockage local sécurisé** : Données chiffrées et compressées
-- ✅ **Mode hors-ligne** : Fonctionnement complet sans connexion internet
-- ✅ **Performance optimisée** : Chargement rapide, code splitting automatique
-- ✅ **Validation robuste** : Contrôles de cohérence et intégrité des données
+### 🔒 Security and Performance
+- ✅ **Secure local storage**: Encrypted and compressed data
+- ✅ **Offline mode**: Complete functionality without internet connection
+- ✅ **Optimized performance**: Fast loading, automatic code splitting
+- ✅ **Robust validation**: Consistency and data integrity checks
 
-## 🚀 Installation et Démarrage Rapide
+## 🚀 Installation and Quick Start
 
-### Prérequis Système
-- **Node.js** 18.0+ ([télécharger ici](https://nodejs.org/))
-- **npm** 8+ ou **yarn** 1.22+
-- **Git** pour le clonage du repository
-- **Navigateur moderne** (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+### System Requirements
+- **Node.js** 18.0+ ([download here](https://nodejs.org/))
+- **npm** 8+ or **yarn** 1.22+
+- **Git** for repository cloning
+- **Modern browser** (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
 
-### Installation Rapide
+### Quick Installation
 
 ```bash
-# 1. Cloner le repository
+# 1. Clone the repository
 git clone https://github.com/hankerspace/garenne.git
 cd garenne
 
-# 2. Installer les dépendances
+# 2. Install dependencies
 npm install
 
-# 3. Démarrer l'application en développement
+# 3. Start the application in development
 npm run dev
 
-# 4. Ouvrir dans le navigateur
-# L'application sera accessible à http://localhost:5173
+# 4. Open in browser
+# The application will be accessible at http://localhost:5173
 ```
 
-### Scripts Disponibles
+### Available Scripts
 
 ```bash
-# 🔧 Développement
-npm run dev          # Démarrer le serveur de développement avec hot-reload
-npm run test         # Lancer les tests en mode watch
-npm run test:ui      # Interface graphique pour les tests
+# 🔧 Development
+npm run dev          # Start development server with hot-reload
+npm run test         # Run tests in watch mode
+npm run test:ui      # Graphical interface for tests
 
-# 🏗️ Build et Production  
-npm run build        # Construire pour la production (dossier dist/)
-npm run preview      # Prévisualiser le build de production
-npm run test:run     # Exécuter tous les tests une fois
-npm run test:coverage # Rapport de couverture des tests
+# 🏗️ Build and Production  
+npm run build        # Build for production (dist/ folder)
+npm run preview      # Preview production build
+npm run test:run     # Run all tests once
+npm run test:coverage # Test coverage report
 
-# 📋 Qualité de Code
-npm run lint         # Analyser le code avec ESLint
-npm run lint:fix     # Corriger automatiquement les erreurs ESLint
-npm run type-check   # Vérification TypeScript sans build
+# 📋 Code Quality
+npm run lint         # Analyze code with ESLint
+npm run lint:fix     # Automatically fix ESLint errors
+npm run type-check   # TypeScript verification without build
 ```
 
-### Installation en Production
+### Production Installation
 
-Pour déployer l'application, consultez notre [Guide de Déploiement](DEPLOYMENT.md) qui couvre :
+To deploy the application, check our [Deployment Guide](DEPLOYMENT.md) which covers:
 - GitHub Pages
 - Netlify / Vercel
 - Docker
-- Configuration PWA
-- Optimisations performance
+- PWA configuration
+- Performance optimizations
 
-## 📱 Utilisation
+## 📱 Usage
 
-### Premier Démarrage
-1. **Données d'exemple** : Cliquez sur "Charger des données d'exemple" pour découvrir l'application
-2. **Premier animal** : Ou créez directement votre premier animal
+### First Start
+1. **Sample data**: Click "Load sample data" to discover the application
+2. **First animal**: Or directly create your first animal
 
-### Gestion des Animaux
+### Animal Management
 
-#### Créer un Animal
-1. Cliquez sur le bouton "+" en bas à droite ou "Créer mon premier animal"
-2. Remplissez les informations de base (nom, identifiant, sexe, etc.)
-3. Définissez l'origine (né ici/acheté) et la parenté si applicable
-4. Sauvegardez
+#### Create an Animal
+1. Click the "+" button in the bottom right or "Create my first animal"
+2. Fill in basic information (name, identifier, sex, etc.)
+3. Define origin (born here/purchased) and kinship if applicable
+4. Save
 
-La liste des animaux affiche toutes les informations essentielles avec des options de recherche et filtrage :
+The animal list displays all essential information with search and filtering options:
 
-![Liste des Animaux](https://github.com/user-attachments/assets/d998702f-0fa7-4b61-8357-0231d08e1630)
+![Animal List](https://github.com/user-attachments/assets/d998702f-0fa7-4b61-8357-0231d08e1630)
 
-#### Consulter les Détails
-1. Cliquez sur "Détails" sur la carte d'un animal
-2. Naviguez entre les onglets :
-   - **Aperçu** : Informations générales et parenté
-   - **Reproduction** : Historique des saillies (à venir)
-   - **Pesées** : Suivi du poids
-   - **Santé** : Traitements et délais d'attente
+#### View Details
+1. Click "Details" on an animal card
+2. Navigate between tabs:
+   - **Overview**: General information and kinship
+   - **Reproduction**: Mating history (coming soon)
+   - **Weighings**: Weight tracking
+   - **Health**: Treatments and withdrawal periods
 
-![Détails Animal](https://github.com/user-attachments/assets/a34455a6-b394-4ffe-a734-6be646fc9b02)
+![Animal Details](https://github.com/user-attachments/assets/a34455a6-b394-4ffe-a734-6be646fc9b02)
 
-#### Suivi des Pesées
-1. Dans les détails d'un animal, cliquez sur l'onglet "Pesées"
-2. Visualisez l'évolution du poids avec graphiques interactifs
-3. Ajoutez de nouvelles pesées avec le bouton "Nouvelle pesée"
-4. Consultez les statistiques (poids actuel, gain total, gain moyen par jour)
+#### Weight Tracking
+1. In animal details, click the "Weighings" tab
+2. View weight evolution with interactive charts
+3. Add new weighings with the "New weighing" button
+4. Check statistics (current weight, total gain, average daily gain)
 
-![Suivi des Pesées](https://github.com/user-attachments/assets/2cb433f0-b524-4ebd-bd78-0d9540b44312)
+![Weight Tracking](https://github.com/user-attachments/assets/2cb433f0-b524-4ebd-bd78-0d9540b44312)
 
-#### Modifier un Animal
-1. Cliquez sur "Modifier" sur la carte ou dans les détails
-2. Modifiez les champs souhaités
-3. Sauvegardez les modifications
+#### Edit an Animal
+1. Click "Edit" on the card or in details
+2. Modify desired fields
+3. Save changes
 
-#### Arbre Généalogique
-1. Dans les détails d'un animal, visualisez l'arbre généalogique interactif
-2. Explorez les relations familiales sur plusieurs générations
-3. Cliquez sur un animal de l'arbre pour naviguer vers ses détails
+#### Family Tree
+1. In animal details, view the interactive family tree
+2. Explore family relationships across multiple generations
+3. Click on an animal in the tree to navigate to its details
 
-#### Saisie Rapide
-- **Pesée rapide** : Bouton d'action flottant pour ajouter rapidement une pesée
-- **Traitement rapide** : Saisie express d'un traitement médical
-- **Fiches imprimables** : Génération instantanée d'une fiche animal avec QR code
+#### Quick Entry
+- **Quick weighing**: Floating action button to quickly add a weighing
+- **Quick treatment**: Express entry for medical treatment
+- **Printable sheets**: Instant generation of animal sheet with QR code
 
-#### Gestion des Cages
-1. Attribuez des cages aux animaux lors de la création/modification
-2. Suivez l'occupation des cages depuis le tableau de bord
-3. Organisez vos installations d'élevage efficacement
+#### Cage Management
+1. Assign cages to animals during creation/modification
+2. Track cage occupancy from the dashboard
+3. Organize your breeding facilities efficiently
 
-#### Système d'Étiquettes
-1. Créez des tags personnalisés pour organiser vos animaux
-2. Filtrez par étiquettes pour des groupes spécifiques
-3. Utilisez les couleurs pour une identification visuelle rapide
+#### Tag System
+1. Create custom tags to organize your animals
+2. Filter by tags for specific groups
+3. Use colors for quick visual identification
 
-### Recherche et Filtres
-- **Barre de recherche** : Recherche par nom, identifiant ou race
-- **Filtre par statut** : Tous, Reproducteurs, Croissance, Retraités
-- **Filtre par sexe** : Tous, Femelles, Mâles
+### Search and Filters
+- **Search bar**: Search by name, identifier or breed
+- **Status filter**: All, Breeders, Growing, Retired
+- **Sex filter**: All, Females, Males
 
-## 🏗️ Architecture Technique
+## 🏗️ Technical Architecture
 
-### Stack Technologique Moderne
-- **Frontend** : React 19 + TypeScript 5.8+ (strict mode)
-- **UI Framework** : Material-UI v5 avec Material Design 3
-- **État Global** : Zustand v5 (store simple et performant)  
-- **Routage** : React Router v7 avec data loading
-- **Validation** : Zod + React Hook Form pour forms type-safe
-- **Build Tool** : Vite 7.0+ avec HMR ultra-rapide
-- **PWA** : Vite PWA Plugin avec Workbox
-- **Tests** : Vitest + Testing Library + jsdom
-- **Linting** : ESLint 9 + TypeScript ESLint
+### Modern Technology Stack
+- **Frontend**: React 19 + TypeScript 5.8+ (strict mode)
+- **UI Framework**: Material-UI v5 with Material Design 3
+- **Global State**: Zustand v5 (simple and performant store)  
+- **Routing**: React Router v7 with data loading
+- **Validation**: Zod + React Hook Form for type-safe forms
+- **Build Tool**: Vite 7.0+ with ultra-fast HMR
+- **PWA**: Vite PWA Plugin with Workbox
+- **Tests**: Vitest + Testing Library + jsdom
+- **Linting**: ESLint 9 + TypeScript ESLint
 
-### Architecture des Données
+### Data Architecture
 
 ```
-Stockage Local (LocalStorage + LZ-String compression)
-├── animals[]           # Registre des animaux avec généalogie et tags
-├── weights[]           # Historique des pesées  
-├── treatments[]        # Traitements et délais d'attente
-├── litters[]           # Portées avec sevrage automatique estimé
-├── breedings[]         # Saillies et planning reproduction
-├── mortalities[]       # Suivi des décès et causes
-├── cages[]             # Gestion des emplacements
-├── tags[]              # Système d'étiquettes personnalisé
-├── performanceMetrics[] # Métriques de performance reproduction
-└── settings            # Préférences utilisateur et durées personnalisables
+Local Storage (LocalStorage + LZ-String compression)
+├── animals[]           # Animal registry with genealogy and tags
+├── weights[]           # Weighing history  
+├── treatments[]        # Treatments and withdrawal periods
+├── litters[]           # Litters with automatic estimated weaning
+├── breedings[]         # Matings and reproduction planning
+├── mortalities[]       # Death tracking and causes
+├── cages[]             # Location management
+├── tags[]              # Custom tag system
+├── performanceMetrics[] # Reproduction performance metrics
+└── settings            # User preferences and customizable durations
 ```
 
-### Structure du Projet
+### Project Structure
 
 ```
 src/
-├── 📁 components/          # Composants réutilisables
-│   ├── charts/             # Graphiques (Recharts) avec PopulationChart
-│   ├── modals/             # Modales spécialisées (QuickWeight, QuickTreatment, Breeding, Mortality)
-│   ├── ErrorBoundary.tsx   # Gestion d'erreurs globale
-│   ├── GenealogyTree.tsx   # Arbre généalogique interactif
-│   ├── PrintableRabbitSheet.tsx # Fiches imprimables avec QR code
-│   └── QRCodeDisplay.tsx   # Affichage de codes QR
-├── 📁 pages/              # Pages principales de l'application
-│   ├── Animals/           # 🐰 Gestion des animaux
-│   ├── Litters/           # 👶 Gestion des portées avec sevrage estimé
-│   ├── Statistics/        # 📊 Métriques et performances détaillées
-│   ├── Treatments/        # 💊 Gestion des traitements
-│   └── Settings/          # ⚙️ Configuration et durées personnalisables
-├── 📁 services/           # Services métier et génération de données
-│   ├── qrcode.service.ts   # Génération de codes QR
-│   ├── statistics.service.ts # Calculs de performance
-│   ├── search.service.ts   # Recherche avancée
-│   ├── export.service.ts   # Export multi-format
-│   ├── backup.service.ts   # Sauvegarde et restauration
-│   └── i18n.service.ts     # Support multilingue
-├── 📁 state/             # Store Zustand et sélecteurs
-├── 📁 utils/             # Utilitaires (dates, validation, storage)
-├── 📁 models/            # Types TypeScript et interfaces étendues
-├── 📁 hooks/             # Hooks personnalisés (useTranslation)
-└── 📁 test/              # Tests unitaires et d'intégration
+├── 📁 components/          # Reusable components
+│   ├── charts/             # Charts (Recharts) with PopulationChart
+│   ├── modals/             # Specialized modals (QuickWeight, QuickTreatment, Breeding, Mortality)
+│   ├── ErrorBoundary.tsx   # Global error handling
+│   ├── GenealogyTree.tsx   # Interactive family tree
+│   ├── PrintableRabbitSheet.tsx # Printable sheets with QR code
+│   └── QRCodeDisplay.tsx   # QR code display
+├── 📁 pages/              # Main application pages
+│   ├── Animals/           # 🐰 Animal management
+│   ├── Litters/           # 👶 Litter management with estimated weaning
+│   ├── Statistics/        # 📊 Detailed metrics and performance
+│   ├── Treatments/        # 💊 Treatment management
+│   └── Settings/          # ⚙️ Configuration and customizable durations
+├── 📁 services/           # Business services and data generation
+│   ├── qrcode.service.ts   # QR code generation
+│   ├── statistics.service.ts # Performance calculations
+│   ├── search.service.ts   # Advanced search
+│   ├── export.service.ts   # Multi-format export
+│   ├── backup.service.ts   # Backup and restoration
+│   └── i18n.service.ts     # Multilingual support
+├── 📁 state/             # Zustand store and selectors
+├── 📁 utils/             # Utilities (dates, validation, storage)
+├── 📁 models/            # TypeScript types and extended interfaces
+├── 📁 hooks/             # Custom hooks (useTranslation)
+└── 📁 test/              # Unit and integration tests
 ```
 
-### Gestion des Données
+### Data Management
 
-#### Stockage et Persistance
-- **LocalStorage** avec compression automatique LZ-String (réduction ~60%)
-- **Sauvegarde automatique** à chaque modification d'état
-- **Backup et restauration** via export/import JSON
-- **Validation de cohérence** au chargement des données
-- **Migration automatique** lors des mises à jour de schéma
+#### Storage and Persistence
+- **LocalStorage** with automatic LZ-String compression (~60% reduction)
+- **Automatic backup** on every state change
+- **Backup and restoration** via JSON export/import
+- **Consistency validation** on data loading
+- **Automatic migration** during schema updates
 
-#### Performance et Optimisation
-- **Code splitting** automatique par route
-- **Lazy loading** des composants lourds
-- **Memoization** avec React.memo et useMemo stratégiques
-- **Virtual scrolling** pour les listes de grande taille
-- **Debouncing** des recherches et filtres
+#### Performance and Optimization
+- **Automatic code splitting** by route
+- **Lazy loading** of heavy components
+- **Memoization** with strategic React.memo and useMemo
+- **Virtual scrolling** for large lists
+- **Debouncing** of searches and filters
 
-### Patterns et Conventions
+## 🛠️ Development Guide
 
-#### État Global (Zustand)
-```typescript
-interface AppState {
-  // Données
-  animals: Animal[];
-  treatments: Treatment[];
-  weights: Weight[];
-  
-  // Actions
-  addAnimal: (data: CreateAnimalData) => Animal;
-  updateAnimal: (id: UUID, data: Partial<Animal>) => void;
-  
-  // Sélecteurs memoïzés
-  getActiveAnimals: () => Animal[];
-  getAnimalsByStatus: (status: Status) => Animal[];
-}
-```
+### Environment Setup
 
-#### Validation avec Zod
-```typescript
-const animalSchema = z.object({
-  name: z.string().min(1).max(50),
-  sex: z.nativeEnum(Sex),
-  birthDate: z.string().datetime().optional(),
-}).refine((data) => {
-  // Validation métier complexe
-});
-```
-
-## 🛠️ Guide de Développement
-
-### Configuration de l'Environnement
-
-#### Extensions VSCode Recommandées
+#### Recommended VSCode Extensions
 ```json
 {
   "recommendations": [
@@ -292,434 +261,233 @@ const animalSchema = z.object({
 }
 ```
 
-#### Configuration ESLint et TypeScript
-- **TypeScript strict mode** activé avec toutes les vérifications
-- **ESLint 9** avec configuration moderne et React rules
-- **Path mapping** configuré pour imports absolus
-- **Auto-fix** au save configuré
+#### ESLint and TypeScript Configuration
+- **TypeScript strict mode** enabled with all checks
+- **ESLint 9** with modern configuration and React rules
+- **Path mapping** configured for absolute imports
+- **Auto-fix** on save configured
 
-### Workflow de Développement
+### Development Workflow
 
-Pour des guidelines détaillées, consultez [CONTRIBUTING.md](CONTRIBUTING.md).
-
-#### 1. Standards de Code
-```typescript
-// ✅ Bonnes pratiques
-interface AnimalCardProps {
-  animal: Animal;
-  onEdit: (id: UUID) => void;
-}
-
-const AnimalCard: React.FC<AnimalCardProps> = ({ animal, onEdit }) => {
-  const handleEdit = useCallback(() => onEdit(animal.id), [onEdit, animal.id]);
-  
-  return (
-    <Card>
-      <CardContent>
-        <Typography variant="h6">{animal.name}</Typography>
-      </CardContent>
-    </Card>
-  );
-};
-```
-
-#### 2. Ajouter une Nouvelle Fonctionnalité
-
-##### Modèles de Données
-```typescript
-// src/models/types.ts
-export interface MonNouveauType {
-  id: UUID;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-```
-
-##### État Global  
-```typescript
-// src/state/store.ts - Ajouter au store
-interface AppState {
-  monNouveauType: MonNouveauType[];
-  addMonNouveauType: (data: CreateData) => MonNouveauType;
-  updateMonNouveauType: (id: UUID, data: UpdateData) => void;
-}
-```
-
-##### Pages et Composants
-```
-src/pages/MonNouveauType/
-├── MonNouveauTypeListPage.tsx      # Liste avec filtres
-├── MonNouveauTypeDetailPage.tsx    # Vue détaillée  
-├── MonNouveauTypeFormPage.tsx      # Formulaire création/édition
-└── components/                     # Composants spécifiques
-    ├── MonNouveauTypeCard.tsx
-    └── MonNouveauTypeForm.tsx
-```
-
-##### Tests
-```typescript
-// src/test/monNouveauType.test.ts
-describe('MonNouveauType Store', () => {
-  beforeEach(() => {
-    useAppStore.getState().clearAllData();
-  });
-
-  it('should add item correctly', () => {
-    const { addMonNouveauType } = useAppStore.getState();
-    const item = addMonNouveauType({ name: 'Test' });
-    expect(item.id).toBeDefined();
-    expect(item.name).toBe('Test');
-  });
-});
-```
+For detailed guidelines, check [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Testing Strategy
 
-#### Types de Tests
-- **Unit Tests** : Utils, services, store actions (90%+ coverage)
-- **Component Tests** : Rendu, interactions, props (80%+ coverage)  
-- **Integration Tests** : Flows utilisateur complets (70%+ coverage)
+#### Test Types
+- **Unit Tests**: Utils, services, store actions (90%+ coverage)
+- **Component Tests**: Rendering, interactions, props (80%+ coverage)  
+- **Integration Tests**: Complete user flows (70%+ coverage)
 
-#### Commandes de Test
+#### Test Commands
 ```bash
-npm run test              # Mode watch pour développement
-npm run test:ui           # Interface graphique Vitest  
-npm run test:run          # Exécution complète CI/CD
-npm run test:coverage     # Rapport de couverture détaillé
+npm run test              # Watch mode for development
+npm run test:ui           # Vitest graphical interface  
+npm run test:run          # Complete CI/CD execution
+npm run test:coverage     # Detailed coverage report
 ```
 
-#### Exemple de Test Composant
-```typescript
-import { render, screen, fireEvent } from '@testing-library/react';
-import { AnimalCard } from './AnimalCard';
+## 📚 Complete Documentation
 
-const mockAnimal: Animal = {
-  id: 'test-id',
-  name: 'Test Animal',
-  sex: Sex.Female,
-  status: Status.Grow,
-  createdAt: '2024-01-01',
-  updatedAt: '2024-01-01'
-};
+### User Guides
+- **[Usage Guide](#-usage)** - How to use all features
+- **[Screenshots and Demos](#screenshots)** - Visual overview of interface
 
-describe('AnimalCard', () => {
-  it('should render animal information', () => {
-    render(<AnimalCard animal={mockAnimal} onEdit={jest.fn()} />);
-    
-    expect(screen.getByText('Test Animal')).toBeInTheDocument();
-    expect(screen.getByText('Femelle')).toBeInTheDocument();
-  });
+### Technical Documentation  
+- **[API Reference](API.md)** - Complete API and data model documentation
+- **[Contribution Guide](CONTRIBUTING.md)** - Development workflow and standards
+- **[Deployment Guide](DEPLOYMENT.md)** - Production deployment instructions
 
-  it('should call onEdit when edit button clicked', () => {
-    const onEdit = jest.fn();
-    render(<AnimalCard animal={mockAnimal} onEdit={onEdit} />);
-    
-    fireEvent.click(screen.getByRole('button', { name: /modifier/i }));
-    expect(onEdit).toHaveBeenCalledWith('test-id');
-  });
-});
-```
+## 🔒 Security and Data
 
-## 📚 Documentation Complète
+### Data Protection
+- **Local storage only**: No data sent to the internet
+- **No authentication**: Single-user local application
+- **Recommended backup**: Regular data export
 
-### Guides Utilisateur
-- **[Guide d'Utilisation](#-utilisation)** - Comment utiliser toutes les fonctionnalités
-- **[Screenshots et Démos](#captures-décran)** - Aperçu visuel de l'interface
+### Withdrawal Periods
+The application automatically monitors treatment withdrawal periods and displays appropriate alerts.
 
-### Documentation Technique  
-- **[API Reference](API.md)** - Documentation complète des APIs et modèles de données
-- **[Guide de Contribution](CONTRIBUTING.md)** - Workflow de développement et standards
-- **[Guide de Déploiement](DEPLOYMENT.md)** - Instructions de déploiement production
+## 🚀 Deployment
 
-### Référence API Rapide
+### GitHub Pages (coming soon)
+Automatic deployment to GitHub Pages will be configured via GitHub Actions.
 
-#### Store Actions Principales
-```typescript
-// Gestion des animaux
-const animal = addAnimal({ name: "Fluffy", sex: Sex.Female, status: Status.Grow });
-updateAnimal(animal.id, { status: Status.Reproducer, cage: "A1" });
-consumeAnimal(animal.id, { consumedDate: "2024-01-01", consumedWeight: 2500 });
-deleteAnimal(animal.id);
-
-// Pesées avec saisie rapide
-const weight = addWeight({ animalId: animal.id, weight: 1200, date: "2024-01-01" });
-quickAddWeight(animal.id, 1300); // Saisie rapide avec date actuelle
-
-// Traitements avec saisie rapide
-const treatment = addTreatment({
-  animalId: animal.id,
-  product: "Vaccination RHD",
-  withdrawalUntil: "2024-02-01"
-});
-quickAddTreatment(animal.id, "Vermifuge"); // Saisie rapide
-
-// Portées avec sevrage estimé
-const litter = addLitter({
-  motherId: animal.id,
-  kindlingDate: "2024-01-01",
-  bornAlive: 8,
-  estimatedWeaningDate: "2024-01-29" // Calculé automatiquement
-});
-
-// Gestion cages et tags
-const cage = addCage({ name: "A1", capacity: 1, location: "Bâtiment A" });
-const tag = addTag({ name: "Reproducteur Elite", color: "#4CAF50" });
-addTagToAnimal(animal.id, tag.id);
-
-// Mortalité
-const mortality = addMortality({
-  animalId: animal.id,
-  date: "2024-01-01",
-  suspectedCause: "Maladie",
-  necropsy: false
-});
-
-// Export/Import amélioré
-const backup = exportData(); // JSON string
-const csvData = exportToCSV(animals); // Export CSV
-const excelData = exportToExcel(animals); // Export Excel
-importData(backup); // Restore from backup
-```
-
-#### Sélecteurs Utiles
-```typescript
-// KPIs et statistiques
-const kpis = getKPIs(state);              // Métriques principales
-const activeAnimals = getActiveAnimals(); // Animaux vivants  
-const breeders = getBreeders();           // Reproducteurs
-const consumedAnimals = getConsumedAnimals(); // Animaux consommés
-
-// Filtres et recherches avancées
-const females = getAnimalsByStatus(Status.Reproducer);
-const recent = getRecentWeights(30);      // 30 derniers jours
-const alerts = getActiveAlerts();         // Délais d'attente actifs
-const cageOccupancy = getCageOccupancy(); // Occupation des cages
-const taggedAnimals = getAnimalsByTag("Reproducteur Elite");
-
-// Métriques de performance
-const performanceMetrics = getPerformanceMetrics(animalId);
-const populationTrends = getPopulationTrends(); // Graphiques de population
-const mortalityStats = getMortalityStatistics(); // Statistiques de mortalité
-const weaningProgress = getWeaningProgress(); // Sevrage en cours
-```
-
-Pour la documentation complète, consultez [API.md](API.md).
-
-## 🔒 Sécurité et Données
-
-### Protection des Données
-- **Stockage local uniquement** : Aucune donnée envoyée sur internet
-- **Pas d'authentification** : Application mono-utilisateur locale
-- **Sauvegarde recommandée** : Export régulier des données
-
-### Délais d'Attente
-L'application surveille automatiquement les délais d'attente des traitements et affiche des alertes appropriées.
-
-## 🚀 Déploiement
-
-### GitHub Pages (à venir)
-Le déploiement automatique sur GitHub Pages sera configuré via GitHub Actions.
-
-### Build de Production
+### Production Build
 ```bash
 npm run build
 ```
-Les fichiers seront générés dans le dossier `dist/`.
+Files will be generated in the `dist/` folder.
 
 ## 🤝 Contribution
 
-### Signaler un Bug
-1. Vérifiez que le bug n'est pas déjà signalé
-2. Créez une issue avec :
-   - Description détaillée
-   - Étapes de reproduction
-   - Screenshots si pertinent
+### Report a Bug
+1. Check that the bug is not already reported
+2. Create an issue with:
+   - Detailed description
+   - Reproduction steps
+   - Screenshots if relevant
 
-### Proposer une Fonctionnalité
-1. Créez une issue avec le label "enhancement"
-2. Décrivez le besoin et la solution proposée
-3. Attendez les retours avant de commencer le développement
+### Propose a Feature
+1. Create an issue with "enhancement" label
+2. Describe the need and proposed solution
+3. Wait for feedback before starting development
 
 ### Pull Requests
-1. Forkez le projet
-2. Créez une branche pour votre fonctionnalité
-3. Committez vos modifications
-4. Créez une pull request avec description détaillée
+1. Fork the project
+2. Create a branch for your feature
+3. Commit your changes
+4. Create a pull request with detailed description
 
-## 📝 Roadmap et Évolution
+## 📝 Roadmap and Evolution
 
-### Version Actuelle (v0.8-beta)
-- [x] 🐰 **Gestion complète des animaux** avec CRUD, parenté, statuts et consommation
-- [x] 📊 **Pesées et courbes de croissance** avec graphiques interactifs et saisie rapide
-- [x] 💊 **Traitements et délais d'attente** avec alertes automatiques et saisie rapide
-- [x] 👶 **Portées et reproduction** avec sevrage estimé automatique et saillies
-- [x] 🏷️ **Système d'étiquettes** personnalisé pour organisation flexible
-- [x] 🏠 **Gestion des cages** avec attribution et suivi d'occupation
-- [x] 📊 **Statistiques avancées** avec métriques de performance et graphiques population
-- [x] 🧬 **Arbre généalogique** interactif pour visualiser les relations familiales
-- [x] 📋 **Fiches imprimables** avec QR codes pour chaque animal
-- [x] ⚰️ **Suivi de mortalité** avec causes et nécropsie
-- [x] 🔄 **Export/Import multi-format** : JSON, CSV, Excel
-- [x] 🌐 **Support multilingue** avec service i18n intégré
-- [x] ⚙️ **Personnalisation** : durées configurables (gestation, sevrage, reproduction)
-- [x] 🎨 **Interface responsive** Material Design 3 avec thèmes
-- [x] 💾 **Stockage local robuste** avec compression et validation
-- [x] 📱 **PWA complète** installable et fonctionnant hors-ligne
-- [x] 🧪 **Tests automatisés** avec couverture >80%
+### Current Version (v0.8-beta)
+- [x] 🐰 **Complete animal management** with CRUD, kinship, statuses and consumption
+- [x] 📊 **Weighings and growth curves** with interactive charts and quick entry
+- [x] 💊 **Treatments and withdrawal periods** with automatic alerts and quick entry
+- [x] 👶 **Litters and reproduction** with automatic estimated weaning and matings
+- [x] 🏷️ **Custom tag system** for flexible organization
+- [x] 🏠 **Cage management** with assignment and occupancy tracking
+- [x] 📊 **Advanced statistics** with performance metrics and population charts
+- [x] 🧬 **Interactive family tree** to visualize family relationships
+- [x] 📋 **Printable sheets** with QR codes for each animal
+- [x] ⚰️ **Mortality tracking** with causes and necropsy
+- [x] 🔄 **Multi-format export/import**: JSON, CSV, Excel
+- [x] 🌐 **Multilingual support** with integrated i18n service
+- [x] ⚙️ **Customization**: configurable durations (gestation, weaning, reproduction)
+- [x] 🎨 **Responsive interface** Material Design 3 with themes
+- [x] 💾 **Robust local storage** with compression and validation
+- [x] 📱 **Complete PWA** installable and working offline
+- [x] 🧪 **Automated tests** with >80% coverage
 
 ### Version 1.0 - Production Ready 
-- [x] 🔄 **Export/Import avancé** : Excel, CSV, formats standards élevage
-- [x] 📈 **Statistiques avancées** : Graphiques de performance, comparaisons
-- [ ] 🔍 **Recherche intelligente** : Filtres complexes, recherche floue
-- [x] 🏷️ **Système d'étiquettes** : Organisation personnalisée
-- [ ] **Visualisation des cages** : représentation graphique des cages avec les animaux dans celles-ci
-- [x] **Consommation des animaux** : Gestion des animaux "abattus pour consommation" avec statistiques
-- [x] **Performances des animaux** : Mesures de performance de reproduction, taux de survie de la descendance, statistiques de performance
-- [x] 🌐 **Internationalisation** : Support multilingue (FR, EN, ES) de l'application et readme
-- [x] **Personnalisation** : possibilité de configurer précisément dans les paramètres la durée de gestation, durée de sevrage, durée avant reproduction, durée avant abattage, etc.
+- [x] 🔄 **Advanced export/import**: Excel, CSV, breeding standard formats
+- [x] 📈 **Advanced statistics**: Performance charts, comparisons
+- [ ] 🔍 **Intelligent search**: Complex filters, fuzzy search
+- [x] 🏷️ **Tag system**: Custom organization
+- [ ] **Cage visualization**: graphic representation of cages with animals in them
+- [x] **Animal consumption**: Management of animals "slaughtered for consumption" with statistics
+- [x] **Animal performance**: Reproduction performance measures, offspring survival rate, performance statistics
+- [x] 🌐 **Internationalization**: Multilingual support (FR, EN, ES, DE, PT) for application and readme
+- [x] **Customization**: ability to precisely configure in settings the gestation duration, weaning duration, duration before reproduction, duration before slaughter, etc.
 
-### Version 1.1 - Fonctionnalités Avancées 
-- [x] 🧬 **Généalogie avancée** : Arbre interactif avec navigation entre générations
-- [ ] 📅 **Planning reproduction** : Calendrier intelligent, rappels
-- [ ] 🎯 **Objectifs et suivi** : Goals tracking, métriques cibles
-- [ ] ☁️ **Synchronisation cloud** : Backup automatique optionnel
-- [ ] 👥 **Multi-utilisateurs** : Partage familial, permissions
-- [ ] **Quick actions PWA** : Ajouter pesée, ajouter traitement depuis l'écran d'accueil
+### Version 1.1 - Advanced Features 
+- [x] 🧬 **Advanced genealogy**: Interactive tree with navigation between generations
+- [ ] 📅 **Reproduction planning**: Intelligent calendar, reminders
+- [ ] 🎯 **Goals and tracking**: Goals tracking, target metrics
+- [ ] ☁️ **Cloud synchronization**: Optional automatic backup
+- [ ] 👥 **Multi-users**: Family sharing, permissions
+- [ ] **PWA quick actions**: Add weighing, add treatment from home screen
 
-### Améliorations Techniques Continues
-- [ ] ⚡ **Performance** : Virtual scrolling, lazy loading amélioré
-- [ ] 🔒 **Sécurité** : Chiffrement bout-à-bout, audit trails
-- [ ] 🧪 **Tests** : E2E testing, visual regression testing
-- [ ] 📊 **Monitoring** : Analytics d'usage, error tracking
-- [ ] 🎯 **Accessibilité** : WCAG 2.1 AAA compliance
-- [ ] 🌍 **Éco-responsabilité** : Optimisations carbones, green coding
+### Continuous Technical Improvements
+- [ ] ⚡ **Performance**: Virtual scrolling, improved lazy loading
+- [ ] 🔒 **Security**: End-to-end encryption, audit trails
+- [ ] 🧪 **Tests**: E2E testing, visual regression testing
+- [ ] 📊 **Monitoring**: Usage analytics, error tracking
+- [ ] 🎯 **Accessibility**: WCAG 2.1 AAA compliance
+- [ ] 🌍 **Eco-responsibility**: Carbon optimizations, green coding
 
-### Contributions Communautaires Recherchées
-- 🌍 **Traductions** : Aide pour l'internationalisation
-- 🎨 **Design** : Amélioration UX/UI, icons personnalisés
-- 🧪 **Tests** : Cas d'usage réels, tests manuels
-- 📚 **Documentation** : Guides utilisateur, vidéos tutoriels
-- 🐛 **Bug hunting** : Signalement et reproduction de bugs
-- 💡 **Idées** : Suggestions de fonctionnalités, feedbacks utilisateur
+### Sought Community Contributions
+- 🌍 **Translations**: Help with internationalization
+- 🎨 **Design**: UX/UI improvements, custom icons
+- 🧪 **Tests**: Real use cases, manual testing
+- 📚 **Documentation**: User guides, tutorial videos
+- 🐛 **Bug hunting**: Bug reporting and reproduction
+- 💡 **Ideas**: Feature suggestions, user feedback
 
-Pour contribuer, consultez [CONTRIBUTING.md](CONTRIBUTING.md) et rejoignez notre communauté !
+To contribute, check [CONTRIBUTING.md](CONTRIBUTING.md) and join our community!
 
-## 🚀 Performance et Optimisation
+## 🚀 Performance and Optimization
 
-### Métriques de Performance
-- **First Contentful Paint** : < 1.5s
-- **Largest Contentful Paint** : < 2.5s  
-- **First Input Delay** : < 100ms
-- **Cumulative Layout Shift** : < 0.1
-- **Bundle Size** : < 1MB (gzipped)
+### Performance Metrics
+- **First Contentful Paint**: < 1.5s
+- **Largest Contentful Paint**: < 2.5s  
+- **First Input Delay**: < 100ms
+- **Cumulative Layout Shift**: < 0.1
+- **Bundle Size**: < 1MB (gzipped)
 
-### Optimisations Implémentées
-- ⚡ **Code Splitting** automatique par route
-- 🎯 **Lazy Loading** des composants lourds (charts, modals)
-- 🧠 **Memoization** stratégique avec React.memo et useMemo
-- 💾 **Compression LZ-String** pour le stockage (-60% d'espace)
-- 🔄 **Virtual Scrolling** pour les listes de grande taille
-- ⏱️ **Debouncing** des recherches et filtres (300ms)
-- 📱 **Service Worker** avec cache intelligent
-
-### Monitoring Production
-```typescript
-// Performance monitoring
-performance.mark('app-start');
-// ... app logic
-performance.mark('app-ready');
-performance.measure('app-boot', 'app-start', 'app-ready');
-```
+### Implemented Optimizations
+- ⚡ **Automatic code splitting** by route
+- 🎯 **Lazy loading** of heavy components (charts, modals)
+- 🧠 **Strategic memoization** with React.memo and useMemo
+- 💾 **LZ-String compression** for storage (-60% space)
+- 🔄 **Virtual scrolling** for large lists
+- ⏱️ **Search and filter debouncing** (300ms)
+- 📱 **Service Worker** with intelligent cache
 
 ## 🛠️ Troubleshooting
 
-### Problèmes Courants
+### Common Issues
 
-#### Application ne se charge pas
+#### Application doesn't load
 ```bash
-# Vérifier Node.js version
-node --version  # Doit être >= 18
+# Check Node.js version
+node --version  # Must be >= 18
 
-# Clear cache npm
+# Clear npm cache
 npm cache clean --force
 rm -rf node_modules package-lock.json
 npm install
 
-# Vérifier ports
-lsof -i :5173  # Port par défaut Vite
+# Check ports
+lsof -i :5173  # Default Vite port
 ```
 
-#### Données perdues après fermeture navigateur
+#### Data lost after browser closure
 ```javascript
-// Vérifier LocalStorage
+// Check LocalStorage
 console.log(localStorage.getItem('garenne-app-state'));
 
-// Vérifier quota storage
+// Check storage quota
 navigator.storage.estimate().then(estimate => {
   console.log(`Used: ${estimate.usage} / ${estimate.quota}`);
 });
 ```
 
-#### Performance dégradée
+#### Degraded performance
 ```bash
-# Analyser bundle size
+# Analyze bundle size
 npm run build -- --mode analyze
 
 # Profile React components
-# Utiliser React DevTools Profiler
+# Use React DevTools Profiler
 ```
 
-#### PWA ne s'installe pas
-- ✅ Vérifier que l'application est servie en HTTPS
-- ✅ Valider manifest.json dans DevTools
-- ✅ Confirmer le Service Worker est actif
-- ✅ Tester critères d'installabilité PWA
+#### PWA doesn't install
+- ✅ Check that application is served over HTTPS
+- ✅ Validate manifest.json in DevTools
+- ✅ Confirm Service Worker is active
+- ✅ Test PWA installability criteria
 
 ### Debug Mode
 
-Activer le mode debug en ajoutant à l'URL :
+Enable debug mode by adding to URL:
 ```
 http://localhost:5173/?debug=true
 ```
 
-Cela affiche :
-- 🐛 Logs détaillés du store
-- 📊 Métriques de performance  
-- 🔍 Informations de debug dans la console
+This displays:
+- 🐛 Detailed store logs
+- 📊 Performance metrics  
+- 🔍 Debug information in console
 
-### Logs et Diagnostics
+### Support and Help
 
-```typescript
-// En développement - logs détaillés
-if (import.meta.env.DEV) {
-  console.log('Store state:', useAppStore.getState());
-}
+- 📋 **GitHub Issues**: [Report a bug](https://github.com/hankerspace/garenne/issues/new?template=bug_report.md)
+- 💬 **Discussions**: [Questions & Support](https://github.com/hankerspace/garenne/discussions)
+- 📧 **Contact**: garenne-support@hankerspace.com
+- 📚 **Wiki**: [Extended documentation](https://github.com/hankerspace/garenne/wiki)
 
-// Production - error tracking
-window.addEventListener('error', (event) => {
-  console.error('Runtime error:', event.error);
-});
-```
+## 📄 License
 
-### Support et Aide
+This project is under MIT license. See the [LICENSE](LICENSE) file for more details.
 
-- 📋 **Issues GitHub** : [Signaler un bug](https://github.com/hankerspace/garenne/issues/new?template=bug_report.md)
-- 💬 **Discussions** : [Questions & Support](https://github.com/hankerspace/garenne/discussions)
-- 📧 **Contact** : garenne-support@hankerspace.com
-- 📚 **Wiki** : [Documentation étendue](https://github.com/hankerspace/garenne/wiki)
+## 🙏 Acknowledgments
 
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## 🙏 Remerciements
-
-- **Material-UI** pour le framework UI
-- **React Team** pour React et les outils de développement
-- **Zustand** pour la gestion d'état simple et efficace
-- **Vite** pour l'outillage de développement rapide
+- **Material-UI** for the UI framework
+- **React Team** for React and development tools
+- **Zustand** for simple and efficient state management
+- **Vite** for fast development tooling
 
 ---
 
-**Développé avec ❤️ pour la communauté des éleveurs**
+**Developed with ❤️ for the breeding community**

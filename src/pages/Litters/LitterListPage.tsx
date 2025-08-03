@@ -29,8 +29,10 @@ import { useAppStore } from '../../state/store';
 import { getLitters, getAnimalById } from '../../state/selectors';
 import { formatDate } from '../../utils/dates';
 import { LitterModal } from '../../components/modals/LitterModal';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const LitterListPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
@@ -120,7 +122,7 @@ const LitterListPage = () => {
 
   const getWeaningStatus = (litter: LitterWithWeaningInfo) => {
     if (litter.weaningDate) {
-      return { status: 'Sevrée', color: 'success' as const };
+      return { status: t('litters.status.weaned'), color: 'success' as const };
     }
     
     const now = new Date();
@@ -128,9 +130,9 @@ const LitterListPage = () => {
     const daysDiff = Math.floor((now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24));
     
     if (daysDiff < 28) {
-      return { status: 'En lactation', color: 'info' as const };
+      return { status: t('litters.status.lactating'), color: 'info' as const };
     } else {
-      return { status: 'À sevrer', color: 'warning' as const };
+      return { status: t('litters.status.toWean'), color: 'warning' as const };
     }
   };
 
@@ -140,7 +142,7 @@ const LitterListPage = () => {
         <Typography variant="h4" component="h2" sx={{
           fontSize: { xs: '1.75rem', sm: '2.125rem' }
         }}>
-          Portées ({filteredAndSortedLitters.length})
+          {t('litters.title')} ({filteredAndSortedLitters.length})
         </Typography>
       </Box>
 
@@ -151,7 +153,7 @@ const LitterListPage = () => {
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Rechercher par mère, père ou notes..."
+              placeholder={t('litters.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               size="small"
@@ -166,28 +168,28 @@ const LitterListPage = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel>Trier par</InputLabel>
+              <InputLabel>{t('litters.sortBy')}</InputLabel>
               <Select
                 value={sortBy}
-                label="Trier par"
+                label={t('litters.sortBy')}
                 onChange={(e) => setSortBy(e.target.value as 'date' | 'mother' | 'offspring')}
               >
-                <MenuItem value="date">Date de naissance</MenuItem>
-                <MenuItem value="mother">Mère</MenuItem>
-                <MenuItem value="offspring">Nombre de petits</MenuItem>
+                <MenuItem value="date">{t('litters.sortOptions.date')}</MenuItem>
+                <MenuItem value="mother">{t('litters.sortOptions.mother')}</MenuItem>
+                <MenuItem value="offspring">{t('litters.sortOptions.offspring')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel>Ordre</InputLabel>
+              <InputLabel>{t('litters.order')}</InputLabel>
               <Select
                 value={sortOrder}
-                label="Ordre"
+                label={t('litters.order')}
                 onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
               >
-                <MenuItem value="desc">Décroissant</MenuItem>
-                <MenuItem value="asc">Croissant</MenuItem>
+                <MenuItem value="desc">{t('litters.orderOptions.descending')}</MenuItem>
+                <MenuItem value="asc">{t('litters.orderOptions.ascending')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -252,24 +254,24 @@ const LitterListPage = () => {
 
                   <Box mb={2}>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Mère:</strong> {litter.mother?.name || 'Inconnue'}
+                      <strong>{t('litters.labels.mother')}:</strong> {litter.mother?.name || t('litters.labels.unknown')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Père:</strong> {litter.father?.name || 'Inconnu'}
+                      <strong>{t('litters.labels.father')}:</strong> {litter.father?.name || t('litters.labels.unknown')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Descendants créés:</strong> {litter.offspringCount}
+                      <strong>{t('litters.labels.offspringCreated')}:</strong> {litter.offspringCount}
                     </Typography>
                   </Box>
 
                   {litter.weaningDate ? (
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Sevrage:</strong> {formatDate(litter.weaningDate)}
-                      {litter.weanedCount && ` (${litter.weanedCount} sevrés)`}
+                      <strong>{t('litters.labels.weaning')}:</strong> {formatDate(litter.weaningDate)}
+                      {litter.weanedCount && ` (${litter.weanedCount} ${t('litters.labels.weaned')})`}
                     </Typography>
                   ) : litter.estimatedWeaningDate && (
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Sevrage estimé:</strong> {formatDate(litter.estimatedWeaningDate)}
+                      <strong>{t('litters.labels.estimatedWeaning')}:</strong> {formatDate(litter.estimatedWeaningDate)}
                     </Typography>
                   )}
 

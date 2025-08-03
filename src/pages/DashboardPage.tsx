@@ -31,9 +31,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../state/store';
 import { getKPIs } from '../state/selectors';
 import { PopulationChart } from '../components/charts/PopulationChart';
+import { useTranslation } from '../hooks/useTranslation';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   
   const state = useAppStore();
@@ -74,45 +76,45 @@ const DashboardPage = () => {
 
   const kpiCards = [
     {
-      title: 'Animaux vivants',
+      title: t('dashboard.kpis.liveAnimals'),
       value: kpis.liveAnimalsCount,
       icon: <PetsIcon color="primary" />,
-      subtitle: `${kpis.femalesCount} femelles, ${kpis.malesCount} mâles`,
+      subtitle: `${kpis.femalesCount} ${t('dashboard.kpis.femalesAndMales').split(', ')[0]}, ${kpis.malesCount} ${t('dashboard.kpis.femalesAndMales').split(', ')[1]}`,
       action: () => navigate('/animals'),
     },
     {
-      title: 'Reproducteurs',
+      title: t('dashboard.kpis.reproductors'),
       value: kpis.reproducersCount,
       icon: <TrendingUp color="secondary" />,
-      subtitle: 'Animaux reproducteurs',
+      subtitle: t('dashboard.kpis.reproductorsSubtitle'),
       action: () => navigate('/animals?filter=reproducteurs'),
     },
     {
-      title: 'Planning reproduction',
+      title: t('dashboard.kpis.reproductionPlanning'),
       value: kpis.activeBreeders || 0,
       icon: <EventIcon color="success" />,
-      subtitle: 'Calendrier élevage',
+      subtitle: t('dashboard.kpis.reproductionPlanningSubtitle'),
       action: () => navigate('/planning'),
     },
     {
-      title: 'Actions rapides',
+      title: t('dashboard.kpis.quickActions'),
       value: '⚡',
       icon: <SpeedIcon color="warning" />,
-      subtitle: 'Accès rapide terrain',
+      subtitle: t('dashboard.kpis.quickActionsSubtitle'),
       action: () => navigate('/quick'),
     },
     {
-      title: 'Traitements actifs',
+      title: t('dashboard.kpis.activeTreatments'),
       value: kpis.activeTreatmentsCount,
       icon: <Warning color="warning" />,
-      subtitle: 'Sous délai d\'attente',
+      subtitle: t('dashboard.kpis.activeTreatmentsSubtitle'),
       action: () => navigate('/animals?filter=treatments'),
     },
     {
-      title: 'Statistiques',
+      title: t('dashboard.kpis.statistics'),
       value: '📊',
       icon: <StatsIcon color="info" />,
-      subtitle: 'Analyse de performance',
+      subtitle: t('dashboard.kpis.statisticsSubtitle'),
       action: () => navigate('/statistics'),
     },
   ];
@@ -123,7 +125,7 @@ const DashboardPage = () => {
         fontSize: { xs: '1.75rem', sm: '2.125rem' },
         mb: { xs: 2, sm: 3 }
       }}>
-        Tableau de bord
+        {t('dashboard.title')}
       </Typography>
 
       {!hasData && (
@@ -131,10 +133,10 @@ const DashboardPage = () => {
           <Card sx={{ bgcolor: 'info.main', color: 'info.contrastText' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Bienvenue dans Garenne !
+                {t('dashboard.welcomeTitle')}
               </Typography>
               <Typography variant="body2" sx={{ mb: 2 }}>
-                Votre élevage semble vide. Voulez-vous charger des données d'exemple pour découvrir l'application ?
+                {t('dashboard.welcomeMessage')}
               </Typography>
               <Button 
                 variant="contained" 
@@ -142,14 +144,14 @@ const DashboardPage = () => {
                 onClick={loadSeedData}
                 sx={{ mr: 1 }}
               >
-                Charger des données d'exemple
+                {t('dashboard.loadSampleData')}
               </Button>
               <Button 
                 variant="outlined" 
                 color="inherit"
                 onClick={() => navigate('/animals?new=true')}
               >
-                Créer mon premier animal
+                {t('dashboard.createFirstAnimal')}
               </Button>
             </CardContent>
           </Card>
@@ -188,7 +190,7 @@ const DashboardPage = () => {
               </CardContent>
               <CardActions>
                 <Button size="small" onClick={card.action}>
-                  Voir détails
+                  {t('dashboard.viewDetails')}
                 </Button>
               </CardActions>
             </Card>
@@ -202,7 +204,7 @@ const DashboardPage = () => {
           <Typography variant="h5" component="h3" gutterBottom sx={{
             fontSize: { xs: '1.25rem', sm: '1.5rem' }
           }}>
-            Vue d'ensemble
+            {t('dashboard.overview')}
           </Typography>
           <PopulationChart />
         </Box>
@@ -235,31 +237,31 @@ const DashboardPage = () => {
           <ListItemIcon>
             <PetsIcon />
           </ListItemIcon>
-          <ListItemText>Nouvel animal</ListItemText>
+          <ListItemText>{t('dashboard.quickActions.newAnimal')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleQuickAction('weight')}>
           <ListItemIcon>
             <WeightIcon />
           </ListItemIcon>
-          <ListItemText>Pesée rapide</ListItemText>
+          <ListItemText>{t('dashboard.quickActions.quickWeighing')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleQuickAction('litter')}>
           <ListItemIcon>
             <FamilyIcon />
           </ListItemIcon>
-          <ListItemText>Nouvelle portée</ListItemText>
+          <ListItemText>{t('dashboard.quickActions.newLitter')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleQuickAction('treatment')}>
           <ListItemIcon>
             <MedicalIcon />
           </ListItemIcon>
-          <ListItemText>Traitement</ListItemText>
+          <ListItemText>{t('dashboard.quickActions.treatment')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleQuickAction('qr')}>
           <ListItemIcon>
             <QrCodeIcon />
           </ListItemIcon>
-          <ListItemText>Codes QR</ListItemText>
+          <ListItemText>{t('dashboard.quickActions.qrCodes')}</ListItemText>
         </MenuItem>
       </Menu>
     </Container>

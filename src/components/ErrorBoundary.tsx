@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Button, Container, Paper } from '@mui/material';
 import { ErrorOutline as ErrorIcon } from '@mui/icons-material';
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -39,12 +40,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 // Router Error Element Component
 export function RouterErrorBoundary() {
   const error = useRouteError();
+  const { t } = useTranslation();
   
-  let errorMessage = 'Une erreur inattendue s\'est produite';
+  let errorMessage = t('errors.unexpected');
   let errorDetails = '';
 
   if (isRouteErrorResponse(error)) {
-    errorMessage = `Erreur ${error.status}: ${error.statusText}`;
+    errorMessage = `${t('common.error')} ${error.status}: ${error.statusText}`;
     errorDetails = error.data?.message || '';
   } else if (error instanceof Error) {
     errorMessage = error.message;
@@ -63,6 +65,8 @@ interface ErrorFallbackProps {
 }
 
 function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
+  const { t } = useTranslation();
+  
   const handleReload = () => {
     if (resetError) {
       resetError();
@@ -94,10 +98,10 @@ function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
             }} 
           />
           <Typography variant="h4" component="h1" gutterBottom>
-            Oups ! Une erreur s'est produite
+            {t('errors.title')}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            {error?.message || 'Une erreur inattendue s\'est produite. Veuillez réessayer.'}
+            {error?.message || t('errors.unexpected')}
           </Typography>
         </Box>
 
@@ -107,21 +111,21 @@ function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
             onClick={handleReload}
             sx={{ minWidth: 120 }}
           >
-            Réessayer
+            {t('errors.reload')}
           </Button>
           <Button 
             variant="outlined" 
             onClick={handleGoHome}
             sx={{ minWidth: 120 }}
           >
-            Retour à l'accueil
+            {t('errors.goHome')}
           </Button>
         </Box>
 
         {process.env.NODE_ENV === 'development' && error?.stack && (
           <Box sx={{ mt: 4, textAlign: 'left' }}>
             <Typography variant="h6" gutterBottom>
-              Détails de l'erreur (développement uniquement):
+              {t('errors.developmentDetails')}
             </Typography>
             <Paper 
               sx={{ 

@@ -200,6 +200,38 @@ export interface Translations {
     weight: string;
     weightUnit: string;
   };
+
+  // Modals
+  modals: {
+    mortality: {
+      title: string;
+      deathDate: string;
+      deathDateHelperText: string;
+      suspectedCause: string;
+      suspectedCausePlaceholder: string;
+      necropsyPerformed: string;
+      notes: string;
+      notesPlaceholder: string;
+      errorEnterDate: string;
+      errorFutureDate: string;
+    };
+    litter: {
+      title: string;
+      kindlingDate: string;
+      bornAlive: string;
+      stillborn: string;
+      malesToCreate: string;
+      femalesToCreate: string;
+      notes: string;
+      notesPlaceholder: string;
+    };
+    quickWeight: {
+      title: string;
+      animal: string;
+      animalPlaceholder: string;
+      weightGrams: string;
+    };
+  };
 }
 
 const frTranslations: Translations = {
@@ -375,6 +407,36 @@ const frTranslations: Translations = {
     initialWeight: 'Poids initial',
     weight: 'Poids',
     weightUnit: 'g',
+  },
+  modals: {
+    mortality: {
+      title: 'Déclarer un décès',
+      deathDate: 'Date de décès',
+      deathDateHelperText: 'Ne peut pas être dans le futur',
+      suspectedCause: 'Cause suspectée',
+      suspectedCausePlaceholder: 'Maladie, accident, vieillesse...',
+      necropsyPerformed: 'Nécropsie réalisée',
+      notes: 'Notes',
+      notesPlaceholder: 'Circonstances, observations...',
+      errorEnterDate: 'Veuillez entrer une date de décès',
+      errorFutureDate: 'La date de décès ne peut pas être dans le futur',
+    },
+    litter: {
+      title: 'Nouvelle portée',
+      kindlingDate: 'Date de mise bas',
+      bornAlive: 'Nés vivants',
+      stillborn: 'Mort-nés',
+      malesToCreate: 'Mâles à créer',
+      femalesToCreate: 'Femelles à créer',
+      notes: 'Notes',
+      notesPlaceholder: 'Observations sur la mise bas, santé des petits...',
+    },
+    quickWeight: {
+      title: 'Pesée rapide',
+      animal: 'Animal',
+      animalPlaceholder: 'Sélectionner un animal',
+      weightGrams: 'Poids (en grammes)',
+    },
   },
 };
 
@@ -553,6 +615,36 @@ const enTranslations: Translations = {
     weight: 'Weight',
     weightUnit: 'g',
   },
+  modals: {
+    mortality: {
+      title: 'Record Death',
+      deathDate: 'Death Date',
+      deathDateHelperText: 'Cannot be in the future',
+      suspectedCause: 'Suspected Cause',
+      suspectedCausePlaceholder: 'Disease, accident, old age...',
+      necropsyPerformed: 'Necropsy Performed',
+      notes: 'Notes',
+      notesPlaceholder: 'Circumstances, observations...',
+      errorEnterDate: 'Please enter a death date',
+      errorFutureDate: 'Death date cannot be in the future',
+    },
+    litter: {
+      title: 'New Litter',
+      kindlingDate: 'Kindling Date',
+      bornAlive: 'Born Alive',
+      stillborn: 'Stillborn',
+      malesToCreate: 'Males to Create',
+      femalesToCreate: 'Females to Create',
+      notes: 'Notes',
+      notesPlaceholder: 'Kindling observations, health of the young...',
+    },
+    quickWeight: {
+      title: 'Quick Weighing',
+      animal: 'Animal',
+      animalPlaceholder: 'Select an animal',
+      weightGrams: 'Weight (in grams)',
+    },
+  },
 };
 
 // Spanish translations
@@ -729,6 +821,36 @@ const esTranslations: Translations = {
     initialWeight: 'Peso Inicial',
     weight: 'Peso',
     weightUnit: 'g',
+  },
+  modals: {
+    mortality: {
+      title: 'Registrar Muerte',
+      deathDate: 'Fecha de Muerte',
+      deathDateHelperText: 'No puede estar en el futuro',
+      suspectedCause: 'Causa Sospechada',
+      suspectedCausePlaceholder: 'Enfermedad, accidente, vejez...',
+      necropsyPerformed: 'Necropsia Realizada',
+      notes: 'Notas',
+      notesPlaceholder: 'Circunstancias, observaciones...',
+      errorEnterDate: 'Por favor ingrese una fecha de muerte',
+      errorFutureDate: 'La fecha de muerte no puede estar en el futuro',
+    },
+    litter: {
+      title: 'Nueva Camada',
+      kindlingDate: 'Fecha de Parto',
+      bornAlive: 'Nacidos Vivos',
+      stillborn: 'Nacidos Muertos',
+      malesToCreate: 'Machos a Crear',
+      femalesToCreate: 'Hembras a Crear',
+      notes: 'Notas',
+      notesPlaceholder: 'Observaciones del parto, salud de las crías...',
+    },
+    quickWeight: {
+      title: 'Pesaje Rápido',
+      animal: 'Animal',
+      animalPlaceholder: 'Seleccionar un animal',
+      weightGrams: 'Peso (en gramos)',
+    },
   },
 };
 
@@ -907,6 +1029,36 @@ const deTranslations: Translations = {
     weight: 'Gewicht',
     weightUnit: 'g',
   },
+  modals: {
+    mortality: {
+      title: 'Tod melden',
+      deathDate: 'Todesdatum',
+      deathDateHelperText: 'Kann nicht in der Zukunft liegen',
+      suspectedCause: 'Vermutete Ursache',
+      suspectedCausePlaceholder: 'Krankheit, Unfall, Alter...',
+      necropsyPerformed: 'Autopsie durchgeführt',
+      notes: 'Notizen',
+      notesPlaceholder: 'Umstände, Beobachtungen...',
+      errorEnterDate: 'Bitte geben Sie ein Todesdatum ein',
+      errorFutureDate: 'Todesdatum kann nicht in der Zukunft liegen',
+    },
+    litter: {
+      title: 'Neuer Wurf',
+      kindlingDate: 'Geburtsdatum',
+      bornAlive: 'Lebend Geboren',
+      stillborn: 'Totgeboren',
+      malesToCreate: 'Männchen zu erstellen',
+      femalesToCreate: 'Weibchen zu erstellen',
+      notes: 'Notizen',
+      notesPlaceholder: 'Geburtsbeobachtungen, Gesundheit der Jungen...',
+    },
+    quickWeight: {
+      title: 'Schnellwiegung',
+      animal: 'Tier',
+      animalPlaceholder: 'Tier auswählen',
+      weightGrams: 'Gewicht (in Gramm)',
+    },
+  },
 };
 
 // Portuguese translations  
@@ -1083,6 +1235,36 @@ const ptTranslations: Translations = {
     initialWeight: 'Peso Inicial',
     weight: 'Peso',
     weightUnit: 'g',
+  },
+  modals: {
+    mortality: {
+      title: 'Registrar Morte',
+      deathDate: 'Data da Morte',
+      deathDateHelperText: 'Não pode estar no futuro',
+      suspectedCause: 'Causa Suspeita',
+      suspectedCausePlaceholder: 'Doença, acidente, velhice...',
+      necropsyPerformed: 'Necrópsia Realizada',
+      notes: 'Notas',
+      notesPlaceholder: 'Circunstâncias, observações...',
+      errorEnterDate: 'Por favor, insira uma data de morte',
+      errorFutureDate: 'A data da morte não pode estar no futuro',
+    },
+    litter: {
+      title: 'Nova Ninhada',
+      kindlingDate: 'Data do Parto',
+      bornAlive: 'Nascidos Vivos',
+      stillborn: 'Natimortos',
+      malesToCreate: 'Machos a Criar',
+      femalesToCreate: 'Fêmeas a Criar',
+      notes: 'Notas',
+      notesPlaceholder: 'Observações do parto, saúde dos filhotes...',
+    },
+    quickWeight: {
+      title: 'Pesagem Rápida',
+      animal: 'Animal',
+      animalPlaceholder: 'Selecionar um animal',
+      weightGrams: 'Peso (em gramas)',
+    },
   },
 };
 

@@ -15,6 +15,7 @@ import {
 import { useAppStore } from '../../state/store';
 import { Animal } from '../../models/types';
 import { formatDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface MortalityModalProps {
   open: boolean;
@@ -27,6 +28,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
   onClose, 
   animal 
 }) => {
+  const { t } = useTranslation();
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [suspectedCause, setSuspectedCause] = useState('');
   const [necropsy, setNecropsy] = useState(false);
@@ -37,7 +39,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
 
   const handleSubmit = () => {
     if (!date) {
-      setError('Veuillez entrer une date de décès');
+      setError(t('modals.mortality.errorEnterDate'));
       return;
     }
 
@@ -47,7 +49,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
     today.setHours(23, 59, 59, 999); // End of today
 
     if (deathDate > today) {
-      setError('La date de décès ne peut pas être dans le futur');
+      setError(t('modals.mortality.errorFutureDate'));
       return;
     }
 
@@ -89,7 +91,7 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Enregistrer le décès</DialogTitle>
+      <DialogTitle>{t('modals.mortality.title')}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
@@ -110,21 +112,21 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
           </Box>
 
           <TextField
-            label="Date de décès"
+            label={t('modals.mortality.deathDate')}
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             InputLabelProps={{ shrink: true }}
             required
             fullWidth
-            helperText="Ne peut pas être dans le futur"
+            helperText={t('modals.mortality.deathDateHelperText')}
           />
 
           <TextField
-            label="Cause suspectée"
+            label={t('modals.mortality.suspectedCause')}
             value={suspectedCause}
             onChange={(e) => setSuspectedCause(e.target.value)}
-            placeholder="Maladie, accident, vieillesse..."
+            placeholder={t('modals.mortality.suspectedCausePlaceholder')}
             fullWidth
           />
 
@@ -135,28 +137,28 @@ export const MortalityModal: React.FC<MortalityModalProps> = ({
                 onChange={(e) => setNecropsy(e.target.checked)}
               />
             }
-            label="Nécropsie réalisée"
+            label={t('modals.mortality.necropsyPerformed')}
           />
 
           <TextField
-            label="Notes"
+            label={t('modals.mortality.notes')}
             multiline
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Circonstances, observations..."
+            placeholder={t('modals.mortality.notesPlaceholder')}
             fullWidth
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <Button 
           onClick={handleSubmit} 
           variant="contained" 
           color="error"
         >
-          Enregistrer le décès
+          {t('modals.mortality.title')}
         </Button>
       </DialogActions>
     </Dialog>

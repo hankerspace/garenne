@@ -13,6 +13,7 @@ import {
 import { useAppStore } from '../../state/store';
 import { getLiveAnimals } from '../../state/selectors';
 import { Animal } from '../../models/types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface QuickWeightModalProps {
   open: boolean;
@@ -21,6 +22,7 @@ interface QuickWeightModalProps {
 }
 
 export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClose, preselectedAnimal }) => {
+  const { t } = useTranslation();
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(preselectedAnimal || null);
   const [weight, setWeight] = useState('');
   const [notes, setNotes] = useState('');
@@ -88,15 +90,15 @@ export const QuickWeightModal: React.FC<QuickWeightModalProps> = ({ open, onClos
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Animal"
-                placeholder="Sélectionner un animal"
+                label={t('modals.quickWeight.animal')}
+                placeholder={t('modals.quickWeight.animalPlaceholder')}
                 required
               />
             )}
           />
 
           <TextField
-            label="Poids (en grammes)"
+            label={t('modals.quickWeight.weightGrams')}
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}

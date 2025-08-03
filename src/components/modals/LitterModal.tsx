@@ -14,6 +14,7 @@ import {
 import { useAppStore } from '../../state/store';
 import { Animal, Breeding, Sex, Status } from '../../models/types';
 import { formatDate, calculateEstimatedWeaningDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface LitterModalProps {
   open: boolean;
@@ -28,6 +29,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
   breeding, 
   preselectedMother 
 }) => {
+  const { t } = useTranslation();
   const [kindlingDate, setKindlingDate] = useState(new Date().toISOString().split('T')[0]);
   const [bornAlive, setBornAlive] = useState<number>(0);
   const [stillborn, setStillborn] = useState<number>(0);
@@ -191,7 +193,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
           </Box>
 
           <TextField
-            label="Date de mise bas"
+            label={t('modals.litter.kindlingDate')}
             type="date"
             value={kindlingDate}
             onChange={(e) => setKindlingDate(e.target.value)}
@@ -203,7 +205,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                label="Nés vivants"
+                label={t('modals.litter.bornAlive')}
                 type="number"
                 value={bornAlive}
                 onChange={(e) => handleBornAliveChange(Math.max(0, parseInt(e.target.value) || 0))}
@@ -213,7 +215,7 @@ export const LitterModal: React.FC<LitterModalProps> = ({
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Mort-nés"
+                label={t('modals.litter.stillborn')}
                 type="number"
                 value={stillborn}
                 onChange={(e) => setStillborn(Math.max(0, parseInt(e.target.value) || 0))}

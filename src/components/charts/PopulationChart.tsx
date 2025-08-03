@@ -15,6 +15,7 @@ import { useAppStore } from '../../state/store';
 import { getKPIs } from '../../state/selectors';
 import { Status } from '../../models/types';
 import { useTranslation } from '../../hooks/useTranslation';
+import { I18nService } from '../../services/i18n.service';
 
 const COLORS = {
   male: '#1976d2',
@@ -73,7 +74,7 @@ export const PopulationChart: React.FC = () => {
     }).length;
 
     monthlyBirths.push({
-      month: targetDate.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
+      month: I18nService.formatDate(targetDate, { month: 'short', year: '2-digit' }),
       births: birthsInMonth,
     });
   }

@@ -51,7 +51,7 @@ export const breedingSchema = z.object({
   }
   return true;
 }, {
-  message: () => I18nService.t('validation.diagnosisAfterBreeding'),
+  message: I18nService.t('validation.diagnosisAfterBreeding'),
   path: ['diagnosisDate']
 });
 
@@ -72,7 +72,7 @@ export const litterSchema = z.object({
   }
   return true;
 }, {
-  message: () => I18nService.t('validation.weaningAfterKindling'),
+  message: I18nService.t('validation.weaningAfterKindling'),
   path: ['weaningDate']
 }).refine((data) => {
   // Validation: weaned count should not exceed born alive
@@ -81,7 +81,7 @@ export const litterSchema = z.object({
   }
   return true;
 }, {
-  message: () => I18nService.t('validation.weanedExceedsAlive'),
+  message: I18nService.t('validation.weanedExceedsAlive'),
   path: ['weanedCount']
 });
 
@@ -89,7 +89,7 @@ export const litterSchema = z.object({
 export const weightSchema = z.object({
   animalId: uuid,
   date: dateString,
-  weightGrams: z.number().min(1, () => I18nService.t('validation.weightPositive')),
+  weightGrams: z.number().min(1, I18nService.t('validation.weightPositive')),
   notes: z.string().optional(),
 });
 
@@ -97,7 +97,7 @@ export const weightSchema = z.object({
 export const treatmentSchema = z.object({
   animalId: uuid,
   date: dateString,
-  product: z.string().min(1, () => I18nService.t('validation.productRequired')),
+  product: z.string().min(1, I18nService.t('validation.productRequired')),
   lotNumber: z.string().optional(),
   dose: z.string().optional(),
   route: z.nativeEnum(Route).optional(),
@@ -111,7 +111,7 @@ export const treatmentSchema = z.object({
   }
   return true;
 }, {
-  message: () => I18nService.t('validation.withdrawalAfterTreatment'),
+  message: I18nService.t('validation.withdrawalAfterTreatment'),
   path: ['withdrawalUntil']
 });
 

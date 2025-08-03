@@ -424,6 +424,84 @@ export interface Translations {
       color: string;
     };
   };
+
+  // Dashboard
+  dashboard: {
+    title: string;
+    welcomeTitle: string;
+    welcomeMessage: string;
+    loadSampleData: string;
+    createFirstAnimal: string;
+    viewDetails: string;
+    overview: string;
+    kpis: {
+      liveAnimals: string;
+      femalesAndMales: string;
+      reproductors: string;
+      reproductorsSubtitle: string;
+      reproductionPlanning: string;
+      reproductionPlanningSubtitle: string;
+      quickActions: string;
+      quickActionsSubtitle: string;
+      activeTreatments: string;
+      activeTreatmentsSubtitle: string;
+      statistics: string;
+      statisticsSubtitle: string;
+    };
+    quickActions: {
+      newAnimal: string;
+      quickWeighing: string;
+      newLitter: string;
+      treatment: string;
+      qrCodes: string;
+    };
+  };
+
+  // Statistics page
+  statisticsPage: {
+    title: string;
+    overview: string;
+    reproduction: string;
+    consumption: string;
+    health: string;
+    otherMetrics: string;
+    reportGenerated: string;
+    cards: {
+      totalAnimals: string;
+      totalAnimalsSubtitle: string;
+      activeAnimals: string;
+      activeAnimalsSubtitle: string;
+      reproductors: string;
+      reproductorsSubtitle: string;
+      growing: string;
+      growingSubtitle: string;
+      totalLitters: string;
+      totalLittersSubtitle: string;
+      averageSize: string;
+      averageSizeSubtitle: string;
+      survivalRate: string;
+      survivalRateSubtitle: string;
+      efficiency: string;
+      efficiencySubtitle: string;
+      totalConsumed: string;
+      totalConsumedSubtitle: string;
+      totalWeight: string;
+      totalWeightSubtitle: string;
+      averageWeight: string;
+      averageWeightSubtitle: string;
+      totalTreatments: string;
+      totalTreatmentsSubtitle: string;
+      activeWithdrawals: string;
+      activeWithdrawalsSubtitle: string;
+      commonTreatments: string;
+      averageAge: string;
+      averageAgeSubtitle: string;
+      averageAnimalWeight: string;
+      averageAnimalWeightSubtitle: string;
+      cageOccupancy: string;
+      cageOccupancySubtitle: string;
+    };
+  };
 }
 
 const frTranslations: Translations = {
@@ -820,6 +898,84 @@ const frTranslations: Translations = {
       capacity: 'Capacité',
       location: 'Emplacement',
       color: 'Couleur',
+    },
+  },
+
+  // Dashboard
+  dashboard: {
+    title: 'Tableau de bord',
+    welcomeTitle: 'Bienvenue dans Garenne !',
+    welcomeMessage: 'Votre élevage semble vide. Voulez-vous charger des données d\'exemple pour découvrir l\'application ?',
+    loadSampleData: 'Charger des données d\'exemple',
+    createFirstAnimal: 'Créer mon premier animal',
+    viewDetails: 'Voir détails',
+    overview: 'Vue d\'ensemble',
+    kpis: {
+      liveAnimals: 'Animaux vivants',
+      femalesAndMales: 'femelles, mâles',
+      reproductors: 'Reproducteurs',
+      reproductorsSubtitle: 'Animaux reproducteurs',
+      reproductionPlanning: 'Planning reproduction',
+      reproductionPlanningSubtitle: 'Calendrier élevage',
+      quickActions: 'Actions rapides',
+      quickActionsSubtitle: 'Accès rapide terrain',
+      activeTreatments: 'Traitements actifs',
+      activeTreatmentsSubtitle: 'Sous délai d\'attente',
+      statistics: 'Statistiques',
+      statisticsSubtitle: 'Analyse de performance',
+    },
+    quickActions: {
+      newAnimal: 'Nouvel animal',
+      quickWeighing: 'Pesée rapide',
+      newLitter: 'Nouvelle portée',
+      treatment: 'Traitement',
+      qrCodes: 'Codes QR',
+    },
+  },
+
+  // Statistics page
+  statisticsPage: {
+    title: 'Statistiques',
+    overview: 'Vue d\'ensemble',
+    reproduction: 'Reproduction',
+    consumption: 'Consommation',
+    health: 'Santé',
+    otherMetrics: 'Autres Métriques',
+    reportGenerated: 'Rapport généré le',
+    cards: {
+      totalAnimals: 'Total Animaux',
+      totalAnimalsSubtitle: 'animaux enregistrés',
+      activeAnimals: 'Animaux Actifs',
+      activeAnimalsSubtitle: 'vivants',
+      reproductors: 'Reproducteurs',
+      reproductorsSubtitle: 'en reproduction',
+      growing: 'En Croissance',
+      growingSubtitle: 'jeunes',
+      totalLitters: 'Total Portées',
+      totalLittersSubtitle: 'portées enregistrées',
+      averageSize: 'Taille Moyenne',
+      averageSizeSubtitle: 'lapereaux par portée',
+      survivalRate: 'Taux de Survie',
+      survivalRateSubtitle: 'sevrage réussi',
+      efficiency: 'Efficacité',
+      efficiencySubtitle: 'portées/femelle/an',
+      totalConsumed: 'Total Consommés',
+      totalConsumedSubtitle: 'animaux',
+      totalWeight: 'Poids Total',
+      totalWeightSubtitle: 'viande produite',
+      averageWeight: 'Poids Moyen',
+      averageWeightSubtitle: 'par animal',
+      totalTreatments: 'Total Traitements',
+      totalTreatmentsSubtitle: 'enregistrés',
+      activeWithdrawals: 'Délais Actifs',
+      activeWithdrawalsSubtitle: 'en cours',
+      commonTreatments: 'Traitements Fréquents',
+      averageAge: 'Âge Moyen',
+      averageAgeSubtitle: 'jours',
+      averageAnimalWeight: 'Poids Moyen',
+      averageAnimalWeightSubtitle: 'animaux actifs',
+      cageOccupancy: 'Occupation Cages',
+      cageOccupancySubtitle: 'taux d\'occupation',
     },
   },
 };
@@ -1221,6 +1377,84 @@ const enTranslations: Translations = {
       color: 'Color',
     },
   },
+
+  // Dashboard
+  dashboard: {
+    title: 'Dashboard',
+    welcomeTitle: 'Welcome to Garenne!',
+    welcomeMessage: 'Your farm seems empty. Would you like to load sample data to discover the application?',
+    loadSampleData: 'Load sample data',
+    createFirstAnimal: 'Create my first animal',
+    viewDetails: 'View details',
+    overview: 'Overview',
+    kpis: {
+      liveAnimals: 'Live Animals',
+      femalesAndMales: 'females, males',
+      reproductors: 'Breeders',
+      reproductorsSubtitle: 'Breeding animals',
+      reproductionPlanning: 'Reproduction Planning',
+      reproductionPlanningSubtitle: 'Breeding calendar',
+      quickActions: 'Quick Actions',
+      quickActionsSubtitle: 'Field quick access',
+      activeTreatments: 'Active Treatments',
+      activeTreatmentsSubtitle: 'Under withdrawal period',
+      statistics: 'Statistics',
+      statisticsSubtitle: 'Performance analysis',
+    },
+    quickActions: {
+      newAnimal: 'New animal',
+      quickWeighing: 'Quick weighing',
+      newLitter: 'New litter',
+      treatment: 'Treatment',
+      qrCodes: 'QR Codes',
+    },
+  },
+
+  // Statistics page
+  statisticsPage: {
+    title: 'Statistics',
+    overview: 'Overview',
+    reproduction: 'Reproduction',
+    consumption: 'Consumption',
+    health: 'Health',
+    otherMetrics: 'Other Metrics',
+    reportGenerated: 'Report generated on',
+    cards: {
+      totalAnimals: 'Total Animals',
+      totalAnimalsSubtitle: 'animals registered',
+      activeAnimals: 'Active Animals',
+      activeAnimalsSubtitle: 'alive',
+      reproductors: 'Breeders',
+      reproductorsSubtitle: 'breeding',
+      growing: 'Growing',
+      growingSubtitle: 'young',
+      totalLitters: 'Total Litters',
+      totalLittersSubtitle: 'litters registered',
+      averageSize: 'Average Size',
+      averageSizeSubtitle: 'kits per litter',
+      survivalRate: 'Survival Rate',
+      survivalRateSubtitle: 'successful weaning',
+      efficiency: 'Efficiency',
+      efficiencySubtitle: 'litters/female/year',
+      totalConsumed: 'Total Consumed',
+      totalConsumedSubtitle: 'animals',
+      totalWeight: 'Total Weight',
+      totalWeightSubtitle: 'meat produced',
+      averageWeight: 'Average Weight',
+      averageWeightSubtitle: 'per animal',
+      totalTreatments: 'Total Treatments',
+      totalTreatmentsSubtitle: 'registered',
+      activeWithdrawals: 'Active Withdrawals',
+      activeWithdrawalsSubtitle: 'in progress',
+      commonTreatments: 'Common Treatments',
+      averageAge: 'Average Age',
+      averageAgeSubtitle: 'days',
+      averageAnimalWeight: 'Average Weight',
+      averageAnimalWeightSubtitle: 'active animals',
+      cageOccupancy: 'Cage Occupancy',
+      cageOccupancySubtitle: 'occupancy rate',
+    },
+  },
 };
 
 // Spanish translations
@@ -1618,6 +1852,84 @@ const esTranslations: Translations = {
       capacity: 'Capacidad',
       location: 'Ubicación',
       color: 'Color',
+    },
+  },
+
+  // Dashboard
+  dashboard: {
+    title: 'Panel de Control',
+    welcomeTitle: '¡Bienvenido a Garenne!',
+    welcomeMessage: 'Su granja parece vacía. ¿Le gustaría cargar datos de ejemplo para descubrir la aplicación?',
+    loadSampleData: 'Cargar datos de ejemplo',
+    createFirstAnimal: 'Crear mi primer animal',
+    viewDetails: 'Ver detalles',
+    overview: 'Resumen',
+    kpis: {
+      liveAnimals: 'Animales Vivos',
+      femalesAndMales: 'hembras, machos',
+      reproductors: 'Reproductores',
+      reproductorsSubtitle: 'Animales reproductores',
+      reproductionPlanning: 'Planificación Reproductiva',
+      reproductionPlanningSubtitle: 'Calendario de cría',
+      quickActions: 'Acciones Rápidas',
+      quickActionsSubtitle: 'Acceso rápido campo',
+      activeTreatments: 'Tratamientos Activos',
+      activeTreatmentsSubtitle: 'Bajo período de retiro',
+      statistics: 'Estadísticas',
+      statisticsSubtitle: 'Análisis de rendimiento',
+    },
+    quickActions: {
+      newAnimal: 'Nuevo animal',
+      quickWeighing: 'Pesaje rápido',
+      newLitter: 'Nueva camada',
+      treatment: 'Tratamiento',
+      qrCodes: 'Códigos QR',
+    },
+  },
+
+  // Statistics page
+  statisticsPage: {
+    title: 'Estadísticas',
+    overview: 'Resumen',
+    reproduction: 'Reproducción',
+    consumption: 'Consumo',
+    health: 'Salud',
+    otherMetrics: 'Otras Métricas',
+    reportGenerated: 'Informe generado el',
+    cards: {
+      totalAnimals: 'Total de Animales',
+      totalAnimalsSubtitle: 'animales registrados',
+      activeAnimals: 'Animales Activos',
+      activeAnimalsSubtitle: 'vivos',
+      reproductors: 'Reproductores',
+      reproductorsSubtitle: 'en reproducción',
+      growing: 'En Crecimiento',
+      growingSubtitle: 'jóvenes',
+      totalLitters: 'Total de Camadas',
+      totalLittersSubtitle: 'camadas registradas',
+      averageSize: 'Tamaño Promedio',
+      averageSizeSubtitle: 'crías por camada',
+      survivalRate: 'Tasa de Supervivencia',
+      survivalRateSubtitle: 'destete exitoso',
+      efficiency: 'Eficiencia',
+      efficiencySubtitle: 'camadas/hembra/año',
+      totalConsumed: 'Total Consumidos',
+      totalConsumedSubtitle: 'animales',
+      totalWeight: 'Peso Total',
+      totalWeightSubtitle: 'carne producida',
+      averageWeight: 'Peso Promedio',
+      averageWeightSubtitle: 'por animal',
+      totalTreatments: 'Total Tratamientos',
+      totalTreatmentsSubtitle: 'registrados',
+      activeWithdrawals: 'Retiros Activos',
+      activeWithdrawalsSubtitle: 'en progreso',
+      commonTreatments: 'Tratamientos Comunes',
+      averageAge: 'Edad Promedio',
+      averageAgeSubtitle: 'días',
+      averageAnimalWeight: 'Peso Promedio',
+      averageAnimalWeightSubtitle: 'animales activos',
+      cageOccupancy: 'Ocupación de Jaulas',
+      cageOccupancySubtitle: 'tasa de ocupación',
     },
   },
 };
@@ -2019,6 +2331,84 @@ const deTranslations: Translations = {
       color: 'Farbe',
     },
   },
+
+  // Dashboard
+  dashboard: {
+    title: 'Dashboard',
+    welcomeTitle: 'Willkommen bei Garenne!',
+    welcomeMessage: 'Ihre Farm scheint leer zu sein. Möchten Sie Beispieldaten laden, um die Anwendung zu entdecken?',
+    loadSampleData: 'Beispieldaten laden',
+    createFirstAnimal: 'Mein erstes Tier erstellen',
+    viewDetails: 'Details anzeigen',
+    overview: 'Übersicht',
+    kpis: {
+      liveAnimals: 'Lebende Tiere',
+      femalesAndMales: 'Weibchen, Männchen',
+      reproductors: 'Züchter',
+      reproductorsSubtitle: 'Zuchttiere',
+      reproductionPlanning: 'Zuchtplanung',
+      reproductionPlanningSubtitle: 'Zuchtkalender',
+      quickActions: 'Schnellaktionen',
+      quickActionsSubtitle: 'Schneller Feldzugang',
+      activeTreatments: 'Aktive Behandlungen',
+      activeTreatmentsSubtitle: 'Unter Wartezeit',
+      statistics: 'Statistiken',
+      statisticsSubtitle: 'Leistungsanalyse',
+    },
+    quickActions: {
+      newAnimal: 'Neues Tier',
+      quickWeighing: 'Schnellwiegung',
+      newLitter: 'Neuer Wurf',
+      treatment: 'Behandlung',
+      qrCodes: 'QR-Codes',
+    },
+  },
+
+  // Statistics page
+  statisticsPage: {
+    title: 'Statistiken',
+    overview: 'Übersicht',
+    reproduction: 'Fortpflanzung',
+    consumption: 'Verbrauch',
+    health: 'Gesundheit',
+    otherMetrics: 'Andere Metriken',
+    reportGenerated: 'Bericht erstellt am',
+    cards: {
+      totalAnimals: 'Tiere Gesamt',
+      totalAnimalsSubtitle: 'Tiere registriert',
+      activeAnimals: 'Aktive Tiere',
+      activeAnimalsSubtitle: 'lebend',
+      reproductors: 'Züchter',
+      reproductorsSubtitle: 'züchtend',
+      growing: 'Wachsend',
+      growingSubtitle: 'jung',
+      totalLitters: 'Würfe Gesamt',
+      totalLittersSubtitle: 'Würfe registriert',
+      averageSize: 'Durchschnittsgröße',
+      averageSizeSubtitle: 'Junge pro Wurf',
+      survivalRate: 'Überlebensrate',
+      survivalRateSubtitle: 'erfolgreich entwöhnt',
+      efficiency: 'Effizienz',
+      efficiencySubtitle: 'Würfe/Weibchen/Jahr',
+      totalConsumed: 'Verbraucht Gesamt',
+      totalConsumedSubtitle: 'Tiere',
+      totalWeight: 'Gesamtgewicht',
+      totalWeightSubtitle: 'Fleisch produziert',
+      averageWeight: 'Durchschnittsgewicht',
+      averageWeightSubtitle: 'pro Tier',
+      totalTreatments: 'Behandlungen Gesamt',
+      totalTreatmentsSubtitle: 'registriert',
+      activeWithdrawals: 'Aktive Wartezeiten',
+      activeWithdrawalsSubtitle: 'in Bearbeitung',
+      commonTreatments: 'Häufige Behandlungen',
+      averageAge: 'Durchschnittsalter',
+      averageAgeSubtitle: 'Tage',
+      averageAnimalWeight: 'Durchschnittsgewicht',
+      averageAnimalWeightSubtitle: 'aktive Tiere',
+      cageOccupancy: 'Käfigbelegung',
+      cageOccupancySubtitle: 'Belegungsrate',
+    },
+  },
 };
 
 // Portuguese translations  
@@ -2416,6 +2806,84 @@ const ptTranslations: Translations = {
       capacity: 'Capacidade',
       location: 'Localização',
       color: 'Cor',
+    },
+  },
+
+  // Dashboard
+  dashboard: {
+    title: 'Painel',
+    welcomeTitle: 'Bem-vindo ao Garenne!',
+    welcomeMessage: 'Sua fazenda parece vazia. Gostaria de carregar dados de exemplo para descobrir a aplicação?',
+    loadSampleData: 'Carregar dados de exemplo',
+    createFirstAnimal: 'Criar meu primeiro animal',
+    viewDetails: 'Ver detalhes',
+    overview: 'Visão Geral',
+    kpis: {
+      liveAnimals: 'Animais Vivos',
+      femalesAndMales: 'fêmeas, machos',
+      reproductors: 'Reprodutores',
+      reproductorsSubtitle: 'Animais reprodutores',
+      reproductionPlanning: 'Planejamento Reprodutivo',
+      reproductionPlanningSubtitle: 'Calendário de criação',
+      quickActions: 'Ações Rápidas',
+      quickActionsSubtitle: 'Acesso rápido campo',
+      activeTreatments: 'Tratamentos Ativos',
+      activeTreatmentsSubtitle: 'Sob período de carência',
+      statistics: 'Estatísticas',
+      statisticsSubtitle: 'Análise de desempenho',
+    },
+    quickActions: {
+      newAnimal: 'Novo animal',
+      quickWeighing: 'Pesagem rápida',
+      newLitter: 'Nova ninhada',
+      treatment: 'Tratamento',
+      qrCodes: 'Códigos QR',
+    },
+  },
+
+  // Statistics page
+  statisticsPage: {
+    title: 'Estatísticas',
+    overview: 'Visão Geral',
+    reproduction: 'Reprodução',
+    consumption: 'Consumo',
+    health: 'Saúde',
+    otherMetrics: 'Outras Métricas',
+    reportGenerated: 'Relatório gerado em',
+    cards: {
+      totalAnimals: 'Total de Animais',
+      totalAnimalsSubtitle: 'animais registrados',
+      activeAnimals: 'Animais Ativos',
+      activeAnimalsSubtitle: 'vivos',
+      reproductors: 'Reprodutores',
+      reproductorsSubtitle: 'reproduzindo',
+      growing: 'Em Crescimento',
+      growingSubtitle: 'jovens',
+      totalLitters: 'Total de Ninhadas',
+      totalLittersSubtitle: 'ninhadas registradas',
+      averageSize: 'Tamanho Médio',
+      averageSizeSubtitle: 'filhotes por ninhada',
+      survivalRate: 'Taxa de Sobrevivência',
+      survivalRateSubtitle: 'desmame bem-sucedido',
+      efficiency: 'Eficiência',
+      efficiencySubtitle: 'ninhadas/fêmea/ano',
+      totalConsumed: 'Total Consumidos',
+      totalConsumedSubtitle: 'animais',
+      totalWeight: 'Peso Total',
+      totalWeightSubtitle: 'carne produzida',
+      averageWeight: 'Peso Médio',
+      averageWeightSubtitle: 'por animal',
+      totalTreatments: 'Total Tratamentos',
+      totalTreatmentsSubtitle: 'registrados',
+      activeWithdrawals: 'Carências Ativas',
+      activeWithdrawalsSubtitle: 'em andamento',
+      commonTreatments: 'Tratamentos Comuns',
+      averageAge: 'Idade Média',
+      averageAgeSubtitle: 'dias',
+      averageAnimalWeight: 'Peso Médio',
+      averageAnimalWeightSubtitle: 'animais ativos',
+      cageOccupancy: 'Ocupação das Gaiolas',
+      cageOccupancySubtitle: 'taxa de ocupação',
     },
   },
 };

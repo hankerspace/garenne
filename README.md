@@ -5,7 +5,7 @@
 [![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=flat&logo=material-ui&logoColor=white)](https://mui.com/)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-blue?style=flat)](https://web.dev/progressive-web-apps/)
 
-![Garenne Dashboard](https://github.com/user-attachments/assets/ceb9cc80-78c9-43af-8e95-01c2d2f81a37)
+![Garenne Dashboard](https://github.com/user-attachments/assets/040a6567-57ff-49d4-bc13-c031b58e8b4b)
 
 **Garenne** is a modern and comprehensive web application for rabbit breeding management, developed with React 19, TypeScript, and Material-UI v5. It provides breeders with a professional solution to efficiently manage their animals, litters, weighings, treatments and much more, all in offline mode with secure local storage.
 

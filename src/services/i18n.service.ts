@@ -2903,6 +2903,47 @@ export class I18nService {
     this.currentLocale = locale;
   }
 
+  static detectBrowserLocale(): Locale {
+    // Get browser language preference
+    const browserLang = navigator.language || navigator.languages?.[0] || 'fr-FR';
+    
+    // Map browser language to supported locales
+    const langMap: Record<string, Locale> = {
+      'fr': 'fr-FR',
+      'fr-FR': 'fr-FR',
+      'fr-CA': 'fr-FR',
+      'en': 'en-US',
+      'en-US': 'en-US',
+      'en-GB': 'en-US',
+      'en-CA': 'en-US',
+      'es': 'es-ES',
+      'es-ES': 'es-ES',
+      'es-MX': 'es-ES',
+      'es-AR': 'es-ES',
+      'de': 'de-DE',
+      'de-DE': 'de-DE',
+      'de-AT': 'de-DE',
+      'de-CH': 'de-DE',
+      'pt': 'pt-PT',
+      'pt-PT': 'pt-PT',
+      'pt-BR': 'pt-PT',
+    };
+
+    // Try exact match first
+    if (langMap[browserLang]) {
+      return langMap[browserLang];
+    }
+
+    // Try language code without region
+    const langCode = browserLang.split('-')[0];
+    if (langMap[langCode]) {
+      return langMap[langCode];
+    }
+
+    // Default to French
+    return 'fr-FR';
+  }
+
   static getCurrentLocale(): Locale {
     return this.currentLocale;
   }

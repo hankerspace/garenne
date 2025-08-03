@@ -5,7 +5,7 @@
 [![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=flat&logo=material-ui&logoColor=white)](https://mui.com/)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-blue?style=flat)](https://web.dev/progressive-web-apps/)
 
-![Garenne Dashboard](https://github.com/user-attachments/assets/ceb9cc80-78c9-43af-8e95-01c2d2f81a37)
+![Garenne Dashboard](https://github.com/user-attachments/assets/816568ca-4cc9-48aa-8526-ac013d555565)
 
 **Garenne** est une application web moderne et complète pour la gestion d'élevage de lapins, développée avec React 19, TypeScript, et Material-UI v5. Elle offre aux éleveurs une solution professionnelle pour gérer efficacement leurs animaux, portées, pesées, traitements et bien plus encore, le tout en mode hors-ligne avec stockage local sécurisé.
 

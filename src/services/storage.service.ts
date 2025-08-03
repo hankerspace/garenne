@@ -1,5 +1,6 @@
 import * as LZString from 'lz-string';
 import { AppState, AppSettings } from '../models/types';
+import { I18nService } from './i18n.service';
 
 const STORAGE_KEY = 'rabbit-app-v1';
 const COMPRESSION_THRESHOLD = 1024 * 1024; // 1MB
@@ -14,7 +15,7 @@ const defaultSettings: AppSettings = {
   theme: 'light',
   weightUnit: 'g',
   enableQR: false,
-  locale: 'fr-FR',
+  locale: I18nService.detectBrowserLocale(), // Use browser locale as default
   schemaVersion: 2,
   gestationDuration: 31,
   weaningDuration: 28,
@@ -44,7 +45,14 @@ export class LocalStorageService implements StorageService {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        return defaultState;
+        // New user - use browser locale detection
+        return {
+          ...defaultState,
+          settings: {
+            ...defaultSettings,
+            locale: I18nService.detectBrowserLocale(),
+          }
+        };
       }
 
       let parsed: unknown;
@@ -75,7 +83,13 @@ export class LocalStorageService implements StorageService {
       };
     } catch (error) {
       console.error('Failed to load from localStorage:', error);
-      return defaultState;
+      return {
+        ...defaultState,
+        settings: {
+          ...defaultSettings,
+          locale: I18nService.detectBrowserLocale(),
+        }
+      };
     }
   }
 
@@ -134,6 +148,7 @@ export class MigrationService {
           ...(stateObj?.settings && typeof stateObj.settings === 'object' ? stateObj.settings : {}),
           schemaVersion: 2,
           // Ensure new settings have defaults
+          locale: stateObj?.settings?.locale || I18nService.detectBrowserLocale(), // Use browser locale if no locale is set
           gestationDuration: stateObj?.settings?.gestationDuration || 31,
           weaningDuration: stateObj?.settings?.weaningDuration || 28,
           reproductionReadyDuration: stateObj?.settings?.reproductionReadyDuration || 90,

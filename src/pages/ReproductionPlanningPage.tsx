@@ -358,6 +358,14 @@ const ReproductionPlanningPage: React.FC = () => {
           >
             Programmer saillie
           </Button>
+          
+          <Button
+            variant="outlined"
+            onClick={() => navigate('/litters')}
+            size={isMobile ? 'small' : 'medium'}
+          >
+            Voir portées
+          </Button>
         </Box>
       </Box>
 

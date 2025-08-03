@@ -23,6 +23,8 @@ import {
   Warning,
   Event as EventIcon,
   Speed as SpeedIcon,
+  Assessment as StatsIcon,
+  QrCode as QrCodeIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -64,6 +66,9 @@ const DashboardPage = () => {
       case 'treatment':
         navigate('/animals?quickTreatment=true');
         break;
+      case 'qr':
+        navigate('/animals?view=qr');
+        break;
     }
   };
 
@@ -102,6 +107,13 @@ const DashboardPage = () => {
       icon: <Warning color="warning" />,
       subtitle: 'Sous délai d\'attente',
       action: () => navigate('/animals?filter=treatments'),
+    },
+    {
+      title: 'Statistiques',
+      value: '📊',
+      icon: <StatsIcon color="info" />,
+      subtitle: 'Analyse de performance',
+      action: () => navigate('/statistics'),
     },
   ];
 
@@ -146,7 +158,7 @@ const DashboardPage = () => {
 
       <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 3, sm: 4 } }}>
         {kpiCards.map((card, index) => (
-          <Grid item xs={12} sm={6} lg={2.4} key={index}>
+          <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
             <Card sx={{ 
               height: '100%',
               transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
@@ -196,100 +208,6 @@ const DashboardPage = () => {
         </Box>
       )}
 
-      {/* Quick Actions Section */}
-      <Box mt={{ xs: 3, sm: 4 }}>
-        <Typography variant="h5" component="h3" gutterBottom sx={{
-          fontSize: { xs: '1.25rem', sm: '1.5rem' }
-        }}>
-          Actions rapides
-        </Typography>
-        <Grid container spacing={{ xs: 2, sm: 3 }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{
-              height: '100%',
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 2,
-              }
-            }}>
-              <CardContent>
-                <PetsIcon color="primary" sx={{ mb: 1 }} />
-                <Typography variant="h6">Nouvel animal</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Enregistrer un nouveau lapin
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button 
-                  size="small" 
-                  onClick={() => handleQuickAction('animal')}
-                >
-                  Ajouter
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
-                <WeightIcon color="primary" sx={{ mb: 1 }} />
-                <Typography variant="h6">Pesée rapide</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Enregistrer une pesée
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button 
-                  size="small" 
-                  onClick={() => handleQuickAction('weight')}
-                >
-                  Peser
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
-                <FamilyIcon color="primary" sx={{ mb: 1 }} />
-                <Typography variant="h6">Nouvelle portée</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Enregistrer une mise bas
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button 
-                  size="small" 
-                  onClick={() => handleQuickAction('litter')}
-                >
-                  Ajouter
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
-                <MedicalIcon color="primary" sx={{ mb: 1 }} />
-                <Typography variant="h6">Traitement</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Enregistrer un soin
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button 
-                  size="small" 
-                  onClick={() => handleQuickAction('treatment')}
-                >
-                  Traiter
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
-
       {/* Floating Action Button */}
       <Fab
         color="primary"
@@ -336,6 +254,12 @@ const DashboardPage = () => {
             <MedicalIcon />
           </ListItemIcon>
           <ListItemText>Traitement</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => handleQuickAction('qr')}>
+          <ListItemIcon>
+            <QrCodeIcon />
+          </ListItemIcon>
+          <ListItemText>Codes QR</ListItemText>
         </MenuItem>
       </Menu>
     </Container>

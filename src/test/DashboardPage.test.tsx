@@ -50,7 +50,7 @@ describe('DashboardPage', () => {
     expect(screen.getAllByText('Actions rapides')).toHaveLength(2) // One in KPI card, one in FAB menu
     expect(screen.getByText('Nouvel animal')).toBeInTheDocument()
     expect(screen.getByText('Pesée rapide')).toBeInTheDocument()
-    expect(screen.getByText('Nouvelle portée')).toBeInTheDocument()
+    expect(screen.getByText('Codes QR')).toBeInTheDocument()
     expect(screen.getByText('Traitement')).toBeInTheDocument()
   })
 })

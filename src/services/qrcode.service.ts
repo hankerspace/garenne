@@ -9,9 +9,15 @@ export class QRCodeService {
    * Generate URL for accessing an animal's detail page
    */
   static generateAnimalUrl(animalId: string): string {
-    // Get the current base URL
-    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-    return `${baseUrl}/animals/${animalId}`;
+    // Get the base URL with proper basename handling
+    const origin = window.location.origin;
+    
+    // Determine the basename based on environment
+    // In production, the basename is '/garenne', in development it's '/'
+    const isProduction = import.meta.env.PROD;
+    const basename = isProduction ? '/garenne' : '';
+    
+    return `${origin}${basename}/animals/${animalId}`;
   }
 
   /**

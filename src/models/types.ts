@@ -217,7 +217,7 @@ export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   weightUnit: 'g' | 'kg';
   enableQR: boolean;
-  locale: 'fr-FR' | 'en-US' | 'es-ES';
+  locale: 'fr-FR' | 'en-US' | 'es-ES' | 'de-DE' | 'pt-PT';
   schemaVersion: number;
   // Customizable durations (in days)
   gestationDuration: number; // Default: 31 days

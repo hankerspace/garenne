@@ -11,22 +11,26 @@ import {
 import { Box, Typography, Card, CardContent } from '@mui/material';
 import { WeightRecord } from '../../models/types';
 import { formatDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface WeightChartProps {
   weights: WeightRecord[];
   title?: string;
 }
 
-export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évolution du poids" }) => {
+export const WeightChart: React.FC<WeightChartProps> = ({ weights, title }) => {
+  const { t } = useTranslation();
+  const chartTitle = title || t('charts.weightEvolution');
+
   if (weights.length === 0) {
     return (
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {title}
+            {chartTitle}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Aucune donnée de poids disponible
+            {t('charts.noWeightData')}
           </Typography>
         </CardContent>
       </Card>
@@ -85,7 +89,7 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
             {data.fullDate}
           </Typography>
           <Typography variant="body2" color="primary">
-            Poids: {data.weight}g
+            {t('charts.weight')}: {data.weight}{t('charts.weightUnit')}
           </Typography>
         </Box>
       );
@@ -97,42 +101,42 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
     <Card>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          {title}
+          {chartTitle}
         </Typography>
         
         {/* Statistics */}
         <Box sx={{ mb: 2, display: 'flex', gap: 3, flexWrap: 'wrap' }}>
           <Box>
             <Typography variant="caption" color="text.secondary">
-              Poids actuel
+              {t('charts.currentWeight')}
             </Typography>
             <Typography variant="body2" fontWeight="medium">
-              {lastWeight}g
+              {lastWeight}{t('charts.weightUnit')}
             </Typography>
           </Box>
           <Box>
             <Typography variant="caption" color="text.secondary">
-              Gain total
+              {t('charts.totalGain')}
             </Typography>
             <Typography 
               variant="body2" 
               fontWeight="medium"
               color={totalGain >= 0 ? 'success.main' : 'error.main'}
             >
-              {totalGain > 0 ? '+' : ''}{totalGain}g ({gainPercentage}%)
+              {totalGain > 0 ? '+' : ''}{totalGain}{t('charts.weightUnit')} ({gainPercentage}%)
             </Typography>
           </Box>
           {avgDailyGain !== 0 && (
             <Box>
               <Typography variant="caption" color="text.secondary">
-                Gain moyen/jour
+                {t('charts.averageDailyGain')}
               </Typography>
               <Typography 
                 variant="body2" 
                 fontWeight="medium"
                 color={avgDailyGain >= 0 ? 'success.main' : 'error.main'}
               >
-                {avgDailyGain > 0 ? '+' : ''}{avgDailyGain.toFixed(1)}g
+                {avgDailyGain > 0 ? '+' : ''}{avgDailyGain.toFixed(1)}{t('charts.weightUnit')}
               </Typography>
             </Box>
           )}
@@ -151,7 +155,7 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
               <YAxis 
                 tick={{ fontSize: 12 }}
                 tickMargin={5}
-                label={{ value: 'Poids (g)', angle: -90, position: 'insideLeft' }}
+                label={{ value: `${t('charts.weight')} (${t('charts.weightUnit')})`, angle: -90, position: 'insideLeft' }}
               />
               <Tooltip content={<CustomTooltip />} />
               <Line 
@@ -168,7 +172,7 @@ export const WeightChart: React.FC<WeightChartProps> = ({ weights, title = "Évo
                   y={firstWeight} 
                   stroke="#666" 
                   strokeDasharray="2 2" 
-                  label={{ value: "Poids initial" }}
+                  label={{ value: t('charts.initialWeight') }}
                 />
               )}
             </LineChart>

@@ -16,7 +16,7 @@ import {
 import {
   Home as HomeIcon,
   Pets as PetsIcon,
-  Assessment as StatsIcon,
+  FamilyRestroom as ReproductionIcon,
   Settings as SettingsIcon,
   Home as CageIcon,
 } from '@mui/icons-material';
@@ -52,7 +52,7 @@ function App() {
     if (location.pathname === '/') return 0;
     if (location.pathname.startsWith('/animals')) return 1;
     if (location.pathname.startsWith('/cages')) return 2;
-    if (location.pathname.startsWith('/statistics')) return 3;
+    if (location.pathname.startsWith('/planning') || location.pathname.startsWith('/litters')) return 3;
     if (location.pathname.startsWith('/settings') || location.pathname.startsWith('/tags')) return 4;
     return 0;
   }, [location.pathname]);
@@ -69,7 +69,7 @@ function App() {
         navigate('/cages/visualization');
         break;
       case 3:
-        navigate('/statistics');
+        navigate('/planning');
         break;
       case 4:
         navigate('/settings');
@@ -153,8 +153,8 @@ function App() {
               icon={<CageIcon />} 
             />
             <BottomNavigationAction 
-              label={t('nav.statistics')} 
-              icon={<StatsIcon />} 
+              label={t('nav.reproduction')} 
+              icon={<ReproductionIcon />} 
             />
             <BottomNavigationAction 
               label={t('nav.settings')} 

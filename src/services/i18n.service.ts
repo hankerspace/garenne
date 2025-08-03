@@ -51,6 +51,7 @@ export interface Translations {
     statistics: string;
     settings: string;
     planning: string;
+    reproduction: string;
   };
 
   // Animals
@@ -236,6 +237,7 @@ const frTranslations: Translations = {
     statistics: 'Statistiques',
     settings: 'Paramètres',
     planning: 'Planning',
+    reproduction: 'Reproduction',
   },
   animals: {
     title: 'Gestion des animaux',
@@ -402,6 +404,7 @@ const enTranslations: Translations = {
     statistics: 'Statistics',
     settings: 'Settings',
     planning: 'Planning',
+    reproduction: 'Reproduction',
   },
   animals: {
     title: 'Animal Management',
@@ -568,6 +571,7 @@ const esTranslations: Translations = {
     statistics: 'Estadísticas',
     settings: 'Configuración',
     planning: 'Planificación',
+    reproduction: 'Reproducción',
   },
   animals: {
     title: 'Gestión de Animales',

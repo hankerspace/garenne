@@ -23,6 +23,7 @@ import {
   Warning,
   Event as EventIcon,
   Speed as SpeedIcon,
+  Assessment as StatsIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -103,6 +104,13 @@ const DashboardPage = () => {
       subtitle: 'Sous délai d\'attente',
       action: () => navigate('/animals?filter=treatments'),
     },
+    {
+      title: 'Statistiques',
+      value: '📊',
+      icon: <StatsIcon color="info" />,
+      subtitle: 'Analyse de performance',
+      action: () => navigate('/statistics'),
+    },
   ];
 
   return (
@@ -146,7 +154,7 @@ const DashboardPage = () => {
 
       <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 3, sm: 4 } }}>
         {kpiCards.map((card, index) => (
-          <Grid item xs={12} sm={6} lg={2.4} key={index}>
+          <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
             <Card sx={{ 
               height: '100%',
               transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',

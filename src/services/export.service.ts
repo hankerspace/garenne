@@ -1,4 +1,5 @@
 import { AppState } from '../models/types';
+import { I18nService } from './i18n.service';
 
 interface ExportFormat {
   json: string;
@@ -16,8 +17,24 @@ export class ExportService {
 
     // Export animals
     if (data.animals.length > 0) {
-      csvSections.push('=== ANIMALS ===');
-      const animalHeaders = ['ID', 'Name', 'Identifier', 'Sex', 'Breed', 'Birth Date', 'Origin', 'Mother ID', 'Father ID', 'Cage', 'Status', 'Tags', 'Consumed Date', 'Consumed Weight', 'Notes'];
+      csvSections.push(`=== ${I18nService.t('export.animals')} ===`);
+      const animalHeaders = [
+        I18nService.t('export.headers.id'),
+        I18nService.t('export.headers.name'),
+        I18nService.t('export.headers.identifier'),
+        I18nService.t('export.headers.sex'),
+        I18nService.t('export.headers.breed'),
+        I18nService.t('export.headers.birthDate'),
+        I18nService.t('export.headers.origin'),
+        I18nService.t('export.headers.motherId'),
+        I18nService.t('export.headers.fatherId'),
+        I18nService.t('export.headers.cage'),
+        I18nService.t('export.headers.status'),
+        I18nService.t('export.headers.tags'),
+        I18nService.t('export.headers.consumedDate'),
+        I18nService.t('export.headers.consumedWeight'),
+        I18nService.t('export.headers.notes')
+      ];
       csvSections.push(animalHeaders.join(','));
       
       data.animals.forEach(animal => {
@@ -45,8 +62,14 @@ export class ExportService {
 
     // Export weights
     if (data.weights.length > 0) {
-      csvSections.push('=== WEIGHTS ===');
-      const weightHeaders = ['ID', 'Animal ID', 'Date', 'Weight (g)', 'Notes'];
+      csvSections.push(`=== ${I18nService.t('export.weights')} ===`);
+      const weightHeaders = [
+        I18nService.t('export.headers.id'),
+        I18nService.t('export.headers.animalId'),
+        I18nService.t('export.headers.date'),
+        I18nService.t('export.headers.weight'),
+        I18nService.t('export.headers.notes')
+      ];
       csvSections.push(weightHeaders.join(','));
       
       data.weights.forEach(weight => {
@@ -64,8 +87,18 @@ export class ExportService {
 
     // Export litters
     if (data.litters.length > 0) {
-      csvSections.push('=== LITTERS ===');
-      const litterHeaders = ['ID', 'Mother ID', 'Father ID', 'Kindling Date', 'Born Alive', 'Stillborn', 'Weaning Date', 'Weaned Count', 'Notes'];
+      csvSections.push(`=== ${I18nService.t('export.litters')} ===`);
+      const litterHeaders = [
+        I18nService.t('export.headers.id'),
+        I18nService.t('export.headers.motherId'),
+        I18nService.t('export.headers.fatherId'),
+        I18nService.t('export.headers.kindlingDate'),
+        I18nService.t('export.headers.bornAlive'),
+        I18nService.t('export.headers.stillborn'),
+        I18nService.t('export.headers.weaningDate'),
+        I18nService.t('export.headers.weanedCount'),
+        I18nService.t('export.headers.notes')
+      ];
       csvSections.push(litterHeaders.join(','));
       
       data.litters.forEach(litter => {
@@ -87,8 +120,19 @@ export class ExportService {
 
     // Export treatments
     if (data.treatments.length > 0) {
-      csvSections.push('=== TREATMENTS ===');
-      const treatmentHeaders = ['ID', 'Animal ID', 'Date', 'Product', 'Lot Number', 'Dose', 'Route', 'Reason', 'Withdrawal Until', 'Notes'];
+      csvSections.push(`=== ${I18nService.t('export.treatments')} ===`);
+      const treatmentHeaders = [
+        I18nService.t('export.headers.id'),
+        I18nService.t('export.headers.animalId'),
+        I18nService.t('export.headers.date'),
+        I18nService.t('export.headers.product'),
+        I18nService.t('export.headers.lotNumber'),
+        I18nService.t('export.headers.dose'),
+        I18nService.t('export.headers.route'),
+        I18nService.t('export.headers.reason'),
+        I18nService.t('export.headers.withdrawalUntil'),
+        I18nService.t('export.headers.notes')
+      ];
       csvSections.push(treatmentHeaders.join(','));
       
       data.treatments.forEach(treatment => {
@@ -111,8 +155,15 @@ export class ExportService {
 
     // Export cages
     if (data.cages.length > 0) {
-      csvSections.push('=== CAGES ===');
-      const cageHeaders = ['ID', 'Name', 'Description', 'Capacity', 'Location', 'Notes'];
+      csvSections.push(`=== ${I18nService.t('export.cages')} ===`);
+      const cageHeaders = [
+        I18nService.t('export.headers.id'),
+        I18nService.t('export.headers.name'),
+        I18nService.t('export.headers.description'),
+        I18nService.t('export.headers.capacity'),
+        I18nService.t('export.headers.location'),
+        I18nService.t('export.headers.notes')
+      ];
       csvSections.push(cageHeaders.join(','));
       
       data.cages.forEach(cage => {
@@ -131,8 +182,13 @@ export class ExportService {
 
     // Export tags
     if (data.tags.length > 0) {
-      csvSections.push('=== TAGS ===');
-      const tagHeaders = ['ID', 'Name', 'Color', 'Description'];
+      csvSections.push(`=== ${I18nService.t('export.tags')} ===`);
+      const tagHeaders = [
+        I18nService.t('export.headers.id'),
+        I18nService.t('export.headers.name'),
+        I18nService.t('export.headers.color'),
+        I18nService.t('export.headers.description')
+      ];
       csvSections.push(tagHeaders.join(','));
       
       data.tags.forEach(tag => {

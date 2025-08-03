@@ -1,26 +1,27 @@
 import { z } from 'zod';
 import { Sex, Status, BreedingMethod, Route } from '../models/types';
+import { I18nService } from '../services/i18n.service';
 
 // Base schemas for common validations
 const dateString = z.string().refine((date) => !isNaN(Date.parse(date)), {
-  message: 'Date invalide'
+  message: I18nService.t('validation.invalidDate')
 });
 
-const positiveNumber = z.number().min(0, 'Doit être positif');
-const uuid = z.string().uuid('ID invalide');
+const positiveNumber = z.number().min(0, I18nService.t('validation.weightPositive'));
+const uuid = z.string().uuid(I18nService.t('validation.invalidId'));
 
 // Animal validation schema
 export const animalSchema = z.object({
-  name: z.string().min(1, 'Le nom est requis').max(50, 'Nom trop long'),
+  name: z.string().min(1, I18nService.t('validation.nameRequired')).max(50, I18nService.t('validation.nameTooLong')),
   identifier: z.string().optional(),
-  sex: z.nativeEnum(Sex, { message: 'Sexe requis' }),
+  sex: z.nativeEnum(Sex, { message: I18nService.t('validation.sexRequired') }),
   breed: z.string().optional(),
   birthDate: dateString.optional(),
   origin: z.enum(['BORN_HERE', 'PURCHASED']).optional(),
   motherId: uuid.optional(),
   fatherId: uuid.optional(),
   cage: z.string().optional(),
-  status: z.nativeEnum(Status, { message: 'Statut requis' }),
+  status: z.nativeEnum(Status, { message: I18nService.t('validation.statusRequired') }),
   notes: z.string().optional(),
 }).refine((data) => {
   // Validation: if birthDate is provided, it should not be in the future
@@ -29,7 +30,7 @@ export const animalSchema = z.object({
   }
   return true;
 }, {
-  message: 'La date de naissance ne peut pas être dans le futur',
+  message: I18nService.t('validation.birthDateFuture'),
   path: ['birthDate']
 });
 
@@ -50,7 +51,7 @@ export const breedingSchema = z.object({
   }
   return true;
 }, {
-  message: 'La date de diagnostic doit être après la saillie',
+  message: () => I18nService.t('validation.diagnosisAfterBreeding'),
   path: ['diagnosisDate']
 });
 
@@ -71,7 +72,7 @@ export const litterSchema = z.object({
   }
   return true;
 }, {
-  message: 'La date de sevrage doit être après la mise bas',
+  message: () => I18nService.t('validation.weaningAfterKindling'),
   path: ['weaningDate']
 }).refine((data) => {
   // Validation: weaned count should not exceed born alive
@@ -80,7 +81,7 @@ export const litterSchema = z.object({
   }
   return true;
 }, {
-  message: 'Le nombre de sevrés ne peut pas dépasser les nés vivants',
+  message: () => I18nService.t('validation.weanedExceedsAlive'),
   path: ['weanedCount']
 });
 
@@ -88,7 +89,7 @@ export const litterSchema = z.object({
 export const weightSchema = z.object({
   animalId: uuid,
   date: dateString,
-  weightGrams: z.number().min(1, 'Le poids doit être supérieur à 0'),
+  weightGrams: z.number().min(1, () => I18nService.t('validation.weightPositive')),
   notes: z.string().optional(),
 });
 
@@ -96,7 +97,7 @@ export const weightSchema = z.object({
 export const treatmentSchema = z.object({
   animalId: uuid,
   date: dateString,
-  product: z.string().min(1, 'Le produit est requis'),
+  product: z.string().min(1, () => I18nService.t('validation.productRequired')),
   lotNumber: z.string().optional(),
   dose: z.string().optional(),
   route: z.nativeEnum(Route).optional(),
@@ -110,7 +111,7 @@ export const treatmentSchema = z.object({
   }
   return true;
 }, {
-  message: 'La fin du délai d\'attente doit être après le traitement',
+  message: () => I18nService.t('validation.withdrawalAfterTreatment'),
   path: ['withdrawalUntil']
 });
 

@@ -362,6 +362,68 @@ export interface Translations {
       weaned: string;
     };
   };
+
+  // Validation
+  validation: {
+    invalidDate: string;
+    invalidId: string;
+    nameRequired: string;
+    nameTooLong: string;
+    sexRequired: string;
+    statusRequired: string;
+    birthDateFuture: string;
+    diagnosisAfterBreeding: string;
+    weaningAfterKindling: string;
+    weanedExceedsAlive: string;
+    weightPositive: string;
+    productRequired: string;
+    withdrawalAfterTreatment: string;
+  };
+
+  // Export
+  export: {
+    animals: string;
+    weights: string;
+    litters: string;
+    treatments: string;
+    cages: string;
+    tags: string;
+    headers: {
+      id: string;
+      name: string;
+      identifier: string;
+      sex: string;
+      breed: string;
+      birthDate: string;
+      origin: string;
+      motherId: string;
+      fatherId: string;
+      cage: string;
+      status: string;
+      tags: string;
+      consumedDate: string;
+      consumedWeight: string;
+      notes: string;
+      animalId: string;
+      date: string;
+      weight: string;
+      kindlingDate: string;
+      bornAlive: string;
+      stillborn: string;
+      weaningDate: string;
+      weanedCount: string;
+      product: string;
+      lotNumber: string;
+      dose: string;
+      route: string;
+      reason: string;
+      withdrawalUntil: string;
+      description: string;
+      capacity: string;
+      location: string;
+      color: string;
+    };
+  };
 }
 
 const frTranslations: Translations = {
@@ -696,6 +758,68 @@ const frTranslations: Translations = {
       weaning: 'Sevrage',
       estimatedWeaning: 'Sevrage estimé',
       weaned: 'sevrés',
+    },
+  },
+
+  // Validation
+  validation: {
+    invalidDate: 'Date invalide',
+    invalidId: 'ID invalide',
+    nameRequired: 'Le nom est requis',
+    nameTooLong: 'Nom trop long',
+    sexRequired: 'Sexe requis',
+    statusRequired: 'Statut requis',
+    birthDateFuture: 'La date de naissance ne peut pas être dans le futur',
+    diagnosisAfterBreeding: 'La date de diagnostic doit être après la saillie',
+    weaningAfterKindling: 'La date de sevrage doit être après la mise bas',
+    weanedExceedsAlive: 'Le nombre de sevrés ne peut pas dépasser les nés vivants',
+    weightPositive: 'Le poids doit être supérieur à 0',
+    productRequired: 'Le produit est requis',
+    withdrawalAfterTreatment: 'La fin du délai d\'attente doit être après le traitement',
+  },
+
+  // Export
+  export: {
+    animals: 'ANIMAUX',
+    weights: 'PESÉES',
+    litters: 'PORTÉES',
+    treatments: 'TRAITEMENTS',
+    cages: 'CAGES',
+    tags: 'ÉTIQUETTES',
+    headers: {
+      id: 'ID',
+      name: 'Nom',
+      identifier: 'Identifiant',
+      sex: 'Sexe',
+      breed: 'Race',
+      birthDate: 'Date de naissance',
+      origin: 'Origine',
+      motherId: 'ID Mère',
+      fatherId: 'ID Père',
+      cage: 'Cage',
+      status: 'Statut',
+      tags: 'Étiquettes',
+      consumedDate: 'Date de consommation',
+      consumedWeight: 'Poids à la consommation',
+      notes: 'Notes',
+      animalId: 'ID Animal',
+      date: 'Date',
+      weight: 'Poids (g)',
+      kindlingDate: 'Date de mise bas',
+      bornAlive: 'Nés vivants',
+      stillborn: 'Mort-nés',
+      weaningDate: 'Date de sevrage',
+      weanedCount: 'Nombre sevrés',
+      product: 'Produit',
+      lotNumber: 'Numéro de lot',
+      dose: 'Dose',
+      route: 'Voie',
+      reason: 'Motif',
+      withdrawalUntil: 'Délai jusqu\'au',
+      description: 'Description',
+      capacity: 'Capacité',
+      location: 'Emplacement',
+      color: 'Couleur',
     },
   },
 };
@@ -1035,6 +1159,68 @@ const enTranslations: Translations = {
       weaned: 'weaned',
     },
   },
+
+  // Validation
+  validation: {
+    invalidDate: 'Invalid date',
+    invalidId: 'Invalid ID',
+    nameRequired: 'Name is required',
+    nameTooLong: 'Name too long',
+    sexRequired: 'Sex is required',
+    statusRequired: 'Status is required',
+    birthDateFuture: 'Birth date cannot be in the future',
+    diagnosisAfterBreeding: 'Diagnosis date must be after breeding date',
+    weaningAfterKindling: 'Weaning date must be after kindling date',
+    weanedExceedsAlive: 'Weaned count cannot exceed live births',
+    weightPositive: 'Weight must be greater than 0',
+    productRequired: 'Product is required',
+    withdrawalAfterTreatment: 'Withdrawal end date must be after treatment date',
+  },
+
+  // Export
+  export: {
+    animals: 'ANIMALS',
+    weights: 'WEIGHTS',
+    litters: 'LITTERS',
+    treatments: 'TREATMENTS',
+    cages: 'CAGES',
+    tags: 'TAGS',
+    headers: {
+      id: 'ID',
+      name: 'Name',
+      identifier: 'Identifier',
+      sex: 'Sex',
+      breed: 'Breed',
+      birthDate: 'Birth Date',
+      origin: 'Origin',
+      motherId: 'Mother ID',
+      fatherId: 'Father ID',
+      cage: 'Cage',
+      status: 'Status',
+      tags: 'Tags',
+      consumedDate: 'Consumed Date',
+      consumedWeight: 'Consumed Weight',
+      notes: 'Notes',
+      animalId: 'Animal ID',
+      date: 'Date',
+      weight: 'Weight (g)',
+      kindlingDate: 'Kindling Date',
+      bornAlive: 'Born Alive',
+      stillborn: 'Stillborn',
+      weaningDate: 'Weaning Date',
+      weanedCount: 'Weaned Count',
+      product: 'Product',
+      lotNumber: 'Lot Number',
+      dose: 'Dose',
+      route: 'Route',
+      reason: 'Reason',
+      withdrawalUntil: 'Withdrawal Until',
+      description: 'Description',
+      capacity: 'Capacity',
+      location: 'Location',
+      color: 'Color',
+    },
+  },
 };
 
 // Spanish translations
@@ -1370,6 +1556,68 @@ const esTranslations: Translations = {
       weaning: 'Destete',
       estimatedWeaning: 'Destete Estimado',
       weaned: 'destetados',
+    },
+  },
+
+  // Validation
+  validation: {
+    invalidDate: 'Fecha inválida',
+    invalidId: 'ID inválido',
+    nameRequired: 'El nombre es obligatorio',
+    nameTooLong: 'Nombre demasiado largo',
+    sexRequired: 'El sexo es obligatorio',
+    statusRequired: 'El estado es obligatorio',
+    birthDateFuture: 'La fecha de nacimiento no puede estar en el futuro',
+    diagnosisAfterBreeding: 'La fecha de diagnóstico debe ser posterior al cruce',
+    weaningAfterKindling: 'La fecha de destete debe ser posterior al parto',
+    weanedExceedsAlive: 'El número de destetados no puede exceder los nacidos vivos',
+    weightPositive: 'El peso debe ser mayor que 0',
+    productRequired: 'El producto es obligatorio',
+    withdrawalAfterTreatment: 'La fecha de fin del período de retiro debe ser posterior al tratamiento',
+  },
+
+  // Export
+  export: {
+    animals: 'ANIMALES',
+    weights: 'PESOS',
+    litters: 'CAMADAS',
+    treatments: 'TRATAMIENTOS',
+    cages: 'JAULAS',
+    tags: 'ETIQUETAS',
+    headers: {
+      id: 'ID',
+      name: 'Nombre',
+      identifier: 'Identificador',
+      sex: 'Sexo',
+      breed: 'Raza',
+      birthDate: 'Fecha de Nacimiento',
+      origin: 'Origen',
+      motherId: 'ID Madre',
+      fatherId: 'ID Padre',
+      cage: 'Jaula',
+      status: 'Estado',
+      tags: 'Etiquetas',
+      consumedDate: 'Fecha de Consumo',
+      consumedWeight: 'Peso al Consumo',
+      notes: 'Notas',
+      animalId: 'ID Animal',
+      date: 'Fecha',
+      weight: 'Peso (g)',
+      kindlingDate: 'Fecha de Parto',
+      bornAlive: 'Nacidos Vivos',
+      stillborn: 'Nacidos Muertos',
+      weaningDate: 'Fecha de Destete',
+      weanedCount: 'Número Destetados',
+      product: 'Producto',
+      lotNumber: 'Número de Lote',
+      dose: 'Dosis',
+      route: 'Vía',
+      reason: 'Motivo',
+      withdrawalUntil: 'Retiro Hasta',
+      description: 'Descripción',
+      capacity: 'Capacidad',
+      location: 'Ubicación',
+      color: 'Color',
     },
   },
 };
@@ -1709,6 +1957,68 @@ const deTranslations: Translations = {
       weaned: 'entwöhnt',
     },
   },
+
+  // Validation
+  validation: {
+    invalidDate: 'Ungültiges Datum',
+    invalidId: 'Ungültige ID',
+    nameRequired: 'Name ist erforderlich',
+    nameTooLong: 'Name zu lang',
+    sexRequired: 'Geschlecht ist erforderlich',
+    statusRequired: 'Status ist erforderlich',
+    birthDateFuture: 'Geburtsdatum kann nicht in der Zukunft liegen',
+    diagnosisAfterBreeding: 'Diagnosedatum muss nach der Paarung liegen',
+    weaningAfterKindling: 'Entwöhnungsdatum muss nach der Geburt liegen',
+    weanedExceedsAlive: 'Anzahl entwöhnter Tiere kann Lebendgeburten nicht überschreiten',
+    weightPositive: 'Gewicht muss größer als 0 sein',
+    productRequired: 'Produkt ist erforderlich',
+    withdrawalAfterTreatment: 'Ende der Wartezeit muss nach der Behandlung liegen',
+  },
+
+  // Export
+  export: {
+    animals: 'TIERE',
+    weights: 'GEWICHTE',
+    litters: 'WÜRFE',
+    treatments: 'BEHANDLUNGEN',
+    cages: 'KÄFIGE',
+    tags: 'ETIKETTEN',
+    headers: {
+      id: 'ID',
+      name: 'Name',
+      identifier: 'Kennung',
+      sex: 'Geschlecht',
+      breed: 'Rasse',
+      birthDate: 'Geburtsdatum',
+      origin: 'Herkunft',
+      motherId: 'Mutter ID',
+      fatherId: 'Vater ID',
+      cage: 'Käfig',
+      status: 'Status',
+      tags: 'Etiketten',
+      consumedDate: 'Verbrauchsdatum',
+      consumedWeight: 'Verbrauchsgewicht',
+      notes: 'Notizen',
+      animalId: 'Tier ID',
+      date: 'Datum',
+      weight: 'Gewicht (g)',
+      kindlingDate: 'Geburtsdatum',
+      bornAlive: 'Lebend Geboren',
+      stillborn: 'Totgeboren',
+      weaningDate: 'Entwöhnungsdatum',
+      weanedCount: 'Anzahl Entwöhnt',
+      product: 'Produkt',
+      lotNumber: 'Losnummer',
+      dose: 'Dosis',
+      route: 'Weg',
+      reason: 'Grund',
+      withdrawalUntil: 'Wartezeit Bis',
+      description: 'Beschreibung',
+      capacity: 'Kapazität',
+      location: 'Standort',
+      color: 'Farbe',
+    },
+  },
 };
 
 // Portuguese translations  
@@ -2044,6 +2354,68 @@ const ptTranslations: Translations = {
       weaning: 'Desmame',
       estimatedWeaning: 'Desmame Estimado',
       weaned: 'desmamados',
+    },
+  },
+
+  // Validation
+  validation: {
+    invalidDate: 'Data inválida',
+    invalidId: 'ID inválido',
+    nameRequired: 'Nome é obrigatório',
+    nameTooLong: 'Nome muito longo',
+    sexRequired: 'Sexo é obrigatório',
+    statusRequired: 'Status é obrigatório',
+    birthDateFuture: 'Data de nascimento não pode estar no futuro',
+    diagnosisAfterBreeding: 'Data de diagnóstico deve ser após o acasalamento',
+    weaningAfterKindling: 'Data de desmame deve ser após o parto',
+    weanedExceedsAlive: 'Número de desmamados não pode exceder os nascidos vivos',
+    weightPositive: 'Peso deve ser maior que 0',
+    productRequired: 'Produto é obrigatório',
+    withdrawalAfterTreatment: 'Data de fim da carência deve ser após o tratamento',
+  },
+
+  // Export
+  export: {
+    animals: 'ANIMAIS',
+    weights: 'PESOS',
+    litters: 'NINHADAS',
+    treatments: 'TRATAMENTOS',
+    cages: 'GAIOLAS',
+    tags: 'ETIQUETAS',
+    headers: {
+      id: 'ID',
+      name: 'Nome',
+      identifier: 'Identificador',
+      sex: 'Sexo',
+      breed: 'Raça',
+      birthDate: 'Data de Nascimento',
+      origin: 'Origem',
+      motherId: 'ID Mãe',
+      fatherId: 'ID Pai',
+      cage: 'Gaiola',
+      status: 'Status',
+      tags: 'Etiquetas',
+      consumedDate: 'Data de Consumo',
+      consumedWeight: 'Peso no Consumo',
+      notes: 'Notas',
+      animalId: 'ID Animal',
+      date: 'Data',
+      weight: 'Peso (g)',
+      kindlingDate: 'Data do Parto',
+      bornAlive: 'Nascidos Vivos',
+      stillborn: 'Natimortos',
+      weaningDate: 'Data de Desmame',
+      weanedCount: 'Número Desmamados',
+      product: 'Produto',
+      lotNumber: 'Número do Lote',
+      dose: 'Dose',
+      route: 'Via',
+      reason: 'Motivo',
+      withdrawalUntil: 'Carência Até',
+      description: 'Descrição',
+      capacity: 'Capacidade',
+      location: 'Localização',
+      color: 'Cor',
     },
   },
 };

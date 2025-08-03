@@ -19,6 +19,7 @@ import { useAppStore } from '../../state/store';
 import { getLiveAnimals } from '../../state/selectors';
 import { Animal, Sex, BreedingMethod } from '../../models/types';
 import { addDaysToDate, formatDate } from '../../utils/dates';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface BreedingModalProps {
   open: boolean;
@@ -30,6 +31,7 @@ interface BreedingModalProps {
 const RABBIT_GESTATION_DAYS = 31;
 
 export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, preselectedFemale }) => {
+  const { t } = useTranslation();
   const [selectedFemale, setSelectedFemale] = useState<Animal | null>(preselectedFemale || null);
   const [selectedMale, setSelectedMale] = useState<Animal | null>(null);
   const [method, setMethod] = useState<BreedingMethod>(BreedingMethod.Natural);
@@ -56,12 +58,12 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
 
   const handleSubmit = () => {
     if (!selectedFemale) {
-      setError('Veuillez sélectionner une femelle');
+      setError(t('modals.breeding.errorSelectFemale'));
       return;
     }
 
     if (!date) {
-      setError('Veuillez entrer une date de saillie');
+      setError(t('modals.breeding.errorEnterDate'));
       return;
     }
 
@@ -86,7 +88,7 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
       
       onClose();
     } catch (_) {
-      setError('Erreur lors de l\'enregistrement de la saillie');
+      setError(t('modals.breeding.errorSavingBreeding'));
     }
   };
 
@@ -97,7 +99,7 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Nouvelle saillie</DialogTitle>
+      <DialogTitle>{t('modals.breeding.title')}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
@@ -106,10 +108,10 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
             value={selectedFemale}
             onChange={(_, newValue) => setSelectedFemale(newValue)}
             options={females}
-            getOptionLabel={(animal) => `${animal.name || 'Sans nom'} ${animal.identifier ? `(${animal.identifier})` : ''}`}
+            getOptionLabel={(animal) => `${animal.name || t('modals.breeding.animalName.noName')} ${animal.identifier ? `(${animal.identifier})` : ''}`}
             disabled={!!preselectedFemale}
             renderInput={(params) => (
-              <TextField {...params} label="Femelle *" />
+              <TextField {...params} label={`${t('modals.breeding.female')} *`} />
             )}
           />
 
@@ -117,26 +119,26 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
             value={selectedMale}
             onChange={(_, newValue) => setSelectedMale(newValue)}
             options={males}
-            getOptionLabel={(animal) => `${animal.name || 'Sans nom'} ${animal.identifier ? `(${animal.identifier})` : ''}`}
+            getOptionLabel={(animal) => `${animal.name || t('modals.breeding.animalName.noName')} ${animal.identifier ? `(${animal.identifier})` : ''}`}
             renderInput={(params) => (
-              <TextField {...params} label="Mâle" />
+              <TextField {...params} label={t('modals.breeding.male')} />
             )}
           />
 
           <FormControl>
-            <InputLabel>Méthode</InputLabel>
+            <InputLabel>{t('modals.breeding.method')}</InputLabel>
             <Select
               value={method}
               onChange={(e) => setMethod(e.target.value as BreedingMethod)}
-              label="Méthode"
+              label={t('modals.breeding.method')}
             >
-              <MenuItem value={BreedingMethod.Natural}>Naturelle</MenuItem>
-              <MenuItem value={BreedingMethod.AI}>Insémination artificielle</MenuItem>
+              <MenuItem value={BreedingMethod.Natural}>{t('modals.breeding.methods.natural')}</MenuItem>
+              <MenuItem value={BreedingMethod.AI}>{t('modals.breeding.methods.artificialInsemination')}</MenuItem>
             </Select>
           </FormControl>
 
           <TextField
-            label="Date de saillie"
+            label={t('modals.breeding.date')}
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
@@ -147,28 +149,28 @@ export const BreedingModal: React.FC<BreedingModalProps> = ({ open, onClose, pre
           {date && (
             <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
               <Typography variant="body2" color="text.secondary">
-                Date de mise bas estimée: <strong>{formatDate(expectedKindlingDate)}</strong>
+                {t('modals.breeding.expectedKindlingDate')}: <strong>{formatDate(expectedKindlingDate)}</strong>
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                (Gestation: {RABBIT_GESTATION_DAYS} jours)
+                ({t('modals.breeding.gestationDays')}: {RABBIT_GESTATION_DAYS} {t('time.days')})
               </Typography>
             </Box>
           )}
 
           <TextField
-            label="Notes"
+            label={t('modals.breeding.notes')}
             multiline
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Observations, conditions particulières..."
+            placeholder={t('modals.breeding.notesPlaceholder')}
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <Button onClick={handleSubmit} variant="contained">
-          Enregistrer
+          {t('common.save')}
         </Button>
       </DialogActions>
     </Dialog>

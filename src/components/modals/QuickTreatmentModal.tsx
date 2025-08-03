@@ -17,6 +17,7 @@ import {
 import { useAppStore } from '../../state/store';
 import { getLiveAnimals } from '../../state/selectors';
 import { Route, Animal } from '../../models/types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface QuickTreatmentModalProps {
   open: boolean;
@@ -25,6 +26,7 @@ interface QuickTreatmentModalProps {
 }
 
 export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, onClose, preselectedAnimal }) => {
+  const { t } = useTranslation();
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(preselectedAnimal || null);
   const [product, setProduct] = useState('');
   const [dose, setDose] = useState('');
@@ -40,12 +42,12 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
 
   const handleSubmit = () => {
     if (!selectedAnimal) {
-      setError('Veuillez sélectionner un animal');
+      setError(t('modals.treatment.errorSelectAnimal'));
       return;
     }
 
     if (!product.trim()) {
-      setError('Veuillez entrer le nom du produit');
+      setError(t('modals.treatment.errorEnterProduct'));
       return;
     }
 
@@ -84,7 +86,7 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
       setError('');
       onClose();
     } catch {
-      setError('Erreur lors de l\'enregistrement du traitement');
+      setError(t('modals.treatment.errorSavingTreatment'));
     }
   };
 
@@ -101,15 +103,15 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
   };
 
   const routeLabels = {
-    [Route.Oral]: 'Oral',
-    [Route.SC]: 'Sous-cutané',
-    [Route.IM]: 'Intramusculaire',
-    [Route.Other]: 'Autre',
+    [Route.Oral]: t('modals.treatment.routes.oral'),
+    [Route.SC]: t('modals.treatment.routes.subcutaneous'),
+    [Route.IM]: t('modals.treatment.routes.intramuscular'),
+    [Route.Other]: t('modals.treatment.routes.other'),
   };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Traitement rapide</DialogTitle>
+      <DialogTitle>{t('modals.treatment.title')}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           {error && (
@@ -126,34 +128,34 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Animal"
-                placeholder="Sélectionner un animal"
+                label={t('modals.treatment.animal')}
+                placeholder={t('modals.treatment.animalPlaceholder')}
                 required
               />
             )}
           />
 
           <TextField
-            label="Produit"
+            label={t('modals.treatment.product')}
             value={product}
             onChange={(e) => setProduct(e.target.value)}
-            placeholder="Nom du médicament ou traitement"
+            placeholder={t('modals.treatment.productPlaceholder')}
             required
           />
 
           <TextField
-            label="Dose"
+            label={t('modals.treatment.dose')}
             value={dose}
             onChange={(e) => setDose(e.target.value)}
-            placeholder="ex: 0.5ml, 1 comprimé"
+            placeholder={t('modals.treatment.dosePlaceholder')}
           />
 
           <FormControl>
-            <InputLabel>Voie d'administration</InputLabel>
+            <InputLabel>{t('modals.treatment.route')}</InputLabel>
             <Select
               value={route}
               onChange={(e) => setRoute(e.target.value as Route)}
-              label="Voie d'administration"
+              label={t('modals.treatment.route')}
             >
               {Object.entries(routeLabels).map(([value, label]) => (
                 <MenuItem key={value} value={value}>
@@ -164,40 +166,40 @@ export const QuickTreatmentModal: React.FC<QuickTreatmentModalProps> = ({ open, 
           </FormControl>
 
           <TextField
-            label="Motif"
+            label={t('modals.treatment.reason')}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            placeholder="Raison du traitement"
+            placeholder={t('modals.treatment.reasonPlaceholder')}
           />
 
           <TextField
-            label="Délai d'attente (jours)"
+            label={t('modals.treatment.withdrawalDays')}
             type="number"
             value={withdrawalDays}
             onChange={(e) => setWithdrawalDays(e.target.value)}
-            placeholder="ex: 30"
+            placeholder={t('modals.treatment.withdrawalPlaceholder')}
             inputProps={{ min: 0 }}
-            helperText="Nombre de jours d'attente avant consommation"
+            helperText={t('modals.treatment.withdrawalHelperText')}
           />
 
           <TextField
-            label="Notes (optionnel)"
+            label={t('modals.treatment.notesOptional')}
             multiline
             rows={2}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Commentaires sur le traitement..."
+            placeholder={t('modals.treatment.notesPlaceholder')}
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <Button 
           onClick={handleSubmit} 
           variant="contained"
           disabled={!selectedAnimal || !product.trim()}
         >
-          Enregistrer
+          {t('common.save')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -217,6 +217,7 @@ export interface Translations {
     };
     litter: {
       title: string;
+      titleRecord: string;
       kindlingDate: string;
       bornAlive: string;
       stillborn: string;
@@ -224,12 +225,109 @@ export interface Translations {
       femalesToCreate: string;
       notes: string;
       notesPlaceholder: string;
+      autoCreateRabbits: string;
+      totalVersus: string;
+      mother: string;
+      father: string;
+      motherNotSpecified: string;
+      fatherNotSpecified: string;
+      breedingInfo: string;
+      expectedKindlingDate: string;
+      saveLitter: string;
+      errorMotherNotFound: string;
+      errorEnterKindlingDate: string;
+      errorNegativeNumbers: string;
+      errorTotalExceeds: string;
+      errorSavingLitter: string;
     };
     quickWeight: {
       title: string;
       animal: string;
       animalPlaceholder: string;
       weightGrams: string;
+      notesOptional: string;
+      weightPlaceholder: string;
+      notesPlaceholder: string;
+      errorValidWeight: string;
+      errorSavingWeight: string;
+    };
+    treatment: {
+      title: string;
+      animal: string;
+      animalPlaceholder: string;
+      product: string;
+      productPlaceholder: string;
+      dose: string;
+      dosePlaceholder: string;
+      route: string;
+      reason: string;
+      reasonPlaceholder: string;
+      withdrawalDays: string;
+      withdrawalPlaceholder: string;
+      withdrawalHelperText: string;
+      notesOptional: string;
+      notesPlaceholder: string;
+      routes: {
+        oral: string;
+        subcutaneous: string;
+        intramuscular: string;
+        other: string;
+      };
+      errorSelectAnimal: string;
+      errorEnterProduct: string;
+      errorSavingTreatment: string;
+    };
+    breeding: {
+      title: string;
+      female: string;
+      male: string;
+      method: string;
+      date: string;
+      notes: string;
+      notesPlaceholder: string;
+      expectedKindlingDate: string;
+      gestationDays: string;
+      methods: {
+        natural: string;
+        artificialInsemination: string;
+      };
+      animalName: {
+        noName: string;
+      };
+      errorSelectFemale: string;
+      errorEnterDate: string;
+      errorSavingBreeding: string;
+    };
+  };
+
+  // Litters
+  litters: {
+    title: string;
+    searchPlaceholder: string;
+    sortBy: string;
+    order: string;
+    sortOptions: {
+      date: string;
+      mother: string;
+      offspring: string;
+    };
+    orderOptions: {
+      descending: string;
+      ascending: string;
+    };
+    status: {
+      weaned: string;
+      lactating: string;
+      toWean: string;
+    };
+    labels: {
+      mother: string;
+      father: string;
+      unknown: string;
+      offspringCreated: string;
+      weaning: string;
+      estimatedWeaning: string;
+      weaned: string;
     };
   };
 }
@@ -423,6 +521,7 @@ const frTranslations: Translations = {
     },
     litter: {
       title: 'Nouvelle portée',
+      titleRecord: 'Enregistrer la mise bas',
       kindlingDate: 'Date de mise bas',
       bornAlive: 'Nés vivants',
       stillborn: 'Mort-nés',
@@ -430,12 +529,109 @@ const frTranslations: Translations = {
       femalesToCreate: 'Femelles à créer',
       notes: 'Notes',
       notesPlaceholder: 'Observations sur la mise bas, santé des petits...',
+      autoCreateRabbits: 'Créer automatiquement les lapereaux',
+      totalVersus: 'Total',
+      mother: 'Mère',
+      father: 'Père',
+      motherNotSpecified: 'Non spécifiée',
+      fatherNotSpecified: 'Non spécifié',
+      breedingInfo: 'Saillie du',
+      expectedKindlingDate: 'Mise bas prévue le',
+      saveLitter: 'Enregistrer la portée',
+      errorMotherNotFound: 'Mère non trouvée',
+      errorEnterKindlingDate: 'Veuillez entrer une date de mise bas',
+      errorNegativeNumbers: 'Les nombres ne peuvent pas être négatifs',
+      errorTotalExceeds: 'Le nombre total de petits à créer ne peut pas dépasser les nés vivants',
+      errorSavingLitter: 'Erreur lors de l\'enregistrement de la portée',
     },
     quickWeight: {
       title: 'Pesée rapide',
       animal: 'Animal',
       animalPlaceholder: 'Sélectionner un animal',
       weightGrams: 'Poids (en grammes)',
+      notesOptional: 'Notes (optionnel)',
+      weightPlaceholder: 'ex: 2500',
+      notesPlaceholder: 'Commentaires sur la pesée...',
+      errorValidWeight: 'Veuillez entrer un poids valide',
+      errorSavingWeight: 'Erreur lors de l\'enregistrement de la pesée',
+    },
+    treatment: {
+      title: 'Traitement rapide',
+      animal: 'Animal',
+      animalPlaceholder: 'Sélectionner un animal',
+      product: 'Produit',
+      productPlaceholder: 'Nom du médicament ou traitement',
+      dose: 'Dose',
+      dosePlaceholder: 'ex: 0.5ml, 1 comprimé',
+      route: 'Voie d\'administration',
+      reason: 'Motif',
+      reasonPlaceholder: 'Raison du traitement',
+      withdrawalDays: 'Délai d\'attente (jours)',
+      withdrawalPlaceholder: 'ex: 30',
+      withdrawalHelperText: 'Nombre de jours d\'attente avant consommation',
+      notesOptional: 'Notes (optionnel)',
+      notesPlaceholder: 'Commentaires sur le traitement...',
+      routes: {
+        oral: 'Oral',
+        subcutaneous: 'Sous-cutané',
+        intramuscular: 'Intramusculaire',
+        other: 'Autre',
+      },
+      errorSelectAnimal: 'Veuillez sélectionner un animal',
+      errorEnterProduct: 'Veuillez entrer le nom du produit',
+      errorSavingTreatment: 'Erreur lors de l\'enregistrement du traitement',
+    },
+    breeding: {
+      title: 'Nouvelle saillie',
+      female: 'Femelle',
+      male: 'Mâle',
+      method: 'Méthode',
+      date: 'Date de saillie',
+      notes: 'Notes',
+      notesPlaceholder: 'Observations, conditions particulières...',
+      expectedKindlingDate: 'Date de mise bas estimée',
+      gestationDays: 'Gestation',
+      methods: {
+        natural: 'Naturelle',
+        artificialInsemination: 'Insémination artificielle',
+      },
+      animalName: {
+        noName: 'Sans nom',
+      },
+      errorSelectFemale: 'Veuillez sélectionner une femelle',
+      errorEnterDate: 'Veuillez entrer une date de saillie',
+      errorSavingBreeding: 'Erreur lors de l\'enregistrement de la saillie',
+    },
+  },
+
+  // Litters
+  litters: {
+    title: 'Gestion des portées',
+    searchPlaceholder: 'Rechercher par mère, père ou notes...',
+    sortBy: 'Trier par',
+    order: 'Ordre',
+    sortOptions: {
+      date: 'Date de naissance',
+      mother: 'Mère',
+      offspring: 'Nombre de petits',
+    },
+    orderOptions: {
+      descending: 'Décroissant',
+      ascending: 'Croissant',
+    },
+    status: {
+      weaned: 'Sevrée',
+      lactating: 'En lactation',
+      toWean: 'À sevrer',
+    },
+    labels: {
+      mother: 'Mère',
+      father: 'Père',
+      unknown: 'Inconnue',
+      offspringCreated: 'Descendants créés',
+      weaning: 'Sevrage',
+      estimatedWeaning: 'Sevrage estimé',
+      weaned: 'sevrés',
     },
   },
 };
@@ -630,6 +826,7 @@ const enTranslations: Translations = {
     },
     litter: {
       title: 'New Litter',
+      titleRecord: 'Record Kindling',
       kindlingDate: 'Kindling Date',
       bornAlive: 'Born Alive',
       stillborn: 'Stillborn',
@@ -637,12 +834,109 @@ const enTranslations: Translations = {
       femalesToCreate: 'Females to Create',
       notes: 'Notes',
       notesPlaceholder: 'Kindling observations, health of the young...',
+      autoCreateRabbits: 'Automatically create rabbits',
+      totalVersus: 'Total',
+      mother: 'Mother',
+      father: 'Father',
+      motherNotSpecified: 'Not specified',
+      fatherNotSpecified: 'Not specified',
+      breedingInfo: 'Breeding on',
+      expectedKindlingDate: 'Expected kindling on',
+      saveLitter: 'Save Litter',
+      errorMotherNotFound: 'Mother not found',
+      errorEnterKindlingDate: 'Please enter a kindling date',
+      errorNegativeNumbers: 'Numbers cannot be negative',
+      errorTotalExceeds: 'Total number of offspring to create cannot exceed live births',
+      errorSavingLitter: 'Error saving litter',
     },
     quickWeight: {
       title: 'Quick Weighing',
       animal: 'Animal',
       animalPlaceholder: 'Select an animal',
       weightGrams: 'Weight (in grams)',
+      notesOptional: 'Notes (optional)',
+      weightPlaceholder: 'e.g.: 2500',
+      notesPlaceholder: 'Comments on the weighing...',
+      errorValidWeight: 'Please enter a valid weight',
+      errorSavingWeight: 'Error saving weight',
+    },
+    treatment: {
+      title: 'Quick Treatment',
+      animal: 'Animal',
+      animalPlaceholder: 'Select an animal',
+      product: 'Product',
+      productPlaceholder: 'Name of medication or treatment',
+      dose: 'Dose',
+      dosePlaceholder: 'e.g.: 0.5ml, 1 tablet',
+      route: 'Route of Administration',
+      reason: 'Reason',
+      reasonPlaceholder: 'Reason for treatment',
+      withdrawalDays: 'Withdrawal Period (days)',
+      withdrawalPlaceholder: 'e.g.: 30',
+      withdrawalHelperText: 'Number of days to wait before consumption',
+      notesOptional: 'Notes (optional)',
+      notesPlaceholder: 'Comments on the treatment...',
+      routes: {
+        oral: 'Oral',
+        subcutaneous: 'Subcutaneous',
+        intramuscular: 'Intramuscular',
+        other: 'Other',
+      },
+      errorSelectAnimal: 'Please select an animal',
+      errorEnterProduct: 'Please enter the product name',
+      errorSavingTreatment: 'Error saving treatment',
+    },
+    breeding: {
+      title: 'New Breeding',
+      female: 'Female',
+      male: 'Male',
+      method: 'Method',
+      date: 'Breeding Date',
+      notes: 'Notes',
+      notesPlaceholder: 'Observations, special conditions...',
+      expectedKindlingDate: 'Expected kindling date',
+      gestationDays: 'Gestation',
+      methods: {
+        natural: 'Natural',
+        artificialInsemination: 'Artificial Insemination',
+      },
+      animalName: {
+        noName: 'Unnamed',
+      },
+      errorSelectFemale: 'Please select a female',
+      errorEnterDate: 'Please enter a breeding date',
+      errorSavingBreeding: 'Error saving breeding',
+    },
+  },
+
+  // Litters
+  litters: {
+    title: 'Litter Management',
+    searchPlaceholder: 'Search by mother, father or notes...',
+    sortBy: 'Sort by',
+    order: 'Order',
+    sortOptions: {
+      date: 'Birth Date',
+      mother: 'Mother',
+      offspring: 'Number of Offspring',
+    },
+    orderOptions: {
+      descending: 'Descending',
+      ascending: 'Ascending',
+    },
+    status: {
+      weaned: 'Weaned',
+      lactating: 'Lactating',
+      toWean: 'To Wean',
+    },
+    labels: {
+      mother: 'Mother',
+      father: 'Father',
+      unknown: 'Unknown',
+      offspringCreated: 'Offspring Created',
+      weaning: 'Weaning',
+      estimatedWeaning: 'Estimated Weaning',
+      weaned: 'weaned',
     },
   },
 };
@@ -837,6 +1131,7 @@ const esTranslations: Translations = {
     },
     litter: {
       title: 'Nueva Camada',
+      titleRecord: 'Registrar Parto',
       kindlingDate: 'Fecha de Parto',
       bornAlive: 'Nacidos Vivos',
       stillborn: 'Nacidos Muertos',
@@ -844,12 +1139,109 @@ const esTranslations: Translations = {
       femalesToCreate: 'Hembras a Crear',
       notes: 'Notas',
       notesPlaceholder: 'Observaciones del parto, salud de las crías...',
+      autoCreateRabbits: 'Crear automáticamente los conejos',
+      totalVersus: 'Total',
+      mother: 'Madre',
+      father: 'Padre',
+      motherNotSpecified: 'No especificada',
+      fatherNotSpecified: 'No especificado',
+      breedingInfo: 'Cruce del',
+      expectedKindlingDate: 'Parto esperado el',
+      saveLitter: 'Guardar Camada',
+      errorMotherNotFound: 'Madre no encontrada',
+      errorEnterKindlingDate: 'Por favor ingrese una fecha de parto',
+      errorNegativeNumbers: 'Los números no pueden ser negativos',
+      errorTotalExceeds: 'El número total de crías a crear no puede exceder los nacidos vivos',
+      errorSavingLitter: 'Error al guardar la camada',
     },
     quickWeight: {
       title: 'Pesaje Rápido',
       animal: 'Animal',
       animalPlaceholder: 'Seleccionar un animal',
       weightGrams: 'Peso (en gramos)',
+      notesOptional: 'Notas (opcional)',
+      weightPlaceholder: 'ej: 2500',
+      notesPlaceholder: 'Comentarios sobre el pesaje...',
+      errorValidWeight: 'Por favor ingrese un peso válido',
+      errorSavingWeight: 'Error al guardar el peso',
+    },
+    treatment: {
+      title: 'Tratamiento Rápido',
+      animal: 'Animal',
+      animalPlaceholder: 'Seleccionar un animal',
+      product: 'Producto',
+      productPlaceholder: 'Nombre del medicamento o tratamiento',
+      dose: 'Dosis',
+      dosePlaceholder: 'ej: 0.5ml, 1 comprimido',
+      route: 'Vía de Administración',
+      reason: 'Motivo',
+      reasonPlaceholder: 'Razón del tratamiento',
+      withdrawalDays: 'Período de Retiro (días)',
+      withdrawalPlaceholder: 'ej: 30',
+      withdrawalHelperText: 'Número de días de espera antes del consumo',
+      notesOptional: 'Notas (opcional)',
+      notesPlaceholder: 'Comentarios sobre el tratamiento...',
+      routes: {
+        oral: 'Oral',
+        subcutaneous: 'Subcutáneo',
+        intramuscular: 'Intramuscular',
+        other: 'Otro',
+      },
+      errorSelectAnimal: 'Por favor seleccione un animal',
+      errorEnterProduct: 'Por favor ingrese el nombre del producto',
+      errorSavingTreatment: 'Error al guardar el tratamiento',
+    },
+    breeding: {
+      title: 'Nuevo Cruce',
+      female: 'Hembra',
+      male: 'Macho',
+      method: 'Método',
+      date: 'Fecha de Cruce',
+      notes: 'Notas',
+      notesPlaceholder: 'Observaciones, condiciones especiales...',
+      expectedKindlingDate: 'Fecha de parto esperada',
+      gestationDays: 'Gestación',
+      methods: {
+        natural: 'Natural',
+        artificialInsemination: 'Inseminación Artificial',
+      },
+      animalName: {
+        noName: 'Sin nombre',
+      },
+      errorSelectFemale: 'Por favor seleccione una hembra',
+      errorEnterDate: 'Por favor ingrese una fecha de cruce',
+      errorSavingBreeding: 'Error al guardar el cruce',
+    },
+  },
+
+  // Litters
+  litters: {
+    title: 'Gestión de Camadas',
+    searchPlaceholder: 'Buscar por madre, padre o notas...',
+    sortBy: 'Ordenar por',
+    order: 'Orden',
+    sortOptions: {
+      date: 'Fecha de Nacimiento',
+      mother: 'Madre',
+      offspring: 'Número de Crías',
+    },
+    orderOptions: {
+      descending: 'Descendente',
+      ascending: 'Ascendente',
+    },
+    status: {
+      weaned: 'Destetada',
+      lactating: 'Lactando',
+      toWean: 'A Destetar',
+    },
+    labels: {
+      mother: 'Madre',
+      father: 'Padre',
+      unknown: 'Desconocida',
+      offspringCreated: 'Descendientes Creados',
+      weaning: 'Destete',
+      estimatedWeaning: 'Destete Estimado',
+      weaned: 'destetados',
     },
   },
 };
@@ -1044,6 +1436,7 @@ const deTranslations: Translations = {
     },
     litter: {
       title: 'Neuer Wurf',
+      titleRecord: 'Geburt erfassen',
       kindlingDate: 'Geburtsdatum',
       bornAlive: 'Lebend Geboren',
       stillborn: 'Totgeboren',
@@ -1051,12 +1444,109 @@ const deTranslations: Translations = {
       femalesToCreate: 'Weibchen zu erstellen',
       notes: 'Notizen',
       notesPlaceholder: 'Geburtsbeobachtungen, Gesundheit der Jungen...',
+      autoCreateRabbits: 'Kaninchen automatisch erstellen',
+      totalVersus: 'Gesamt',
+      mother: 'Mutter',
+      father: 'Vater',
+      motherNotSpecified: 'Nicht angegeben',
+      fatherNotSpecified: 'Nicht angegeben',
+      breedingInfo: 'Paarung vom',
+      expectedKindlingDate: 'Erwartete Geburt am',
+      saveLitter: 'Wurf speichern',
+      errorMotherNotFound: 'Mutter nicht gefunden',
+      errorEnterKindlingDate: 'Bitte geben Sie ein Geburtsdatum ein',
+      errorNegativeNumbers: 'Zahlen können nicht negativ sein',
+      errorTotalExceeds: 'Die Gesamtzahl der zu erstellenden Nachkommen kann die Lebendgeburten nicht überschreiten',
+      errorSavingLitter: 'Fehler beim Speichern des Wurfs',
     },
     quickWeight: {
       title: 'Schnellwiegung',
       animal: 'Tier',
       animalPlaceholder: 'Tier auswählen',
       weightGrams: 'Gewicht (in Gramm)',
+      notesOptional: 'Notizen (optional)',
+      weightPlaceholder: 'z.B.: 2500',
+      notesPlaceholder: 'Kommentare zur Wiegung...',
+      errorValidWeight: 'Bitte geben Sie ein gültiges Gewicht ein',
+      errorSavingWeight: 'Fehler beim Speichern des Gewichts',
+    },
+    treatment: {
+      title: 'Schnellbehandlung',
+      animal: 'Tier',
+      animalPlaceholder: 'Tier auswählen',
+      product: 'Produkt',
+      productPlaceholder: 'Name des Medikaments oder der Behandlung',
+      dose: 'Dosis',
+      dosePlaceholder: 'z.B.: 0,5ml, 1 Tablette',
+      route: 'Verabreichungsweg',
+      reason: 'Grund',
+      reasonPlaceholder: 'Grund für die Behandlung',
+      withdrawalDays: 'Wartezeit (Tage)',
+      withdrawalPlaceholder: 'z.B.: 30',
+      withdrawalHelperText: 'Anzahl Tage bis zum Verzehr warten',
+      notesOptional: 'Notizen (optional)',
+      notesPlaceholder: 'Kommentare zur Behandlung...',
+      routes: {
+        oral: 'Oral',
+        subcutaneous: 'Subkutan',
+        intramuscular: 'Intramuskulär',
+        other: 'Andere',
+      },
+      errorSelectAnimal: 'Bitte wählen Sie ein Tier aus',
+      errorEnterProduct: 'Bitte geben Sie den Produktnamen ein',
+      errorSavingTreatment: 'Fehler beim Speichern der Behandlung',
+    },
+    breeding: {
+      title: 'Neue Paarung',
+      female: 'Weibchen',
+      male: 'Männchen',
+      method: 'Methode',
+      date: 'Paarungsdatum',
+      notes: 'Notizen',
+      notesPlaceholder: 'Beobachtungen, besondere Umstände...',
+      expectedKindlingDate: 'Erwartetes Geburtsdatum',
+      gestationDays: 'Trächtigkeit',
+      methods: {
+        natural: 'Natürlich',
+        artificialInsemination: 'Künstliche Befruchtung',
+      },
+      animalName: {
+        noName: 'Unbenannt',
+      },
+      errorSelectFemale: 'Bitte wählen Sie ein Weibchen aus',
+      errorEnterDate: 'Bitte geben Sie ein Paarungsdatum ein',
+      errorSavingBreeding: 'Fehler beim Speichern der Paarung',
+    },
+  },
+
+  // Litters
+  litters: {
+    title: 'Wurfverwaltung',
+    searchPlaceholder: 'Nach Mutter, Vater oder Notizen suchen...',
+    sortBy: 'Sortieren nach',
+    order: 'Reihenfolge',
+    sortOptions: {
+      date: 'Geburtsdatum',
+      mother: 'Mutter',
+      offspring: 'Anzahl Nachkommen',
+    },
+    orderOptions: {
+      descending: 'Absteigend',
+      ascending: 'Aufsteigend',
+    },
+    status: {
+      weaned: 'Entwöhnt',
+      lactating: 'Säugend',
+      toWean: 'Zu entwöhnen',
+    },
+    labels: {
+      mother: 'Mutter',
+      father: 'Vater',
+      unknown: 'Unbekannt',
+      offspringCreated: 'Nachkommen erstellt',
+      weaning: 'Entwöhnung',
+      estimatedWeaning: 'Geschätzte Entwöhnung',
+      weaned: 'entwöhnt',
     },
   },
 };
@@ -1251,6 +1741,7 @@ const ptTranslations: Translations = {
     },
     litter: {
       title: 'Nova Ninhada',
+      titleRecord: 'Registrar Parto',
       kindlingDate: 'Data do Parto',
       bornAlive: 'Nascidos Vivos',
       stillborn: 'Natimortos',
@@ -1258,12 +1749,109 @@ const ptTranslations: Translations = {
       femalesToCreate: 'Fêmeas a Criar',
       notes: 'Notas',
       notesPlaceholder: 'Observações do parto, saúde dos filhotes...',
+      autoCreateRabbits: 'Criar coelhos automaticamente',
+      totalVersus: 'Total',
+      mother: 'Mãe',
+      father: 'Pai',
+      motherNotSpecified: 'Não especificada',
+      fatherNotSpecified: 'Não especificado',
+      breedingInfo: 'Acasalamento de',
+      expectedKindlingDate: 'Parto esperado em',
+      saveLitter: 'Salvar Ninhada',
+      errorMotherNotFound: 'Mãe não encontrada',
+      errorEnterKindlingDate: 'Por favor, insira uma data de parto',
+      errorNegativeNumbers: 'Os números não podem ser negativos',
+      errorTotalExceeds: 'O número total de filhotes a criar não pode exceder os nascidos vivos',
+      errorSavingLitter: 'Erro ao salvar a ninhada',
     },
     quickWeight: {
       title: 'Pesagem Rápida',
       animal: 'Animal',
       animalPlaceholder: 'Selecionar um animal',
       weightGrams: 'Peso (em gramas)',
+      notesOptional: 'Notas (opcional)',
+      weightPlaceholder: 'ex: 2500',
+      notesPlaceholder: 'Comentários sobre a pesagem...',
+      errorValidWeight: 'Por favor, insira um peso válido',
+      errorSavingWeight: 'Erro ao salvar o peso',
+    },
+    treatment: {
+      title: 'Tratamento Rápido',
+      animal: 'Animal',
+      animalPlaceholder: 'Selecionar um animal',
+      product: 'Produto',
+      productPlaceholder: 'Nome do medicamento ou tratamento',
+      dose: 'Dose',
+      dosePlaceholder: 'ex: 0,5ml, 1 comprimido',
+      route: 'Via de Administração',
+      reason: 'Motivo',
+      reasonPlaceholder: 'Razão do tratamento',
+      withdrawalDays: 'Período de Carência (dias)',
+      withdrawalPlaceholder: 'ex: 30',
+      withdrawalHelperText: 'Número de dias para aguardar antes do consumo',
+      notesOptional: 'Notas (opcional)',
+      notesPlaceholder: 'Comentários sobre o tratamento...',
+      routes: {
+        oral: 'Oral',
+        subcutaneous: 'Subcutâneo',
+        intramuscular: 'Intramuscular',
+        other: 'Outro',
+      },
+      errorSelectAnimal: 'Por favor, selecione um animal',
+      errorEnterProduct: 'Por favor, insira o nome do produto',
+      errorSavingTreatment: 'Erro ao salvar o tratamento',
+    },
+    breeding: {
+      title: 'Novo Acasalamento',
+      female: 'Fêmea',
+      male: 'Macho',
+      method: 'Método',
+      date: 'Data do Acasalamento',
+      notes: 'Notas',
+      notesPlaceholder: 'Observações, condições especiais...',
+      expectedKindlingDate: 'Data esperada do parto',
+      gestationDays: 'Gestação',
+      methods: {
+        natural: 'Natural',
+        artificialInsemination: 'Inseminação Artificial',
+      },
+      animalName: {
+        noName: 'Sem nome',
+      },
+      errorSelectFemale: 'Por favor, selecione uma fêmea',
+      errorEnterDate: 'Por favor, insira uma data de acasalamento',
+      errorSavingBreeding: 'Erro ao salvar o acasalamento',
+    },
+  },
+
+  // Litters
+  litters: {
+    title: 'Gestão de Ninhadas',
+    searchPlaceholder: 'Pesquisar por mãe, pai ou notas...',
+    sortBy: 'Ordenar por',
+    order: 'Ordem',
+    sortOptions: {
+      date: 'Data de Nascimento',
+      mother: 'Mãe',
+      offspring: 'Número de Filhotes',
+    },
+    orderOptions: {
+      descending: 'Decrescente',
+      ascending: 'Crescente',
+    },
+    status: {
+      weaned: 'Desmamada',
+      lactating: 'Amamentando',
+      toWean: 'A Desmamar',
+    },
+    labels: {
+      mother: 'Mãe',
+      father: 'Pai',
+      unknown: 'Desconhecida',
+      offspringCreated: 'Descendentes Criados',
+      weaning: 'Desmame',
+      estimatedWeaning: 'Desmame Estimado',
+      weaned: 'desmamados',
     },
   },
 };

@@ -1,21 +1,25 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { lazy } from 'react';
 import App from './App.tsx';
-import DashboardPage from './pages/DashboardPage.tsx';
-import AnimalListPage from './pages/Animals/AnimalListPage.tsx';
-import AnimalDetailPage from './pages/Animals/AnimalDetailPage.tsx';
-import AnimalFormPage from './pages/Animals/AnimalFormPage.tsx';
-import LitterListPage from './pages/Litters/LitterListPage.tsx';
-import LitterDetailPage from './pages/Litters/LitterDetailPage.tsx';
-import CageListPage from './pages/Cages/CageListPage.tsx';
-import CageFormPage from './pages/Cages/CageFormPage.tsx';
-import CageVisualizationPage from './pages/Cages/CageVisualizationPage.tsx';
-import TagListPage from './pages/Tags/TagListPage.tsx';
-import StatisticsPage from './pages/Statistics/StatisticsPage.tsx';
-import SettingsPage from './pages/Settings/SettingsPage.tsx';
-import ReproductionPlanningPage from './pages/ReproductionPlanningPage.tsx';
-import GoalsTrackingPage from './pages/GoalsTrackingPage.tsx';
-import QuickActionsPage from './pages/QuickActionsPage.tsx';
 import { RouterErrorBoundary } from './components/ErrorBoundary.tsx';
+import { LazyRoute } from './components/LazyRoute.tsx';
+
+// Lazy load all pages for better code splitting
+const DashboardPage = lazy(() => import('./pages/DashboardPage.tsx'));
+const AnimalListPage = lazy(() => import('./pages/Animals/AnimalListPage.tsx'));
+const AnimalDetailPage = lazy(() => import('./pages/Animals/AnimalDetailPage.tsx'));
+const AnimalFormPage = lazy(() => import('./pages/Animals/AnimalFormPage.tsx'));
+const LitterListPage = lazy(() => import('./pages/Litters/LitterListPage.tsx'));
+const LitterDetailPage = lazy(() => import('./pages/Litters/LitterDetailPage.tsx'));
+const CageListPage = lazy(() => import('./pages/Cages/CageListPage.tsx'));
+const CageFormPage = lazy(() => import('./pages/Cages/CageFormPage.tsx'));
+const CageVisualizationPage = lazy(() => import('./pages/Cages/CageVisualizationPage.tsx'));
+const TagListPage = lazy(() => import('./pages/Tags/TagListPage.tsx'));
+const StatisticsPage = lazy(() => import('./pages/Statistics/StatisticsPage.tsx'));
+const SettingsPage = lazy(() => import('./pages/Settings/SettingsPage.tsx'));
+const ReproductionPlanningPage = lazy(() => import('./pages/ReproductionPlanningPage.tsx'));
+const GoalsTrackingPage = lazy(() => import('./pages/GoalsTrackingPage.tsx'));
+const QuickActionsPage = lazy(() => import('./pages/QuickActionsPage.tsx'));
 
 export const router = createBrowserRouter([
   {
@@ -25,87 +29,87 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        element: <LazyRoute><DashboardPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'animals',
-        element: <AnimalListPage />,
+        element: <LazyRoute><AnimalListPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'animals/new',
-        element: <AnimalFormPage />,
+        element: <LazyRoute><AnimalFormPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'animals/:id/edit',
-        element: <AnimalFormPage />,
+        element: <LazyRoute><AnimalFormPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'animals/:id',
-        element: <AnimalDetailPage />,
+        element: <LazyRoute><AnimalDetailPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'litters',
-        element: <LitterListPage />,
+        element: <LazyRoute><LitterListPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'litters/:id',
-        element: <LitterDetailPage />,
+        element: <LazyRoute><LitterDetailPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'planning',
-        element: <ReproductionPlanningPage />,
+        element: <LazyRoute><ReproductionPlanningPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'goals',
-        element: <GoalsTrackingPage />,
+        element: <LazyRoute><GoalsTrackingPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'quick',
-        element: <QuickActionsPage />,
+        element: <LazyRoute><QuickActionsPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'cages',
-        element: <CageListPage />,
+        element: <LazyRoute><CageListPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'cages/new',
-        element: <CageFormPage />,
+        element: <LazyRoute><CageFormPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'cages/:id/edit',
-        element: <CageFormPage />,
+        element: <LazyRoute><CageFormPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'cages/visualization',
-        element: <CageVisualizationPage />,
+        element: <LazyRoute><CageVisualizationPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'tags',
-        element: <TagListPage />,
+        element: <LazyRoute><TagListPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'statistics',
-        element: <StatisticsPage />,
+        element: <LazyRoute><StatisticsPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {
         path: 'settings',
-        element: <SettingsPage />,
+        element: <LazyRoute><SettingsPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
     ],

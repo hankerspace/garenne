@@ -8,7 +8,6 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 - [ ] **Corriger les warnings ESLint**
   - [x] Identifier: Warning React Hook useEffect dans QRCodeDisplay.tsx (ligne 46)
   - [ ] Corriger la dépendance manquante 'animal' dans useEffect
-  - [ ] Réactiver les règles TypeScript strictes (@typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any)
   - [ ] Nettoyer les variables non utilisées dans tout le codebase
 
 ### Architecture et Organisation
@@ -152,44 +151,12 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [ ] Suivi des cycles de reproduction avec statistiques
   - [ ] Prédiction des périodes optimales de reproduction
 
-- [ ] **Suivi sanitaire avancé**
-  - [ ] Intégration avec une base de données de médicaments
-  - [ ] Calcul automatique des délais d'attente selon la réglementation
-  - [ ] Système d'alertes pour les traitements préventifs
-  - [ ] Historique médical avec photos et documents
-
 ### Analytics et Reporting
 - [ ] **Tableaux de bord avancés**
   - [ ] Métriques de performance en temps réel
   - [ ] Comparaisons inter-périodes et benchmarks
   - [ ] Prédictions basées sur l'IA pour les performances
   - [ ] Alertes proactives sur les anomalies
-
-- [ ] **Reporting automatisé**
-  - [ ] Génération automatique de rapports mensuels/annuels
-  - [ ] Export vers Excel avec formatage professionnel
-  - [ ] Intégration avec les standards de traçabilité
-  - [ ] Rapports personnalisables par utilisateur
-
-### Expérience Utilisateur
-- [ ] **Mode hors ligne avancé**
-  - [ ] Synchronisation intelligente lors de la reconnexion
-  - [ ] Résolution automatique des conflits de données
-  - [ ] Cache prédictif pour une navigation plus fluide
-  - [ ] Indicateurs de statut de synchronisation
-
-- [ ] **Collaboration et partage**
-  - [ ] Système multi-utilisateurs avec permissions
-  - [ ] Partage sécurisé de données avec d'autres éleveurs
-  - [ ] Commentaires et annotations collaboratives
-  - [ ] Historique des modifications avec traçabilité
-
-### Intégrations
-- [ ] **Connectivité externe**
-  - [ ] API pour balance connectée (pesée automatique)
-  - [ ] Intégration avec systèmes de gestion vétérinaire
-  - [ ] Connexion aux registres officiels d'élevage
-  - [ ] Export vers logiciels comptables
 
 ## 📱 PWA et Mobile
 
@@ -239,7 +206,6 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 
 ### Sécurité des Données
 - [ ] **Chiffrement et Protection**
-  - [ ] Chiffrement client-side des données sensibles
   - [ ] Validation stricte des données entrantes
   - [ ] Protection contre l'injection et XSS
   - [ ] Audit trail pour les modifications importantes
@@ -250,28 +216,15 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [ ] Traçabilité selon les normes vétérinaires
   - [ ] Export conforme aux obligations déclaratives
 
-### Monitoring et Observabilité
-- [ ] **Surveillance de la Production**
-  - [ ] Monitoring des erreurs avec Sentry
-  - [ ] Analytics d'usage avec respect de la vie privée
-  - [ ] Métriques de performance et disponibilité
-  - [ ] Alertes proactives sur les problèmes
-
 ## 🌍 Internationalisation et Localisation
 
 ### Support Multi-langue
 - [ ] **Compléter la traduction**
   - [x] Infrastructure i18n en place
   - [ ] Traduire tous les textes manquants
-  - [ ] Support RTL pour l'arabe et l'hébreu
   - [ ] Formats de date/nombre localisés
   - [ ] Pluralisation correcte dans toutes les langues
 
-- [ ] **Adaptation Culturelle**
-  - [ ] Adaptation des couleurs selon les cultures
-  - [ ] Formats d'adresse et de contact locaux
-  - [ ] Devises et unités de mesure locales
-  - [ ] Réglementations d'élevage par pays
 
 ## 🎯 Expérience Développeur
 

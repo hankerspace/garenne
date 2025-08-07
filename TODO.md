@@ -34,7 +34,7 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 - [x] **Optimiser la couche de services**
   - [x] Standardiser les interfaces de tous les services (interface StorageAdapter créée)
   - [x] Implémenter une couche d'abstraction pour le storage (AbstractStorageService)
-  - [ ] Ajouter des intercepteurs pour la gestion d'erreurs globale
+  - [x] Ajouter des intercepteurs pour la gestion d'erreurs globale (ErrorInterceptorService avec retry automatique)
   - [x] Créer un service de cache pour optimiser les performances (CacheService avec LRU et TTL)
 
 ### Gestion d'Erreurs
@@ -190,12 +190,13 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 
 ### Couverture de Tests
 - [x] **Étendre la suite de tests**
-  - [x] État actuel: 12 fichiers de test, 107 tests passants (amélioration: +5 fichiers, +41 tests)
+  - [x] État actuel: 13 fichiers de test, 124 tests passants (amélioration: +6 fichiers, +58 tests)
   - [x] Ajout de tests pour QRCodeDisplay component (7 tests)
   - [x] Ajout de tests pour StorageService (7 tests)
   - [x] Ajout de tests pour le store modulaire (10 tests)
   - [x] Ajout de tests pour CacheService (21 tests)
-  - [ ] Viser 90% de couverture de code (actuellement ~45%, objectif long terme)
+  - [x] Ajout de tests pour ErrorInterceptorService (17 tests)
+  - [ ] Viser 90% de couverture de code (actuellement ~50%, objectif long terme)
   - [ ] Tests d'intégration pour les flux critiques
   - [ ] Tests end-to-end avec Playwright
   - [ ] Tests de régression visuelle

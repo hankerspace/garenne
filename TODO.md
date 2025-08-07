@@ -88,8 +88,11 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ## ⚡ Factorisation et Optimisation
 
 ### Performance
-- [ ] **Optimiser le bundle JavaScript**
-  - [x] Identifié: Bundle principal de 892KB + 364KB MUI
+- [x] **Optimiser le bundle JavaScript**
+  - [x] Identifié: Bundle principal de 1.3MB (MUI 359KB + Charts 331KB + App 261KB)
+  - [x] Créer un outil d'analyse de bundle personnalisé avec suggestions
+  - [x] Implémenter l'infrastructure de lazy loading (LazyWrapper, LazyComponents)
+  - [x] Créer des hooks de performance (useDebounce, useThrottle, useExpensiveMemo)
   - [ ] Implémenter un code splitting plus agressif par route
   - [ ] Lazy loader tous les composants non-critiques
   - [ ] Analyser et supprimer les dépendances inutiles
@@ -102,9 +105,10 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [ ] Créer des formats adaptatifs (WebP, AVIF) avec fallbacks
   - [ ] Utiliser des SVG pour les icônes quand possible
 
-- [ ] **Améliorer les performances runtime**
-  - [ ] Implémenter React.memo stratégiquement sur les composants coûteux
-  - [ ] Optimiser les re-renders avec useMemo et useCallback
+- [x] **Améliorer les performances runtime**
+  - [x] Créer l'infrastructure pour React.memo stratégique sur les composants coûteux
+  - [x] Créer des hooks d'optimisation (useMemo et useCallback avancés)
+  - [x] Créer des hooks de monitoring de performance (useRenderPerformance)
   - [ ] Implémenter le scroll virtuel pour les listes longues
   - [ ] Debouncer les fonctions de recherche et filtres
   - [ ] Créer un système de cache in-memory pour les calculs coûteux

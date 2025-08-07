@@ -51,6 +51,10 @@ const generateId = () => `notification-${Date.now()}-${Math.random().toString(36
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
+  const hideNotification = useCallback((id: string) => {
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
+  }, []);
+
   const showNotification = useCallback((notification: Omit<Notification, 'id'>) => {
     const id = generateId();
     const newNotification: Notification = {
@@ -69,11 +73,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     }
 
     return id;
-  }, []);
-
-  const hideNotification = useCallback((id: string) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
-  }, []);
+  }, [hideNotification]);
 
   const clearAllNotifications = useCallback(() => {
     setNotifications([]);

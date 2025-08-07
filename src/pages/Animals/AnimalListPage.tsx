@@ -5,47 +5,23 @@ import {
   Typography,
   Box,
   Grid,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Chip,
-  Avatar,
-  TextField,
-  InputAdornment,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Fab,
-  Autocomplete,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
 } from '@mui/material';
 import {
-  Search as SearchIcon,
   Add as AddIcon,
-  Pets as PetsIcon,
-  Female as FemaleIcon,
-  Male as MaleIcon,
-  Warning as WarningIcon,
 } from '@mui/icons-material';
 import { useAppStore } from '../../state/store';
 import { getLiveAnimals, getAnimalActiveTreatments } from '../../state/selectors';
-import { Sex, Status } from '../../models/types';
-import { calculateAgeText } from '../../utils/dates';
-import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
-import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
-import QRCodeDisplay from '../../components/QRCodeDisplay';
+import { Status } from '../../models/types';
 import { SearchService, SearchFilters } from '../../services/search.service';
 import { AdvancedSearchFilters } from '../../components/AdvancedSearchFilters';
 import { useTranslation } from '../../hooks/useTranslation';
-import { AccessibleButton } from '../../components/AccessibleButton';
-import { AccessibleCard } from '../../components/AccessibleCard';
 import { useScreenReaderAnnouncement } from '../../hooks/useAccessibility';
+import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
+import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
+import { AnimalCard } from '../../components/AnimalCard';
+import { EmptyState } from '../../components/EmptyState';
+import { ConsumptionConfirmationDialog } from '../../components/ConsumptionConfirmationDialog';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
@@ -122,6 +98,7 @@ const AnimalListPage = () => {
     }
   }, [filteredAnimals.length, searchFilters, announce]);
 
+  // Helper functions (kept for compatibility with current template)
   const getStatusColor = (status: Status) => {
     switch (status) {
       case Status.Reproducer:
@@ -180,170 +157,19 @@ const AnimalListPage = () => {
       <Grid container spacing={{ xs: 2, sm: 3 }}>
         {filteredAnimals.map((animal, index) => (
           <Grid item xs={12} sm={6} lg={4} xl={3} key={animal.id}>
-            <AccessibleCard
+            <AnimalCard
+              animal={animal}
               index={index}
-              ariaLabel={`${animal.name || 'Animal'} ${animal.identifier || ''}, ${animal.sex === Sex.Female ? 'Femelle' : 'Mâle'}, ${getStatusLabel(animal.status)}`}
-              sx={{ 
-                height: '100%', 
-                display: 'flex', 
-                flexDirection: 'column',
-              }}
-            >
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Box display="flex" alignItems="center" mb={2}>
-                  <Avatar sx={{ mr: 2, bgcolor: animal.sex === Sex.Female ? 'pink' : 'lightblue' }}>
-                    {animal.sex === Sex.Female ? <FemaleIcon /> : <MaleIcon />}
-                  </Avatar>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" component="h3" sx={{
-                      fontSize: { xs: '1rem', sm: '1.25rem' }
-                    }}>
-                      {animal.name || t('animals.name')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {animal.identifier || t('animals.identifier')}
-                    </Typography>
-                  </Box>
-                  {settings.enableQR && (
-                    <Box ml={1}>
-                      <QRCodeDisplay animal={animal} size="small" />
-                    </Box>
-                  )}
-                  {hasActiveWithdrawal(animal.id) && (
-                    <WarningIcon color="warning" sx={{ ml: 1 }} />
-                  )}
-                </Box>
-
-                <Box mb={2}>
-                  <Chip
-                    label={getStatusLabel(animal.status)}
-                    color={getStatusColor(animal.status)}
-                    size="small"
-                    sx={{ mr: 1, mb: 1 }}
-                  />
-                  {animal.sex === Sex.Female && (
-                    <Chip
-                      label="♀"
-                      color="secondary"
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                    />
-                  )}
-                  {animal.sex === Sex.Male && (
-                    <Chip
-                      label="♂"
-                      color="primary"
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                    />
-                  )}
-                  {/* Display animal tags */}
-                  {animal.tags && animal.tags.map((tagId) => {
-                    const tag = tags.find(t => t.id === tagId);
-                    return tag ? (
-                      <Chip
-                        key={tagId}
-                        label={tag.name}
-                        size="small"
-                        sx={{ 
-                          mr: 1, 
-                          mb: 1,
-                          backgroundColor: tag.color || '#e0e0e0',
-                          color: '#fff',
-                          fontWeight: 'bold'
-                        }}
-                      />
-                    ) : null;
-                  })}
-                </Box>
-
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>{t('animals.breed')}:</strong> {animal.breed || t('common.none')}
-                </Typography>
-                
-                {animal.birthDate && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>Âge:</strong> {calculateAgeText(animal.birthDate)}
-                  </Typography>
-                )}
-
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  <strong>{t('animals.cage')}:</strong> {
-                    animal.cage 
-                      ? (cages.find(c => c.id === animal.cage)?.name || 'aucun')
-                      : 'aucun'
-                  }
-                </Typography>
-
-                {animal.notes && (
-                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                    {animal.notes}
-                  </Typography>
-                )}
-              </CardContent>
-              
-              <CardActions sx={{ 
-                flexWrap: { xs: 'wrap', sm: 'nowrap' },
-                gap: { xs: 0.5, sm: 1 }
-              }}>
-                <AccessibleButton 
-                  size="small" 
-                  onClick={() => navigate(`/animals/${animal.id}`)}
-                  ariaLabel={`Voir les détails de ${animal.name || animal.identifier}`}
-                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                >
-                  Détails
-                </AccessibleButton>
-                <AccessibleButton 
-                  size="small" 
-                  color="secondary"
-                  onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
-                  ariaLabel={`Peser ${animal.name || animal.identifier}`}
-                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                >
-                  Peser
-                </AccessibleButton>
-                <AccessibleButton 
-                  size="small" 
-                  color="primary"
-                  onClick={() => navigate(`/animals/${animal.id}/edit`)}
-                  ariaLabel={`Modifier ${animal.name || animal.identifier}`}
-                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                >
-                  {t('common.edit')}
-                </AccessibleButton>
-                {animal.status === Status.Grow && (
-                  <AccessibleButton 
-                    size="small" 
-                    color="error"
-                    onClick={() => handleMarkConsumed(animal.id)}
-                    ariaLabel={`Marquer ${animal.name || animal.identifier} comme consommé`}
-                    tooltip="Cette action est irréversible"
-                    isDestructive
-                    sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                  >
-                    {t('animals.markConsumed')}
-                  </AccessibleButton>
-                )}
-              </CardActions>
-            </AccessibleCard>
+              cages={cages}
+              tags={tags}
+              onMarkConsumed={handleMarkConsumed}
+            />
           </Grid>
         ))}
       </Grid>
 
       {filteredAnimals.length === 0 && (
-        <Box textAlign="center" py={4}>
-          <PetsIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            Aucun animal trouvé
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {animals.length === 0 
-              ? 'Commencez par ajouter votre premier animal'
-              : 'Essayez de modifier vos filtres de recherche'
-            }
-          </Typography>
-        </Box>
+        <EmptyState hasAnimals={animals.length > 0} />
       )}
 
       {/* Floating Action Button */}
@@ -373,34 +199,11 @@ const AnimalListPage = () => {
       />
 
       {/* Consumption Confirmation Dialog */}
-      <Dialog
+      <ConsumptionConfirmationDialog
         open={consumptionDialog.open}
         onClose={() => setConsumptionDialog({ open: false, animalId: null })}
-      >
-        <DialogTitle>{t('animals.confirmConsumption')}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {t('animals.confirmConsumption')}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <AccessibleButton 
-            onClick={() => setConsumptionDialog({ open: false, animalId: null })}
-            ariaLabel="Annuler la suppression"
-          >
-            {t('common.cancel')}
-          </AccessibleButton>
-          <AccessibleButton 
-            onClick={confirmConsumption}
-            color="error"
-            variant="contained"
-            ariaLabel="Confirmer la suppression définitive"
-            isDestructive
-          >
-            {t('common.confirm')}
-          </AccessibleButton>
-        </DialogActions>
-      </Dialog>
+        onConfirm={confirmConsumption}
+      />
     </Container>
   );
 };

@@ -66,7 +66,8 @@ export function useExpensiveMemo<T>(
     }
     
     return result;
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [factory, isExpensive, ...deps]);
   
   return memoizedValue;
 }
@@ -119,7 +120,8 @@ export function useStableCallback<T extends (...args: any[]) => any>(
   
   useEffect(() => {
     ref.current = callback;
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [callback, ...deps]);
   
   return useCallback((...args: Parameters<T>) => {
     return ref.current(...args);

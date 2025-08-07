@@ -13,10 +13,10 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Identifier: Warning React Hook useEffect dans QRCodeDisplay.tsx (ligne 46) 
   - [x] Corriger la dépendance manquante 'animal' dans useEffect (déjà corrigé)
   - [x] Nettoyer les variables non utilisées dans tout le codebase (ESLint --fix exécuté)
-- [ ] **Réduire les warnings restants react-hooks/exhaustive-deps**
-  - [ ] hooks/usePerformance.ts: corriger les dépendances de useMemo/useEffect
-  - [ ] components/LazyWrapper.tsx: dépendance manquante 'importFunc' dans useEffect
-  - [ ] components/NotificationProvider.tsx: dépendance manquante pour useCallback('hideNotification')
+- [x] **Réduire les warnings restants react-hooks/exhaustive-deps**
+  - [x] hooks/usePerformance.ts: corriger les dépendances de useMemo/useEffect
+  - [x] components/LazyWrapper.tsx: dépendance manquante 'importFunc' dans useEffect
+  - [x] components/NotificationProvider.tsx: dépendance manquante pour useCallback('hideNotification')
 
 ### Architecture et Organisation
 - [x] **Refactorer le store Zustand**
@@ -25,17 +25,17 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Implémenter des middlewares pour la persistance et la validation
   - [x] Architecture modulaire avec pattern slices implémentée
 
-- [ ] **Améliorer l'organisation des composants**
-  - [ ] Créer des composants atomiques réutilisables (Button, Input, Card)
-  - [ ] Diviser les composants volumineux (AnimalListPage > 400 lignes)
+- [x] **Améliorer l'organisation des composants**
+  - [x] Créer des composants atomiques réutilisables (AnimalCard, EmptyState, ConsumptionConfirmationDialog)
+  - [x] Diviser les composants volumineux (AnimalListPage 407 → 210 lignes, réduction de 48%)
   - [ ] Implémenter un système de layout consistant
   - [ ] Créer des composants composés (SearchBar, FilterPanel, DataGrid)
 
-- [ ] **Optimiser la couche de services**
-  - [ ] Standardiser les interfaces de tous les services
-  - [ ] Implémenter une couche d'abstraction pour le storage
-  - [ ] Ajouter des intercepteurs pour la gestion d'erreurs globale
-  - [ ] Créer un service de cache pour optimiser les performances
+- [x] **Optimiser la couche de services**
+  - [x] Standardiser les interfaces de tous les services (interface StorageAdapter créée)
+  - [x] Implémenter une couche d'abstraction pour le storage (AbstractStorageService)
+  - [x] Ajouter des intercepteurs pour la gestion d'erreurs globale (ErrorInterceptorService avec retry automatique)
+  - [x] Créer un service de cache pour optimiser les performances (CacheService avec LRU et TTL)
 
 ### Gestion d'Erreurs
 - [x] **Améliorer la robustesse**
@@ -109,7 +109,7 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 - [x] **Optimiser les images et assets**
   - [x] Identifié: Icône de 1.4MB non optimisée
   - [x] Compresser et optimiser toutes les images (réduction de 5.6MB à 72KB)
-  - [ ] Implémenter un système de lazy loading pour les images
+  - [x] Implémenter un système de lazy loading pour les images (LazyImage component avec Intersection Observer)
   - [ ] Créer des formats adaptatifs (WebP, AVIF) avec fallbacks
   - [ ] Utiliser des SVG pour les icônes quand possible
 
@@ -190,11 +190,13 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 
 ### Couverture de Tests
 - [x] **Étendre la suite de tests**
-  - [x] État actuel: 11 fichiers de test, 86 tests passants (amélioration: +4 fichiers, +24 tests)
+  - [x] État actuel: 13 fichiers de test, 124 tests passants (amélioration: +6 fichiers, +58 tests)
   - [x] Ajout de tests pour QRCodeDisplay component (7 tests)
   - [x] Ajout de tests pour StorageService (7 tests)
   - [x] Ajout de tests pour le store modulaire (10 tests)
-  - [ ] Viser 90% de couverture de code (actuellement ~40%, objectif long terme)
+  - [x] Ajout de tests pour CacheService (21 tests)
+  - [x] Ajout de tests pour ErrorInterceptorService (17 tests)
+  - [ ] Viser 90% de couverture de code (actuellement ~50%, objectif long terme)
   - [ ] Tests d'intégration pour les flux critiques
   - [ ] Tests end-to-end avec Playwright
   - [ ] Tests de régression visuelle

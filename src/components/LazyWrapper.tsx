@@ -147,7 +147,8 @@ const useLazyImport = <T extends React.ComponentType<any>>(
     return () => {
       mounted = false;
     };
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [importFunc, ...deps]);
 
   return { Component, loading, error };
 };

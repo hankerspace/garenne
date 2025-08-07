@@ -12,6 +12,7 @@ interface ErrorContext {
   timestamp: number;
   userAgent: string;
   url: string;
+  showToUser?: boolean;
 }
 
 interface ErrorInterceptor {

@@ -15,7 +15,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "type-check": "tsc --noEmit",
-    "analyze": "npm run build -- --mode analyze"
+    "analyze": "npm run build -- --mode analyze",
+    "analyze-bundle": "npm run build && node scripts/analyze-bundle.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

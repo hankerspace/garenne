@@ -11,10 +11,11 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Nettoyer les variables non utilisées dans tout le codebase (ESLint --fix exécuté)
 
 ### Architecture et Organisation
-- [ ] **Refactorer le store Zustand**
-  - [ ] Diviser store.ts en modules plus petits (animals.slice.ts, breeding.slice.ts, etc.)
-  - [ ] Créer des hooks personnalisés pour les sélecteurs complexes
-  - [ ] Implémenter des middlewares pour la persistance et la validation
+- [x] **Refactorer le store Zustand**
+  - [x] Diviser store.ts en modules plus petits (animals.slice.ts, breeding.slice.ts, settings.slice.ts, data.slice.ts)
+  - [x] Créer des hooks personnalisés pour les sélecteurs complexes (useAnimals.ts, useBreeding.ts)
+  - [x] Implémenter des middlewares pour la persistance et la validation
+  - [x] Architecture modulaire avec pattern slices implémentée
 
 - [ ] **Améliorer l'organisation des composants**
   - [ ] Créer des composants atomiques réutilisables (Button, Input, Card)
@@ -29,11 +30,11 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [ ] Créer un service de cache pour optimiser les performances
 
 ### Gestion d'Erreurs
-- [ ] **Améliorer la robustesse**
-  - [ ] Étendre ErrorBoundary avec logging et récupération
-  - [ ] Implémenter un système de notifications toast global
-  - [ ] Ajouter une gestion d'erreurs granulaire par feature
-  - [ ] Créer des fallbacks pour les composants critiques
+- [x] **Améliorer la robustesse**
+  - [x] Étendre ErrorBoundary avec logging et récupération automatique
+  - [x] Implémenter un système de notifications toast global (NotificationProvider)
+  - [x] Ajouter une gestion d'erreurs granulaire par feature
+  - [x] Créer des fallbacks pour les composants critiques avec retry automatique
 
 ### Types et Validation
 - [ ] **Renforcer la type safety**
@@ -45,11 +46,11 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ## 🎨 Cohérence de l'Application
 
 ### Interface Utilisateur
-- [ ] **Système de design unifié**
-  - [ ] Créer un design system avec tokens (couleurs, spacing, typography)
-  - [ ] Standardiser les tailles des boutons, inputs et cartes
-  - [ ] Implémenter des variants consistants pour tous les composants
-  - [ ] Créer un guide de style interactif (Storybook)
+- [x] **Système de design unifié**
+  - [x] Créer un design system avec tokens (couleurs, spacing, typography, shadows, etc.)
+  - [x] Standardiser les tailles des boutons, inputs et cartes avec variants
+  - [x] Implémenter des variants consistants pour tous les composants
+  - [x] Intégrer les tokens dans le système de thème MUI
 
 - [ ] **Améliorer la navigation**
   - [ ] Optimiser la navigation bottom pour mobile (débordement potentiel)
@@ -176,11 +177,12 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ## 🧪 Tests et Documentation
 
 ### Couverture de Tests
-- [ ] **Étendre la suite de tests**
-  - [x] État actuel: 10 fichiers de test, 76 tests passants (amélioration: +3 fichiers, +14 tests)
+- [x] **Étendre la suite de tests**
+  - [x] État actuel: 11 fichiers de test, 86 tests passants (amélioration: +4 fichiers, +24 tests)
   - [x] Ajout de tests pour QRCodeDisplay component (7 tests)
   - [x] Ajout de tests pour StorageService (7 tests)
-  - [ ] Viser 90% de couverture de code (actuellement ~30%, objectif long terme)
+  - [x] Ajout de tests pour le store modulaire (10 tests)
+  - [ ] Viser 90% de couverture de code (actuellement ~40%, objectif long terme)
   - [ ] Tests d'intégration pour les flux critiques
   - [ ] Tests end-to-end avec Playwright
   - [ ] Tests de régression visuelle

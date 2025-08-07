@@ -113,9 +113,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
+          // Core vendors
           vendor: ['react', 'react-dom'],
           mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
           router: ['react-router-dom'],
+          
+          // Functionality-based chunks
           forms: ['react-hook-form', '@hookform/resolvers'],
           charts: ['recharts'],
           utils: ['date-fns', 'zod', 'zustand', 'lz-string', 'uuid'],

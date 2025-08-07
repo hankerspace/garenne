@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { expect, test, vi, beforeEach, describe } from 'vitest';
 import QRCodeDisplay from '../components/QRCodeDisplay';
-import { Animal } from '../models/types';
+import { Animal, Sex, Status } from '../models/types';
 import { QRCodeService } from '../services/qrcode.service';
 
 // Mock the QRCodeService
@@ -16,14 +16,14 @@ const mockAnimal: Animal = {
   id: 'test-id',
   name: 'Test Rabbit',
   identifier: 'TR001',
-  dateOfBirth: new Date('2023-01-01'),
-  sex: 'male',
+  birthDate: '2023-01-01T00:00:00.000Z',
+  sex: Sex.Male,
   breed: 'Test Breed',
-  status: 'breeder',
-  cageLocation: 'A1',
+  status: Status.Reproducer,
+  cage: 'A1',
   tags: [],
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: '2023-01-01T00:00:00.000Z',
+  updatedAt: '2023-01-01T00:00:00.000Z',
 };
 
 describe('QRCodeDisplay', () => {

@@ -1,6 +1,6 @@
 import { expect, test, vi, beforeEach, describe } from 'vitest';
 import { LocalStorageService } from '../services/storage.service';
-import { AppState } from '../models/types';
+import { AppState, Sex, Status } from '../models/types';
 
 // Mock localStorage
 const localStorageMock = {
@@ -61,7 +61,18 @@ describe('LocalStorageService', () => {
 
     test('loads and parses stored data successfully', () => {
       const mockState: AppState = {
-        animals: [{ id: 'test-animal', name: 'Test', dateOfBirth: new Date(), sex: 'male', breed: 'Test', status: 'growth', cageLocation: 'A1', tags: [], createdAt: new Date(), updatedAt: new Date() }],
+        animals: [{ 
+          id: 'test-animal', 
+          name: 'Test', 
+          birthDate: '2023-01-01T00:00:00.000Z', 
+          sex: Sex.Male, 
+          breed: 'Test', 
+          status: Status.Grow, 
+          cage: 'A1', 
+          tags: [], 
+          createdAt: '2023-01-01T00:00:00.000Z', 
+          updatedAt: '2023-01-01T00:00:00.000Z' 
+        }],
         breedings: [],
         litters: [],
         weights: [],
@@ -76,7 +87,7 @@ describe('LocalStorageService', () => {
           theme: 'dark',
           weightUnit: 'kg',
           enableQR: true,
-          locale: 'en',
+          locale: 'en-US',
           schemaVersion: 2,
           gestationDuration: 31,
           weaningDuration: 28,
@@ -121,11 +132,11 @@ describe('LocalStorageService', () => {
         animals: [{
           id: 'test-animal',
           name: 'Test',
-          dateOfBirth: '2023-01-01T00:00:00.000Z',
-          sex: 'male',
+          birthDate: '2023-01-01T00:00:00.000Z',
+          sex: Sex.Male,
           breed: 'Test',
-          status: 'growth',
-          cageLocation: 'A1',
+          status: Status.Grow,
+          cage: 'A1',
           tags: [],
           createdAt: '2023-01-01T00:00:00.000Z',
           updatedAt: '2023-01-01T00:00:00.000Z',
@@ -144,7 +155,7 @@ describe('LocalStorageService', () => {
           theme: 'light',
           weightUnit: 'g',
           enableQR: false,
-          locale: 'en',
+          locale: 'en-US',
           schemaVersion: 2,
           gestationDuration: 31,
           weaningDuration: 28,
@@ -160,7 +171,7 @@ describe('LocalStorageService', () => {
       const result = service.load();
 
       // Storage service loads raw data, date conversion is handled by application layer
-      expect(result.animals[0].dateOfBirth).toBe('2023-01-01T00:00:00.000Z');
+      expect(result.animals[0].birthDate).toBe('2023-01-01T00:00:00.000Z');
       expect(result.animals[0].id).toBe('test-animal');
       expect(result.animals[0].name).toBe('Test');
     });
@@ -184,7 +195,7 @@ describe('LocalStorageService', () => {
           theme: 'dark',
           weightUnit: 'kg',
           enableQR: true,
-          locale: 'en',
+          locale: 'en-US',
           schemaVersion: 2,
           gestationDuration: 31,
           weaningDuration: 28,
@@ -220,7 +231,7 @@ describe('LocalStorageService', () => {
           theme: 'light',
           weightUnit: 'g',
           enableQR: false,
-          locale: 'en',
+          locale: 'en-US',
           schemaVersion: 2,
           gestationDuration: 31,
           weaningDuration: 28,

@@ -32,11 +32,18 @@ export const AccessibleButton = forwardRef<HTMLButtonElement, AccessibleButtonPr
       accessibilityProps['aria-describedby'] = 'destructive-action-warning';
     }
 
+    // Si on utilise un Tooltip, on ne veut pas de title sur l'élément
+    // car MUI Tooltip gère cela lui-même
+    const buttonProps = { ...accessibilityProps };
+    if (tooltip || keyboardShortcut) {
+      delete buttonProps.title;
+    }
+
     const button = (
       <MuiButton
         ref={ref}
         {...props}
-        {...accessibilityProps}
+        {...buttonProps}
         onClick={onClick}
         // Améliorer le contraste pour les actions destructives
         color={isDestructive ? 'error' : props.color}

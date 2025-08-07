@@ -114,8 +114,13 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          mui: ['@mui/material', '@mui/icons-material'],
-          utils: ['date-fns', 'zod', 'zustand']
+          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          router: ['react-router-dom'],
+          forms: ['react-hook-form', '@hookform/resolvers'],
+          charts: ['recharts'],
+          utils: ['date-fns', 'zod', 'zustand', 'lz-string', 'uuid'],
+          qrcode: ['qrcode'],
+          filesaver: ['file-saver']
         }
       }
     }

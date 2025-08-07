@@ -43,7 +43,7 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
     };
 
     generateQRCode();
-  }, [animal.id, variant]);
+  }, [animal, variant]);
 
   if (loading) {
     return (

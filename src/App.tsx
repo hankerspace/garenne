@@ -23,7 +23,7 @@ import {
 import { lightTheme, darkTheme } from './utils/theme';
 import { useAppStore } from './state/store';
 import { useTranslation } from './hooks/useTranslation';
-import logo from './assets/icon.png';
+import { getBestImageSrc } from './utils/imageUtils';
 
 function App() {
   const location = useLocation();
@@ -94,7 +94,7 @@ function App() {
             <Toolbar sx={{ px: 0 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
                 <img 
-                  src={logo}
+                  src={getBestImageSrc('icon')}
                   alt="Garenne Logo" 
                   style={{ 
                     height: '40px', 

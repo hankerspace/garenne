@@ -43,18 +43,35 @@ import QRCodeDisplay from '../../components/QRCodeDisplay';
 import { SearchService, SearchFilters } from '../../services/search.service';
 import { AdvancedSearchFilters } from '../../components/AdvancedSearchFilters';
 import { useTranslation } from '../../hooks/useTranslation';
+import { AccessibleButton } from '../../components/AccessibleButton';
+import { AccessibleCard } from '../../components/AccessibleCard';
+import { useScreenReaderAnnouncement } from '../../hooks/useAccessibility';
 
 const AnimalListPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
+  const { announce } = useScreenReaderAnnouncement();
   const [showQuickWeight, setShowQuickWeight] = useState(false);
   const [showQuickTreatment, setShowQuickTreatment] = useState(false);
   const [consumptionDialog, setConsumptionDialog] = useState<{
     open: boolean;
     animalId: string | null;
   }>({ open: false, animalId: null });
+
+  // Raccourci clavier pour ajouter un animal (Ctrl+N)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'n') {
+        event.preventDefault();
+        navigate('/animals/new');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
 
   // Handle URL parameters for quick actions
   useEffect(() => {
@@ -95,6 +112,15 @@ const AnimalListPage = () => {
   const filteredAnimals = useMemo(() => 
     SearchService.searchAnimals(animals, searchFilters), [animals, searchFilters]
   );
+
+  // Annoncer les résultats de recherche aux lecteurs d'écran
+  useEffect(() => {
+    if (searchFilters.query || Object.keys(searchFilters).length > 0) {
+      const announcement = `${filteredAnimals.length} animal${filteredAnimals.length !== 1 ? 'aux' : ''} trouvé${filteredAnimals.length !== 1 ? 's' : ''}`;
+      const timer = setTimeout(() => announce(announcement, 'polite'), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [filteredAnimals.length, searchFilters, announce]);
 
   const getStatusColor = (status: Status) => {
     switch (status) {
@@ -152,18 +178,17 @@ const AnimalListPage = () => {
 
       {/* Animals Grid */}
       <Grid container spacing={{ xs: 2, sm: 3 }}>
-        {filteredAnimals.map((animal) => (
+        {filteredAnimals.map((animal, index) => (
           <Grid item xs={12} sm={6} lg={4} xl={3} key={animal.id}>
-            <Card sx={{ 
-              height: '100%', 
-              display: 'flex', 
-              flexDirection: 'column',
-              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 4,
-              }
-            }}>
+            <AccessibleCard
+              index={index}
+              ariaLabel={`${animal.name || 'Animal'} ${animal.identifier || ''}, ${animal.sex === Sex.Female ? 'Femelle' : 'Mâle'}, ${getStatusLabel(animal.status)}`}
+              sx={{ 
+                height: '100%', 
+                display: 'flex', 
+                flexDirection: 'column',
+              }}
+            >
               <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" alignItems="center" mb={2}>
                   <Avatar sx={{ mr: 2, bgcolor: animal.sex === Sex.Female ? 'pink' : 'lightblue' }}>
@@ -261,41 +286,47 @@ const AnimalListPage = () => {
                 flexWrap: { xs: 'wrap', sm: 'nowrap' },
                 gap: { xs: 0.5, sm: 1 }
               }}>
-                <Button 
+                <AccessibleButton 
                   size="small" 
                   onClick={() => navigate(`/animals/${animal.id}`)}
+                  ariaLabel={`Voir les détails de ${animal.name || animal.identifier}`}
                   sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
                   Détails
-                </Button>
-                <Button 
+                </AccessibleButton>
+                <AccessibleButton 
                   size="small" 
                   color="secondary"
                   onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
+                  ariaLabel={`Peser ${animal.name || animal.identifier}`}
                   sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
                   Peser
-                </Button>
-                <Button 
+                </AccessibleButton>
+                <AccessibleButton 
                   size="small" 
                   color="primary"
                   onClick={() => navigate(`/animals/${animal.id}/edit`)}
+                  ariaLabel={`Modifier ${animal.name || animal.identifier}`}
                   sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                 >
                   {t('common.edit')}
-                </Button>
+                </AccessibleButton>
                 {animal.status === Status.Grow && (
-                  <Button 
+                  <AccessibleButton 
                     size="small" 
                     color="error"
                     onClick={() => handleMarkConsumed(animal.id)}
+                    ariaLabel={`Marquer ${animal.name || animal.identifier} comme consommé`}
+                    tooltip="Cette action est irréversible"
+                    isDestructive
                     sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                   >
                     {t('animals.markConsumed')}
-                  </Button>
+                  </AccessibleButton>
                 )}
               </CardActions>
-            </Card>
+            </AccessibleCard>
           </Grid>
         ))}
       </Grid>
@@ -318,7 +349,8 @@ const AnimalListPage = () => {
       {/* Floating Action Button */}
       <Fab
         color="primary"
-        aria-label="add animal"
+        aria-label="Ajouter un nouvel animal (Ctrl+N)"
+        title="Ajouter un nouvel animal (Ctrl+N)"
         sx={{ 
           position: 'fixed', 
           bottom: { xs: 80, sm: 16 }, 
@@ -352,18 +384,21 @@ const AnimalListPage = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button 
+          <AccessibleButton 
             onClick={() => setConsumptionDialog({ open: false, animalId: null })}
+            ariaLabel="Annuler la suppression"
           >
             {t('common.cancel')}
-          </Button>
-          <Button 
+          </AccessibleButton>
+          <AccessibleButton 
             onClick={confirmConsumption}
             color="error"
             variant="contained"
+            ariaLabel="Confirmer la suppression définitive"
+            isDestructive
           >
             {t('common.confirm')}
-          </Button>
+          </AccessibleButton>
         </DialogActions>
       </Dialog>
     </Container>

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import {
   Container,
   Typography,
@@ -30,7 +31,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../state/store';
 import { getKPIs } from '../state/selectors';
-import { PopulationChart } from '../components/charts/PopulationChart';
+import { PopulationChart } from '../components/LazyComponents';
 import { useTranslation } from '../hooks/useTranslation';
 
 const DashboardPage = () => {
@@ -206,7 +207,9 @@ const DashboardPage = () => {
           }}>
             {t('dashboard.overview')}
           </Typography>
-          <PopulationChart />
+          <Suspense fallback={<Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><Typography>Chargement du graphique...</Typography></Box>}>
+            <PopulationChart />
+          </Suspense>
         </Box>
       )}
 

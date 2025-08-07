@@ -1,4 +1,5 @@
 import { Animal, Litter, Treatment, Status, Sex } from '../models/types';
+import { CacheUtils } from './memory-cache.service';
 
 export interface SearchFilters {
   query?: string;
@@ -70,7 +71,12 @@ export class SearchService {
    * Search animals with intelligent filtering and ranking
    */
   static searchAnimals(animals: Animal[], filters: SearchFilters): Animal[] {
-    let results = animals;
+    // Use cache for expensive search operations
+    return CacheUtils.cacheSearchResults(
+      filters.query || '',
+      filters,
+      () => {
+        let results = animals;
 
     // Apply basic filters first
     if (filters.status && filters.status.length > 0) {
@@ -171,6 +177,7 @@ export class SearchService {
     }
 
     return results;
+    });
   }
 
   /**

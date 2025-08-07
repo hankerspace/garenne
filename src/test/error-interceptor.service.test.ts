@@ -61,21 +61,21 @@ describe('ErrorInterceptorService', () => {
         id: 'low',
         name: 'Low Priority',
         priority: 3,
-        handler: () => callOrder.push('low')
+        handler: () => { callOrder.push('low'); }
       });
 
       service.register({
         id: 'high',
         name: 'High Priority',
         priority: 1,
-        handler: () => callOrder.push('high')
+        handler: () => { callOrder.push('high'); }
       });
 
       service.register({
         id: 'medium',
         name: 'Medium Priority',
         priority: 2,
-        handler: () => callOrder.push('medium')
+        handler: () => { callOrder.push('medium'); }
       });
 
       await service.captureError(new Error('test'));
@@ -186,7 +186,7 @@ describe('ErrorInterceptorService', () => {
   describe('Retry mechanism', () => {
     it('should retry failed operations', async () => {
       let attempts = 0;
-      const operation = vi.fn(() => {
+      const operation = vi.fn(async () => {
         attempts++;
         if (attempts < 3) {
           throw new Error('Operation failed');

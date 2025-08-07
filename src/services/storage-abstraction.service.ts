@@ -27,7 +27,7 @@ export class LocalStorageAdapter implements StorageAdapter {
   async get<T>(key: string): Promise<T | null> {
     try {
       const fullKey = this.getFullKey(key);
-      const item = localStorage.getItem(fullKey);
+      const item = window.localStorage.getItem(fullKey);
       return item ? JSON.parse(item) : null;
     } catch (error) {
       console.warn(`Failed to get item from localStorage:`, error);
@@ -38,7 +38,7 @@ export class LocalStorageAdapter implements StorageAdapter {
   async set<T>(key: string, value: T): Promise<void> {
     try {
       const fullKey = this.getFullKey(key);
-      localStorage.setItem(fullKey, JSON.stringify(value));
+      window.localStorage.setItem(fullKey, JSON.stringify(value));
     } catch (error) {
       console.error(`Failed to set item in localStorage:`, error);
       throw error;
@@ -48,7 +48,7 @@ export class LocalStorageAdapter implements StorageAdapter {
   async remove(key: string): Promise<void> {
     try {
       const fullKey = this.getFullKey(key);
-      localStorage.removeItem(fullKey);
+      window.localStorage.removeItem(fullKey);
     } catch (error) {
       console.warn(`Failed to remove item from localStorage:`, error);
     }
@@ -105,7 +105,7 @@ export class SessionStorageAdapter implements StorageAdapter {
   async get<T>(key: string): Promise<T | null> {
     try {
       const fullKey = this.getFullKey(key);
-      const item = sessionStorage.getItem(fullKey);
+      const item = window.sessionStorage.getItem(fullKey);
       return item ? JSON.parse(item) : null;
     } catch (error) {
       console.warn(`Failed to get item from sessionStorage:`, error);
@@ -116,7 +116,7 @@ export class SessionStorageAdapter implements StorageAdapter {
   async set<T>(key: string, value: T): Promise<void> {
     try {
       const fullKey = this.getFullKey(key);
-      sessionStorage.setItem(fullKey, JSON.stringify(value));
+      window.sessionStorage.setItem(fullKey, JSON.stringify(value));
     } catch (error) {
       console.error(`Failed to set item in sessionStorage:`, error);
       throw error;
@@ -126,7 +126,7 @@ export class SessionStorageAdapter implements StorageAdapter {
   async remove(key: string): Promise<void> {
     try {
       const fullKey = this.getFullKey(key);
-      sessionStorage.removeItem(fullKey);
+      window.sessionStorage.removeItem(fullKey);
     } catch (error) {
       console.warn(`Failed to remove item from sessionStorage:`, error);
     }

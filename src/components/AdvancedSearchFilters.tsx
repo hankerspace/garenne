@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -28,6 +28,7 @@ import {
 import { SearchFilters } from '../services/search.service';
 import { Sex, Status } from '../models/types';
 import { useTranslation } from '../hooks/useTranslation';
+import { useDebounce } from '../hooks/usePerformance';
 
 interface AdvancedSearchFiltersProps {
   filters: SearchFilters;
@@ -50,12 +51,30 @@ export const AdvancedSearchFilters: React.FC<AdvancedSearchFiltersProps> = ({
 }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
-
-  const handleQueryChange = (newQuery: string) => {
+  
+  // Local state for immediate UI updates
+  const [localQuery, setLocalQuery] = useState(filters.query || '');
+  
+  // Debounced query for actual filtering
+  const debouncedQuery = useDebounce(localQuery, 300);
+  
+  // Update filters when debounced query changes
+  React.useEffect(() => {
     onFiltersChange({
       ...filters,
-      query: newQuery || undefined,
+      query: debouncedQuery || undefined,
     });
+  }, [debouncedQuery, filters, onFiltersChange]);
+  
+  // Update local query when external filters change
+  React.useEffect(() => {
+    if (filters.query !== localQuery) {
+      setLocalQuery(filters.query || '');
+    }
+  }, [filters.query, localQuery]);
+
+  const handleQueryChange = (newQuery: string) => {
+    setLocalQuery(newQuery);
   };
 
   const handleStatusChange = (statuses: Status[]) => {
@@ -152,7 +171,7 @@ export const AdvancedSearchFilters: React.FC<AdvancedSearchFiltersProps> = ({
         <Autocomplete
           freeSolo
           options={suggestions}
-          value={filters.query || ''}
+          value={localQuery}
           onInputChange={(_, newValue) => handleQueryChange(newValue || '')}
           renderInput={(params) => (
             <TextField

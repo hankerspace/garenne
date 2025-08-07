@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Container,
@@ -45,15 +45,8 @@ import { useAppStore } from '../../state/store';
 import { Sex, Status, Breeding } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
 import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
-import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
-import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
-import { BreedingModal } from '../../components/modals/BreedingModal';
+import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, PrintableRabbitSheet, MortalityModal, QuickWeightModal, QuickTreatmentModal } from '../../components/LazyComponents';
 import { LitterModal } from '../../components/modals/LitterModal';
-import { MortalityModal } from '../../components/modals/MortalityModal';
-import { WeightChart } from '../../components/charts/WeightChart';
-import { GenealogyTree } from '../../components/GenealogyTree';
-import QRCodeDisplay from '../../components/QRCodeDisplay';
-import PrintableRabbitSheet from '../../components/PrintableRabbitSheet';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -403,10 +396,12 @@ const AnimalDetailPage = () => {
             )}
 
             <Grid item xs={12}>
-              <GenealogyTree 
-                currentAnimal={animal}
-                allAnimals={animals}
-              />
+              <Suspense fallback={<Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><Typography>Chargement de l'arbre généalogique...</Typography></Box>}>
+                <GenealogyTree 
+                  currentAnimal={animal}
+                  allAnimals={animals}
+                />
+              </Suspense>
             </Grid>
           </Grid>
         </TabPanel>
@@ -531,7 +526,9 @@ const AnimalDetailPage = () => {
           {/* Weight Chart */}
           {weights.length > 0 && (
             <Box sx={{ mb: 3 }}>
-              <WeightChart weights={weights} />
+              <Suspense fallback={<Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><Typography>Chargement du graphique...</Typography></Box>}>
+                <WeightChart weights={weights} />
+              </Suspense>
             </Box>
           )}
           
@@ -614,16 +611,20 @@ const AnimalDetailPage = () => {
       </Paper>
 
       {/* Modals */}
-      <QuickWeightModal
-        open={weightModalOpen}
-        onClose={() => setWeightModalOpen(false)}
-        preselectedAnimal={animal}
-      />
-      <QuickTreatmentModal
-        open={treatmentModalOpen}
-        onClose={() => setTreatmentModalOpen(false)}
-        preselectedAnimal={animal}
-      />
+      <Suspense fallback={<div>Chargement...</div>}>
+        <QuickWeightModal
+          open={weightModalOpen}
+          onClose={() => setWeightModalOpen(false)}
+          preselectedAnimal={animal}
+        />
+      </Suspense>
+      <Suspense fallback={<div>Chargement...</div>}>
+        <QuickTreatmentModal
+          open={treatmentModalOpen}
+          onClose={() => setTreatmentModalOpen(false)}
+          preselectedAnimal={animal}
+        />
+      </Suspense>
       <BreedingModal
         open={breedingModalOpen}
         onClose={() => setBreedingModalOpen(false)}
@@ -639,11 +640,13 @@ const AnimalDetailPage = () => {
         preselectedMother={animal?.sex === Sex.Female ? animal : undefined}
       />
       {animal && (
-        <MortalityModal
-          open={mortalityModalOpen}
-          onClose={() => setMortalityModalOpen(false)}
-          animal={animal}
-        />
+        <Suspense fallback={<div>Chargement...</div>}>
+          <MortalityModal
+            open={mortalityModalOpen}
+            onClose={() => setMortalityModalOpen(false)}
+            animal={animal}
+          />
+        </Suspense>
       )}
 
       {/* Breeding Menu */}

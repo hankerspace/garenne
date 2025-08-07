@@ -192,7 +192,7 @@ function NotificationContainer() {
 }
 
 // Hook to use notifications
-export function useNotifications() {
+function useNotifications() {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error('useNotifications must be used within a NotificationProvider');
@@ -201,7 +201,7 @@ export function useNotifications() {
 }
 
 // HOC to wrap components with notification capability
-export function withNotifications<P extends object>(
+function withNotifications<P extends object>(
   Component: React.ComponentType<P>
 ) {
   return function WithNotificationsComponent(props: P) {

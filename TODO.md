@@ -5,10 +5,18 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ## 🔧 Améliorations de Code
 
 ### Qualité du Code
-- [x] **Corriger les warnings ESLint**
+- [x] **Corriger les erreurs ESLint bloquantes**
+  - [x] Règle react-refresh/only-export-components: rendre internes les exports non-composants
+    - [x] LazyWrapper.tsx: withLazyWrapper, useLazyImport
+    - [x] NotificationProvider.tsx: useNotifications, withNotifications
+- [x] **Corriger les warnings ESLint ciblés**
   - [x] Identifier: Warning React Hook useEffect dans QRCodeDisplay.tsx (ligne 46) 
   - [x] Corriger la dépendance manquante 'animal' dans useEffect (déjà corrigé)
   - [x] Nettoyer les variables non utilisées dans tout le codebase (ESLint --fix exécuté)
+- [ ] **Réduire les warnings restants react-hooks/exhaustive-deps**
+  - [ ] hooks/usePerformance.ts: corriger les dépendances de useMemo/useEffect
+  - [ ] components/LazyWrapper.tsx: dépendance manquante 'importFunc' dans useEffect
+  - [ ] components/NotificationProvider.tsx: dépendance manquante pour useCallback('hideNotification')
 
 ### Architecture et Organisation
 - [x] **Refactorer le store Zustand**
@@ -269,7 +277,7 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 - [ ] **Standards de Code**
   - [ ] Couverture de tests > 90% (actuellement ~30%)
   - [ ] Score Lighthouse > 95 sur toutes les métriques
-  - [ ] 0 warnings ESLint (actuellement 1)
+  - [ ] 0 warnings ESLint (actuellement 7)
   - [ ] Temps de build < 30s (actuellement ~20s)
 
 ---

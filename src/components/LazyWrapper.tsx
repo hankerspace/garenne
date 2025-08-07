@@ -94,7 +94,7 @@ export const LazyWrapper: React.FC<LazyWrapperProps> = ({
 /**
  * Higher-order component for wrapping lazy components
  */
-export const withLazyWrapper = <P extends object>(
+const withLazyWrapper = <P extends object>(
   options?: Omit<LazyWrapperProps, 'children'>
 ) => (Component: React.ComponentType<P>) => {
   const WrappedComponent = (props: P) => (
@@ -110,7 +110,7 @@ export const withLazyWrapper = <P extends object>(
 /**
  * Hook for dynamically importing components with error handling
  */
-export const useLazyImport = <T extends React.ComponentType<any>>(
+const useLazyImport = <T extends React.ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,
   deps: React.DependencyList = []
 ) => {

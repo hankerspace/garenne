@@ -1,59 +1,80 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { frFR } from '@mui/material/locale';
+import { colors, typography, borderRadius, shadows } from './tokens';
 
-// Define the theme colors and typography
+// Define the theme colors and typography using design tokens
 export const lightTheme: Theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#A4703A',
-      light: '#C4905A',
-      dark: '#84502A',
+      main: colors.primary[400],
+      light: colors.primary[300],
+      dark: colors.primary[500],
     },
     secondary: {
-      main: '#F2E8D5',
-      light: '#F5EFDF',
-      dark: '#E8D9C0',
+      main: colors.secondary[200],
+      light: colors.secondary[100],
+      dark: colors.secondary[300],
     },
     background: {
-      default: '#fafafa',
+      default: colors.neutral[50],
       paper: '#ffffff',
+    },
+    success: {
+      main: colors.success[500],
+      light: colors.success[300],
+      dark: colors.success[700],
+    },
+    error: {
+      main: colors.error[500],
+      light: colors.error[300],
+      dark: colors.error[700],
+    },
+    warning: {
+      main: colors.warning[500],
+      light: colors.warning[300],
+      dark: colors.warning[700],
+    },
+    info: {
+      main: colors.info[500],
+      light: colors.info[300],
+      dark: colors.info[700],
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: typography.fontFamily.sans.join(', '),
     h4: {
-      fontWeight: 600,
+      fontWeight: typography.fontWeight.semibold,
     },
     h5: {
-      fontWeight: 600,
+      fontWeight: typography.fontWeight.semibold,
     },
     h6: {
-      fontWeight: 600,
+      fontWeight: typography.fontWeight.semibold,
     },
   },
   components: {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          borderRadius: borderRadius.md,
+          boxShadow: shadows.base,
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: borderRadius.base,
           textTransform: 'none',
-          fontWeight: 600,
+          fontWeight: typography.fontWeight.semibold,
         },
       },
     },
     MuiFab: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: borderRadius.lg,
         },
       },
     },
@@ -64,54 +85,74 @@ export const darkTheme: Theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#C4905A',
-      light: '#D4A06A',
-      dark: '#A4703A',
+      main: colors.primary[300],
+      light: colors.primary[200],
+      dark: colors.primary[400],
     },
     secondary: {
-      main: '#E8D9C0',
-      light: '#F2E8D5',
-      dark: '#D4C5A8',
+      main: colors.secondary[300],
+      light: colors.secondary[200],
+      dark: colors.secondary[400],
     },
     background: {
-      default: '#121212',
-      paper: '#1e1e1e',
+      default: colors.neutral[900],
+      paper: colors.neutral[800],
+    },
+    success: {
+      main: colors.success[500],
+      light: colors.success[300],
+      dark: colors.success[700],
+    },
+    error: {
+      main: colors.error[500],
+      light: colors.error[300],
+      dark: colors.error[700],
+    },
+    warning: {
+      main: colors.warning[500],
+      light: colors.warning[300],
+      dark: colors.warning[700],
+    },
+    info: {
+      main: colors.info[500],
+      light: colors.info[300],
+      dark: colors.info[700],
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: typography.fontFamily.sans.join(', '),
     h4: {
-      fontWeight: 600,
+      fontWeight: typography.fontWeight.semibold,
     },
     h5: {
-      fontWeight: 600,
+      fontWeight: typography.fontWeight.semibold,
     },
     h6: {
-      fontWeight: 600,
+      fontWeight: typography.fontWeight.semibold,
     },
   },
   components: {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+          borderRadius: borderRadius.md,
+          boxShadow: shadows.lg,
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: borderRadius.base,
           textTransform: 'none',
-          fontWeight: 600,
+          fontWeight: typography.fontWeight.semibold,
         },
       },
     },
     MuiFab: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: borderRadius.lg,
         },
       },
     },

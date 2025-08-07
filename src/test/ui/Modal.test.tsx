@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import { Modal } from '../../components/ui/Modal';
@@ -220,6 +220,8 @@ describe('useModal hook', () => {
     const closeButton = screen.getByRole('button', { name: 'Fermer' });
     await user.click(closeButton);
 
-    expect(screen.queryByText('Test Hook')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Test Hook')).not.toBeInTheDocument();
+    });
   });
 });

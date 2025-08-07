@@ -41,6 +41,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     sx,
     ...props 
   }, ref) => {
+    const computedAriaLabel = loading && typeof children === 'string' ? children : undefined;
+
     return (
       <MuiButton
         ref={ref}
@@ -81,6 +83,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ...sx
         }}
         {...props}
+        aria-label={computedAriaLabel}
       >
         {loading ? '' : children}
       </MuiButton>

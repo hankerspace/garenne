@@ -23,7 +23,7 @@ describe('UI Button Component', () => {
 
   it('handles different sizes', () => {
     const { rerender } = render(<Button size="small">Small</Button>);
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-sizeMedium'); // MUI maps small to medium internally
+    expect(screen.getByRole('button')).toHaveClass('MuiButton-sizeSmall');
     
     rerender(<Button size="large">Large</Button>);
     expect(screen.getByRole('button')).toHaveClass('MuiButton-sizeLarge');

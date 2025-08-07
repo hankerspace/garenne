@@ -27,6 +27,14 @@ export const QuickTreatmentModal = lazy(() =>
   import('./modals/QuickTreatmentModal.tsx').then(module => ({ default: module.QuickTreatmentModal }))
 );
 
+export const MortalityModal = lazy(() => 
+  import('./modals/MortalityModal.tsx').then(module => ({ default: module.MortalityModal }))
+);
+
+export const QuickWeightModal = lazy(() => 
+  import('./modals/QuickWeightModal.tsx').then(module => ({ default: module.QuickWeightModal }))
+);
+
 // Advanced components - loaded when specific features are used
 export const GenealogyTree = lazy(() => 
   import('./GenealogyTree.tsx').then(module => ({ default: module.GenealogyTree }))
@@ -53,6 +61,8 @@ export const LazyComponents = {
   LitterModal,
   BreedingModal,
   QuickTreatmentModal,
+  MortalityModal,
+  QuickWeightModal,
   
   // Advanced components
   GenealogyTree,

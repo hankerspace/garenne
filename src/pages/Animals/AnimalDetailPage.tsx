@@ -45,11 +45,8 @@ import { useAppStore } from '../../state/store';
 import { Sex, Status, Breeding } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
 import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
-import { QuickWeightModal } from '../../components/modals/QuickWeightModal';
-import { QuickTreatmentModal } from '../../components/modals/QuickTreatmentModal';
-import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, PrintableRabbitSheet } from '../../components/LazyComponents';
+import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, PrintableRabbitSheet, MortalityModal, QuickWeightModal, QuickTreatmentModal } from '../../components/LazyComponents';
 import { LitterModal } from '../../components/modals/LitterModal';
-import { MortalityModal } from '../../components/modals/MortalityModal';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -614,16 +611,20 @@ const AnimalDetailPage = () => {
       </Paper>
 
       {/* Modals */}
-      <QuickWeightModal
-        open={weightModalOpen}
-        onClose={() => setWeightModalOpen(false)}
-        preselectedAnimal={animal}
-      />
-      <QuickTreatmentModal
-        open={treatmentModalOpen}
-        onClose={() => setTreatmentModalOpen(false)}
-        preselectedAnimal={animal}
-      />
+      <Suspense fallback={<div>Chargement...</div>}>
+        <QuickWeightModal
+          open={weightModalOpen}
+          onClose={() => setWeightModalOpen(false)}
+          preselectedAnimal={animal}
+        />
+      </Suspense>
+      <Suspense fallback={<div>Chargement...</div>}>
+        <QuickTreatmentModal
+          open={treatmentModalOpen}
+          onClose={() => setTreatmentModalOpen(false)}
+          preselectedAnimal={animal}
+        />
+      </Suspense>
       <BreedingModal
         open={breedingModalOpen}
         onClose={() => setBreedingModalOpen(false)}
@@ -639,11 +640,13 @@ const AnimalDetailPage = () => {
         preselectedMother={animal?.sex === Sex.Female ? animal : undefined}
       />
       {animal && (
-        <MortalityModal
-          open={mortalityModalOpen}
-          onClose={() => setMortalityModalOpen(false)}
-          animal={animal}
-        />
+        <Suspense fallback={<div>Chargement...</div>}>
+          <MortalityModal
+            open={mortalityModalOpen}
+            onClose={() => setMortalityModalOpen(false)}
+            animal={animal}
+          />
+        </Suspense>
       )}
 
       {/* Breeding Menu */}

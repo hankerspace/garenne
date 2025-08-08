@@ -25,10 +25,18 @@ export class MemoryCache<T = any> {
   private readonly maxSize: number;
   private readonly useLRU: boolean;
 
-  constructor(config: CacheConfig = {}) {
-    this.ttl = config.ttl || 5 * 60 * 1000; // 5 minutes default
-    this.maxSize = config.maxSize || 100;
-    this.useLRU = config.useLRU !== false;
+  constructor(config: CacheConfig = {});
+  constructor(maxSize: number);
+  constructor(configOrMaxSize: CacheConfig | number = {}) {
+    if (typeof configOrMaxSize === 'number') {
+      this.ttl = 5 * 60 * 1000; // 5 minutes default
+      this.maxSize = configOrMaxSize;
+      this.useLRU = true;
+    } else {
+      this.ttl = configOrMaxSize.ttl || 5 * 60 * 1000; // 5 minutes default
+      this.maxSize = configOrMaxSize.maxSize || 100;
+      this.useLRU = configOrMaxSize.useLRU !== false;
+    }
   }
 
   /**

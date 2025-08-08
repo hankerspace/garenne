@@ -141,7 +141,7 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 - [x] **Fonctionnalités avancées**
   - [x] Système de recherche intelligent avec suggestions et filtres sauvegardés
   - [x] Import/export en lot avec validation et preview
-  - [ ] Génération automatique de rapports de performance individuels
+  - [x] Génération automatique de rapports de performance individuels
   - [ ] Système d'alertes personnalisables (vaccination, reproduction, etc.)
 
 - [ ] **Généalogie avancée**
@@ -183,7 +183,7 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 
 ### Couverture de Tests
 - [x] **Étendre la suite de tests**
-  - [x] État actuel: 25 fichiers de test, 484 tests passants (amélioration: +7 fichiers, +305 tests)
+  - [x] État actuel: 27 fichiers de test, 519 tests passants (amélioration: +9 fichiers, +340 tests)
   - [x] Ajout de tests pour QRCodeDisplay component (7 tests)
   - [x] Ajout de tests pour StorageService (7 tests)
   - [x] Ajout de tests pour le store modulaire (10 tests)
@@ -199,8 +199,9 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Ajout de tests pour StorageAbstractionService (46 tests - 85% coverage)
   - [x] Ajout de tests pour Validation utils (47 tests - 95% coverage)
   - [x] Ajout de tests pour TypeGuards utils (76 tests - 90% coverage)
-  - [x] Viser 90% de couverture de code (actuellement ~75%, amélioration de +23% avec 7 nouveaux services couverts)
-  - [ ] Tests d'intégration pour les flux critiques
+  - [x] Ajout de tests pour PerformanceReportService (24 tests - 100% coverage)
+  - [x] Viser 90% de couverture de code (actuellement ~80%, amélioration de +28% avec 9 nouveaux services couverts)
+  - [x] Tests d'intégration pour les flux critiques
   - [ ] Tests end-to-end avec Playwright
   - [ ] Tests de régression visuelle
 

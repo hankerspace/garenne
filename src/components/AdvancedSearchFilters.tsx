@@ -29,6 +29,7 @@ import { SearchFilters } from '../services/search.service';
 import { Sex, Status } from '../models/types';
 import { useTranslation } from '../hooks/useTranslation';
 import { useDebounce } from '../hooks/usePerformance';
+import { SavedFiltersManager } from './SavedFiltersManager';
 
 interface AdvancedSearchFiltersProps {
   filters: SearchFilters;
@@ -194,6 +195,15 @@ export const AdvancedSearchFilters: React.FC<AdvancedSearchFiltersProps> = ({
           )}
         />
       </Box>
+
+      {/* Saved Filters Manager */}
+      <SavedFiltersManager
+        currentFilters={filters}
+        onApplyFilter={onFiltersChange}
+        onSaveSuccess={() => {
+          // Optional: Show success message
+        }}
+      />
 
       {/* Filter Toggle and Clear */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>

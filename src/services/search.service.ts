@@ -18,6 +18,14 @@ export interface SearchFilters {
   };
 }
 
+export interface SavedSearchFilter {
+  id: string;
+  name: string;
+  filters: SearchFilters;
+  createdAt: string;
+  lastUsed?: string;
+}
+
 export class SearchService {
   /**
    * Fuzzy search algorithm to match text with typos and partial matches
@@ -235,5 +243,93 @@ export class SearchService {
       statuses: Object.values(Status),
       sexes: Object.values(Sex)
     };
+  }
+
+  /**
+   * Saved search filters management
+   */
+  private static SAVED_FILTERS_KEY = 'garenne-saved-search-filters';
+
+  static getSavedFilters(): SavedSearchFilter[] {
+    try {
+      const saved = localStorage.getItem(this.SAVED_FILTERS_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error('Error loading saved filters:', error);
+      return [];
+    }
+  }
+
+  static saveSearchFilter(name: string, filters: SearchFilters): SavedSearchFilter {
+    const savedFilters = this.getSavedFilters();
+    
+    const newFilter: SavedSearchFilter = {
+      id: crypto.randomUUID(),
+      name,
+      filters,
+      createdAt: new Date().toISOString(),
+    };
+
+    savedFilters.push(newFilter);
+    
+    try {
+      localStorage.setItem(this.SAVED_FILTERS_KEY, JSON.stringify(savedFilters));
+    } catch (error) {
+      console.error('Error saving filter:', error);
+      throw new Error('Failed to save search filter');
+    }
+
+    return newFilter;
+  }
+
+  static deleteSavedFilter(filterId: string): boolean {
+    const savedFilters = this.getSavedFilters();
+    const filteredList = savedFilters.filter(f => f.id !== filterId);
+    
+    if (filteredList.length === savedFilters.length) {
+      return false; // Filter not found
+    }
+
+    try {
+      localStorage.setItem(this.SAVED_FILTERS_KEY, JSON.stringify(filteredList));
+      return true;
+    } catch (error) {
+      console.error('Error deleting saved filter:', error);
+      return false;
+    }
+  }
+
+  static updateFilterLastUsed(filterId: string): void {
+    const savedFilters = this.getSavedFilters();
+    const filterIndex = savedFilters.findIndex(f => f.id === filterId);
+    
+    if (filterIndex >= 0) {
+      savedFilters[filterIndex].lastUsed = new Date().toISOString();
+      
+      try {
+        localStorage.setItem(this.SAVED_FILTERS_KEY, JSON.stringify(savedFilters));
+      } catch (error) {
+        console.error('Error updating filter last used:', error);
+      }
+    }
+  }
+
+  static getRecentSavedFilters(limit: number = 5): SavedSearchFilter[] {
+    const savedFilters = this.getSavedFilters();
+    return savedFilters
+      .filter(f => f.lastUsed)
+      .sort((a, b) => new Date(b.lastUsed!).getTime() - new Date(a.lastUsed!).getTime())
+      .slice(0, limit);
+  }
+
+  static isFilterEmpty(filters: SearchFilters): boolean {
+    return !filters.query &&
+           (!filters.status || filters.status.length === 0) &&
+           (!filters.sex || filters.sex.length === 0) &&
+           (!filters.breed || filters.breed.length === 0) &&
+           (!filters.tags || filters.tags.length === 0) &&
+           (!filters.cage || filters.cage.length === 0) &&
+           !filters.dateRange &&
+           !filters.weightRange;
   }
 }

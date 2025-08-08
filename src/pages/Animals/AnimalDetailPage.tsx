@@ -47,6 +47,9 @@ import { calculateAgeText, formatDate } from '../../utils/dates';
 import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
 import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, PrintableRabbitSheet, MortalityModal, QuickWeightModal, QuickTreatmentModal } from '../../components/LazyComponents';
 import { LitterModal } from '../../components/modals/LitterModal';
+import { AdvancedGenealogyTree } from '../../components/AdvancedGenealogyTree';
+import { MatingRecommendations } from '../../components/MatingRecommendations';
+import { PedigreePDFService } from '../../services/pedigree-pdf.service';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -81,6 +84,8 @@ const AnimalDetailPage = () => {
       case 'breeding': return 1;
       case 'weights': return 2;
       case 'health': return 3;
+      case 'genealogy': return 4;
+      case 'mating': return 5;
       default: return 0;
     }
   });
@@ -179,6 +184,31 @@ const AnimalDetailPage = () => {
       // Close dialog after printing
       setPrintDialogOpen(false);
     }, 100);
+  };
+
+  const handleExportPedigree = async (animal: any) => {
+    try {
+      await PedigreePDFService.generatePedigreePDF(animal, animals, {
+        generations: 4,
+        includeInbreedingCoefficients: true,
+        title: `Pedigree de ${animal.name || animal.identifier || 'Animal'}`,
+        format: 'A4'
+      });
+    } catch (error) {
+      console.error('Erreur lors de la génération du pedigree PDF:', error);
+      // You could add a toast notification here
+    }
+  };
+
+  const handleCreateBreedingFromRecommendation = (femaleId: string, maleId: string) => {
+    // Open breeding modal with preselected animals
+    const female = animals.find(a => a.id === femaleId);
+    const male = animals.find(a => a.id === maleId);
+    
+    if (female && male) {
+      // For now, just navigate to breeding creation - you could enhance this to pre-fill the form
+      setBreedingModalOpen(true);
+    }
   };
 
   if (!animal) {
@@ -329,6 +359,8 @@ const AnimalDetailPage = () => {
           <Tab label="Reproduction" />
           <Tab label="Pesées" />
           <Tab label="Santé" />
+          <Tab label="Généalogie" />
+          <Tab label="Accouplements" />
         </Tabs>
 
         {/* Overview Tab */}
@@ -606,6 +638,28 @@ const AnimalDetailPage = () => {
                 </ListItem>
               ))}
             </List>
+          )}
+        </TabPanel>
+
+        {/* Advanced Genealogy Tab */}
+        <TabPanel value={tabValue} index={4}>
+          {animal && (
+            <AdvancedGenealogyTree
+              currentAnimal={animal}
+              allAnimals={animals}
+              onExportPedigree={handleExportPedigree}
+            />
+          )}
+        </TabPanel>
+
+        {/* Mating Recommendations Tab */}
+        <TabPanel value={tabValue} index={5}>
+          {animal && (
+            <MatingRecommendations
+              animal={animal}
+              allAnimals={animals}
+              onCreateBreeding={handleCreateBreedingFromRecommendation}
+            />
           )}
         </TabPanel>
       </Paper>

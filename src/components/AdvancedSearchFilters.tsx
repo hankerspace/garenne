@@ -72,10 +72,8 @@ export const AdvancedSearchFilters: React.FC<AdvancedSearchFiltersProps> = ({
   
   // Update local query when external filters change
   React.useEffect(() => {
-    if (filters.query !== localQuery) {
-      setLocalQuery(filters.query || '');
-    }
-  }, [filters.query, localQuery]);
+    setLocalQuery(filters.query || '');
+  }, [filters.query]);
 
   const handleQueryChange = (newQuery: string) => {
     setLocalQuery(newQuery);

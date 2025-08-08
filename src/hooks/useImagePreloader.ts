@@ -1,4 +1,4 @@
-import { getOptimizedImage, getSupportedFormats } from '../../utils/imageUtils';
+import { getOptimizedImage, getSupportedFormats } from '../utils/imageUtils';
 
 /**
  * Hook pour précharger des images

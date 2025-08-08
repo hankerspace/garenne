@@ -195,7 +195,7 @@ function TestModalHook() {
   return (
     <>
       <Button onClick={openModal}>Open Modal</Button>
-      <Modal open={open} onClose={closeModal} title="Test Hook">
+      <Modal open={open} onClose={closeModal} title="Test Hook" disableAnimation>
         <p>Modal opened with hook</p>
       </Modal>
     </>
@@ -222,6 +222,6 @@ describe('useModal hook', () => {
 
     await waitFor(() => {
       expect(screen.queryByText('Test Hook')).not.toBeInTheDocument();
-    });
+    }, { timeout: 1000 });
   });
 });

@@ -3,6 +3,7 @@ import { Box, Typography, Button, Container, Paper, Collapse, Alert } from '@mui
 import { ErrorOutline as ErrorIcon, RefreshRounded, HomeRounded, BugReportRounded } from '@mui/icons-material';
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
+import { ERROR_CONSTANTS } from '../constants';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -88,7 +89,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
   handleRetry = () => {
     const { retryCount } = this.state;
-    const maxRetries = 3;
+    const maxRetries = ERROR_CONSTANTS.MAX_RETRIES;
     
     if (retryCount < maxRetries) {
       this.setState({ 
@@ -103,7 +104,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         if (this.state.hasError && this.state.retryCount < maxRetries) {
           this.handleRetry();
         }
-      }, 2000);
+      }, ERROR_CONSTANTS.DEFAULT_RETRY_DELAY);
     }
   };
 
@@ -167,7 +168,7 @@ function ErrorFallback({ error, errorInfo, resetError, retryCount = 0 }: ErrorFa
   const [showDetails, setShowDetails] = React.useState(false);
   const [reportSent, setReportSent] = React.useState(false);
   
-  const maxRetries = 3;
+  const maxRetries = ERROR_CONSTANTS.MAX_RETRIES;
   const canRetry = resetError && retryCount < maxRetries;
   
   const handleReload = () => {

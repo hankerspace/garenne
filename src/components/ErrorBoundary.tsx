@@ -133,24 +133,39 @@ export function RouterErrorBoundary() {
   let errorMessage = t('errors.unexpected');
   let errorDetails = '';
 
+  const lastLoggedRef = React.useRef<string | null>(null);
+  let errorKey: string | null = null;
+
   if (isRouteErrorResponse(error)) {
     errorMessage = `${t('common.error')} ${error.status}: ${error.statusText}`;
     errorDetails = error.data?.message || '';
-    
-    // Log router errors
-    logError(
-      new Error(`Router Error ${error.status}: ${error.statusText}`),
-      undefined,
-      'RouterErrorBoundary'
-    );
+    errorKey = `route:${error.status}:${error.statusText}:${errorDetails}`;
   } else if (error instanceof Error) {
     errorMessage = error.message;
     errorDetails = error.stack || '';
-    logError(error, undefined, 'RouterErrorBoundary');
+    errorKey = `error:${error.message}:${error.stack ?? ''}`;
   } else if (typeof error === 'string') {
     errorMessage = error;
-    logError(new Error(error), undefined, 'RouterErrorBoundary');
+    errorKey = `string:${error}`;
   }
+
+  React.useEffect(() => {
+    if (!errorKey || lastLoggedRef.current === errorKey) return;
+
+    let e: Error;
+    if (isRouteErrorResponse(error)) {
+      e = new Error(`Router Error ${error.status}: ${error.statusText}`);
+    } else if (error instanceof Error) {
+      e = error;
+    } else if (typeof error === 'string') {
+      e = new Error(error);
+    } else {
+      e = new Error('Unknown router error');
+    }
+
+    logError(e, undefined, 'RouterErrorBoundary');
+    lastLoggedRef.current = errorKey;
+  }, [errorKey]);
 
   return <ErrorFallback error={{ message: errorMessage, stack: errorDetails }} />;
 }

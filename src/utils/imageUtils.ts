@@ -45,13 +45,38 @@ export function supportsWebP(): boolean {
 }
 
 /**
+ * Check if browser supports AVIF format
+ */
+export function supportsAVIF(): boolean {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  return canvas.toDataURL('image/avif').indexOf('data:image/avif') === 0;
+}
+
+/**
+ * Get all supported formats for an image
+ */
+export function getSupportedFormats() {
+  return {
+    avif: supportsAVIF(),
+    webp: supportsWebP(),
+  };
+}
+
+/**
  * Get the best supported image format
  */
 export function getBestImageSrc(imageName: 'icon' | 'icon_with_title'): string {
   const sources = getOptimizedImage(imageName);
+  const supportedFormats = getSupportedFormats();
   
-  // Return WebP if supported, otherwise fallback to PNG
-  if (sources.webp && supportsWebP()) {
+  // Return AVIF if supported and available, then WebP, then fallback
+  if (sources.avif && supportedFormats.avif) {
+    return sources.avif;
+  }
+  
+  if (sources.webp && supportedFormats.webp) {
     return sources.webp;
   }
   

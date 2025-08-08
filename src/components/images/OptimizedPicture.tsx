@@ -2,7 +2,7 @@ import { ImgHTMLAttributes, ReactNode } from 'react';
 import { Box, Skeleton } from '@mui/material';
 import { getSupportedFormats, getOptimizedImage, ImageSources } from '../../utils/imageUtils';
 
-export interface OptimizedPictureProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
+export interface OptimizedPictureProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'srcSet' | 'loading' | 'alt'> {
   /** Nom de l'image (pour les images prédéfinies) */
   imageName?: 'icon' | 'icon_with_title';
   /** Sources d'images personnalisées */

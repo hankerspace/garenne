@@ -62,7 +62,7 @@ export const MatingRecommendations: React.FC<MatingRecommendationsProps> = ({
   onCreateBreeding,
 }) => {
   const navigate = useNavigate();
-  const cages = useAppStore((state) => state.cages);
+  const allCages = useAppStore((state) => state.cages) || [];
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [filters, setFilters] = useState<RecommendationFilters>({
     preferredBreeds: [],
@@ -211,7 +211,7 @@ export const MatingRecommendations: React.FC<MatingRecommendationsProps> = ({
                     <Chip label={partner.status} size="small" variant="outlined" />
                     {partner.cage && (
                       <Chip
-                        label={`cage : ${cages.find(c => c.id === partner.cage)?.name || 'Cage inconnue'}`}
+                        label={`cage : ${allCages.find(c => c.id === partner.cage)?.name || 'Cage inconnue'}`}
                         size="small"
                         variant="outlined"
                       />

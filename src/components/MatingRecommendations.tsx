@@ -38,6 +38,7 @@ import {
   Science as ScienceIcon,
 } from '@mui/icons-material';
 import { Animal, Sex, Status } from '../models/types';
+import { useAppStore } from '../state/store';
 import { GenealogyService, MatingRecommendationOptions } from '../services/genealogy.service';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,6 +62,7 @@ export const MatingRecommendations: React.FC<MatingRecommendationsProps> = ({
   onCreateBreeding,
 }) => {
   const navigate = useNavigate();
+  const cages = useAppStore((state) => state.cages);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [filters, setFilters] = useState<RecommendationFilters>({
     preferredBreeds: [],
@@ -207,7 +209,13 @@ export const MatingRecommendations: React.FC<MatingRecommendationsProps> = ({
                 <Box mt={1}>
                   <Stack direction="row" spacing={1} flexWrap="wrap">
                     <Chip label={partner.status} size="small" variant="outlined" />
-                    {partner.cage && <Chip label={`Cage: ${partner.cage}`} size="small" variant="outlined" />}
+                    {partner.cage && (
+                      <Chip
+                        label={`cage : ${cages.find(c => c.id === partner.cage)?.name || 'Cage inconnue'}`}
+                        size="small"
+                        variant="outlined"
+                      />
+                    )}
                   </Stack>
                 </Box>
               </Box>

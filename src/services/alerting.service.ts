@@ -35,6 +35,7 @@ export class AlertingService {
 
   private constructor() {
     this.settings = this.loadSettings();
+    this.loadAlerts();
     this.startMonitoring();
   }
 
@@ -43,6 +44,17 @@ export class AlertingService {
       AlertingService.instance = new AlertingService();
     }
     return AlertingService.instance;
+  }
+
+  /**
+   * Reset instance for testing purposes
+   * @internal
+   */
+  static resetInstance(): void {
+    if (AlertingService.instance) {
+      AlertingService.instance.stopMonitoring();
+    }
+    AlertingService.instance = undefined as any;
   }
 
   /**
@@ -141,7 +153,14 @@ export class AlertingService {
     };
 
     this.alerts.unshift(alert);
+    
+    // Keep only last 100 alerts
+    if (this.alerts.length > 100) {
+      this.alerts = this.alerts.slice(0, 100);
+    }
+    
     this.notifySubscribers();
+    this.saveAlerts();
     
     if (this.settings.soundEnabled) {
       this.playNotificationSound(severity);

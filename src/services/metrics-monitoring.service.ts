@@ -184,7 +184,7 @@ export class MetricsMonitoringService {
         currentLabel = format(now, 'MMMM yyyy');
         previousLabel = format(subMonths(now, 1), 'MMMM yyyy');
         break;
-      case 'quarter':
+      case 'quarter': {
         const currentQuarter = Math.floor(now.getMonth() / 3);
         currentStart = new Date(now.getFullYear(), currentQuarter * 3, 1);
         currentEnd = new Date(now.getFullYear(), (currentQuarter + 1) * 3, 0);
@@ -193,6 +193,7 @@ export class MetricsMonitoringService {
         currentLabel = `Q${currentQuarter + 1} ${now.getFullYear()}`;
         previousLabel = `Q${currentQuarter} ${now.getFullYear()}`;
         break;
+      }
       case 'year':
         currentStart = new Date(now.getFullYear(), 0, 1);
         currentEnd = new Date(now.getFullYear(), 11, 31);

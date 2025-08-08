@@ -68,7 +68,7 @@ export const AdvancedSearchFilters: React.FC<AdvancedSearchFiltersProps> = ({
       });
     }
     // Only depend on scalar values to avoid loops from object identity changes
-  }, [debouncedQuery, filters.query, onFiltersChange]);
+  }, [debouncedQuery, filters, onFiltersChange]);
   
   // Update local query when external filters change
   React.useEffect(() => {

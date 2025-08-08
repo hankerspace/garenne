@@ -140,7 +140,7 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ### Gestion des Animaux
 - [x] **Fonctionnalités avancées**
   - [x] Système de recherche intelligent avec suggestions et filtres sauvegardés
-  - [ ] Import/export en lot avec validation et preview
+  - [x] Import/export en lot avec validation et preview
   - [ ] Système de notes vocales pour les observations terrain
   - [ ] Génération automatique de rapports de performance individuels
   - [ ] Système d'alertes personnalisables (vaccination, reproduction, etc.)

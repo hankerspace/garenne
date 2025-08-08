@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useAppStore } from '../state/store'
 import { storageService } from '../services/storage.service'
+import { AppState } from '../models/types'
 
 // Top-level keys expected in exported JSON
 const stateArrayKeys = [
@@ -78,7 +79,7 @@ describe('Data export/import', () => {
     store.loadSeedData()
 
     const exported = store.exportData('json') as string
-    const snapshot = JSON.parse(exported) as Record<string, any>
+    const snapshot = JSON.parse(exported) as AppState
 
     // Clear and verify empty
     store.clearAllData()

@@ -67,7 +67,7 @@ describe('SearchService', () => {
         breed: 'Dutch',
         birthDate: '2023-12-01',
         origin: 'BORN_HERE',
-        status: Status.RETIRED,
+        status: Status.Retired,
         cage: 'C3',
         tags: ['old', 'retired'],
         notes: "Former breeder",
@@ -275,7 +275,9 @@ describe('SearchService', () => {
         id: 'minimal',
         sex: Sex.Male,
         status: Status.Grow,
-        birthDate: '2024-01-01'
+        birthDate: '2024-01-01',
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z'
       };
 
       const filters: SearchFilters = {

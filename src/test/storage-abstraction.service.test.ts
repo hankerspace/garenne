@@ -10,6 +10,17 @@ import {
   memoryStorage
 } from '../services/storage-abstraction.service';
 
+// Type for mocked storage adapter
+type MockedStorageAdapter = {
+  get: ReturnType<typeof vi.fn>;
+  set: ReturnType<typeof vi.fn>;
+  remove: ReturnType<typeof vi.fn>;
+  clear: ReturnType<typeof vi.fn>;
+  exists: ReturnType<typeof vi.fn>;
+  keys: ReturnType<typeof vi.fn>;
+  size: ReturnType<typeof vi.fn>;
+};
+
 // Mock window.localStorage and window.sessionStorage
 const mockStorage = () => {
   const storage = new Map<string, string>();
@@ -325,7 +336,7 @@ describe('MemoryStorageAdapter', () => {
 
 describe('AbstractStorageService', () => {
   let service: AbstractStorageService;
-  let mockAdapter: jest.Mocked<StorageAdapter>;
+  let mockAdapter: MockedStorageAdapter;
 
   beforeEach(() => {
     mockAdapter = {
@@ -333,6 +344,7 @@ describe('AbstractStorageService', () => {
       set: vi.fn(),
       remove: vi.fn(),
       clear: vi.fn(),
+      exists: vi.fn(),
       keys: vi.fn(),
       size: vi.fn()
     };

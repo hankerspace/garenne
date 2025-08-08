@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { Animal, Litter, WeightRecord, Treatment, Status, Sex, Route } from '../models/types';
+import { Animal, Litter, WeightRecord, Treatment, Status, Sex, Route, AppState } from '../models/types';
 import { StatisticsService } from '../services/statistics.service';
 import { PerformanceReportService } from '../services/performance-report.service';
 import { ExportService } from '../services/export.service';
@@ -135,10 +135,7 @@ describe('Critical User Flows - Integration Tests', () => {
         id: 'litter-001',
         motherId: 'doe-001',
         fatherId: 'buck-001',
-        breedingDate: '2024-05-01',
         kindlingDate: '2024-06-01',
-        kindlingCount: 8,
-        aliveCount: 7,
         bornAlive: 8,
         stillborn: 1,
         notes: 'Excellent litter, good milk production',
@@ -149,10 +146,7 @@ describe('Critical User Flows - Integration Tests', () => {
         id: 'litter-002',
         motherId: 'doe-002',
         fatherId: 'buck-001',
-        breedingDate: '2024-02-01',
         kindlingDate: '2024-03-01',
-        kindlingCount: 6,
-        aliveCount: 5,
         bornAlive: 6,
         stillborn: 1,
         notes: 'Standard litter',
@@ -163,8 +157,7 @@ describe('Critical User Flows - Integration Tests', () => {
         id: 'litter-003',
         motherId: 'doe-001',
         fatherId: 'buck-001',
-        breedingDate: '2024-08-01',
-        expectedKindlingDate: '2024-09-01',
+        kindlingDate: '2024-09-01',
         bornAlive: 0,
         stillborn: 0,
         notes: 'Pregnancy confirmed',
@@ -176,22 +169,22 @@ describe('Critical User Flows - Integration Tests', () => {
     // Create weight tracking records
     weights = [
       // Bella weights
-      { id: 'w001', animalId: 'doe-001', weight: 3000, date: '2024-01-01', notes: 'Breeding weight', createdAt: '2024-01-01T00:00:00Z' },
-      { id: 'w002', animalId: 'doe-001', weight: 3400, date: '2024-05-15', notes: 'Pregnant', createdAt: '2024-05-15T00:00:00Z' },
-      { id: 'w003', animalId: 'doe-001', weight: 3200, date: '2024-06-15', notes: 'Post-kindling', createdAt: '2024-06-15T00:00:00Z' },
+      { id: 'w001', animalId: 'doe-001', weightGrams: 3000, date: '2024-01-01', notes: 'Breeding weight', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+      { id: 'w002', animalId: 'doe-001', weightGrams: 3400, date: '2024-05-15', notes: 'Pregnant', createdAt: '2024-05-15T00:00:00Z', updatedAt: '2024-05-15T00:00:00Z' },
+      { id: 'w003', animalId: 'doe-001', weightGrams: 3200, date: '2024-06-15', notes: 'Post-kindling', createdAt: '2024-06-15T00:00:00Z', updatedAt: '2024-06-15T00:00:00Z' },
       
       // Thunder weights
-      { id: 'w004', animalId: 'buck-001', weight: 3500, date: '2024-01-01', notes: 'Breeding condition', createdAt: '2024-01-01T00:00:00Z' },
-      { id: 'w005', animalId: 'buck-001', weight: 3700, date: '2024-08-01', notes: 'Good condition', createdAt: '2024-08-01T00:00:00Z' },
+      { id: 'w004', animalId: 'buck-001', weightGrams: 3500, date: '2024-01-01', notes: 'Breeding condition', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+      { id: 'w005', animalId: 'buck-001', weightGrams: 3700, date: '2024-08-01', notes: 'Good condition', createdAt: '2024-08-01T00:00:00Z', updatedAt: '2024-08-01T00:00:00Z' },
       
       // Growing kit weights
-      { id: 'w006', animalId: 'kit-001', weight: 150, date: '2024-06-15', notes: '2 weeks old', createdAt: '2024-06-15T00:00:00Z' },
-      { id: 'w007', animalId: 'kit-001', weight: 500, date: '2024-07-01', notes: '1 month old', createdAt: '2024-07-01T00:00:00Z' },
-      { id: 'w008', animalId: 'kit-001', weight: 1200, date: '2024-08-01', notes: '2 months old', createdAt: '2024-08-01T00:00:00Z' },
-      { id: 'w009', animalId: 'kit-001', weight: 1800, date: '2024-09-01', notes: '3 months old', createdAt: '2024-09-01T00:00:00Z' },
+      { id: 'w006', animalId: 'kit-001', weightGrams: 150, date: '2024-06-15', notes: '2 weeks old', createdAt: '2024-06-15T00:00:00Z', updatedAt: '2024-06-15T00:00:00Z' },
+      { id: 'w007', animalId: 'kit-001', weightGrams: 500, date: '2024-07-01', notes: '1 month old', createdAt: '2024-07-01T00:00:00Z', updatedAt: '2024-07-01T00:00:00Z' },
+      { id: 'w008', animalId: 'kit-001', weightGrams: 1200, date: '2024-08-01', notes: '2 months old', createdAt: '2024-08-01T00:00:00Z', updatedAt: '2024-08-01T00:00:00Z' },
+      { id: 'w009', animalId: 'kit-001', weightGrams: 1800, date: '2024-09-01', notes: '3 months old', createdAt: '2024-09-01T00:00:00Z', updatedAt: '2024-09-01T00:00:00Z' },
       
       // Consumed animal final weight
-      { id: 'w010', animalId: 'kit-003', weight: 2200, date: '2024-08-01', notes: 'Market weight', createdAt: '2024-08-01T00:00:00Z' }
+      { id: 'w010', animalId: 'kit-003', weightGrams: 2200, date: '2024-08-01', notes: 'Market weight', createdAt: '2024-08-01T00:00:00Z', updatedAt: '2024-08-01T00:00:00Z' }
     ];
 
     // Create treatment records
@@ -203,7 +196,7 @@ describe('Critical User Flows - Integration Tests', () => {
         product: 'Penicillin',
         dose: '0.5ml',
         route: Route.IM,
-        withdrawalTime: 14,
+        withdrawalUntil: '2024-01-29', // 14 days from treatment date
         notes: 'Respiratory infection treatment',
         createdAt: '2024-01-15T00:00:00Z',
         updatedAt: '2024-01-15T00:00:00Z'
@@ -215,7 +208,7 @@ describe('Critical User Flows - Integration Tests', () => {
         product: 'Ivermectin',
         dose: '0.2ml',
         route: Route.SC,
-        withdrawalTime: 21,
+        withdrawalUntil: '2024-07-22', // 21 days from treatment date
         notes: 'Preventive parasite treatment',
         createdAt: '2024-07-01T00:00:00Z',
         updatedAt: '2024-07-01T00:00:00Z'
@@ -227,7 +220,7 @@ describe('Critical User Flows - Integration Tests', () => {
         product: 'Vitamins',
         dose: '5ml',
         route: Route.Oral,
-        withdrawalTime: 0,
+        // No withdrawal period needed for vitamins
         notes: 'Seasonal supplement',
         createdAt: '2024-03-01T00:00:00Z',
         updatedAt: '2024-03-01T00:00:00Z'
@@ -238,9 +231,36 @@ describe('Critical User Flows - Integration Tests', () => {
   describe('Animal Management Flow', () => {
     it('should complete full animal lifecycle management', async () => {
       // 1. Create and store animals
-      await storageService.save('animals', animals);
-      const storedData = await storageService.load('animals');
-      expect(storedData).toBeDefined();
+      const testState: AppState = {
+        animals,
+        litters,
+        weights,
+        treatments,
+        breedings: [],
+        mortalities: [],
+        cages: [],
+        tags: [],
+        performanceMetrics: [],
+        goals: [],
+        goalAchievements: [],
+        settings: {
+          theme: 'light',
+          weightUnit: 'g',
+          enableQR: true,
+          locale: 'fr-FR',
+          schemaVersion: 1,
+          gestationDuration: 31,
+          weaningDuration: 28,
+          reproductionReadyDuration: 90,
+          slaughterReadyDuration: 70,
+          exportFormat: 'json',
+          includeImages: false
+        }
+      };
+      
+      storageService.save(testState);
+      const storedData = storageService.load();
+      expect(storedData.animals).toBeDefined();
       
       // 2. Search for specific animals (simplified)
       const bellaResults = animals.filter(a => a.name?.includes('Bella'));
@@ -254,7 +274,7 @@ describe('Critical User Flows - Integration Tests', () => {
       // 4. Track weight progression
       const bellaWeights = weights.filter(w => w.animalId === 'doe-001');
       expect(bellaWeights).toHaveLength(3);
-      expect(bellaWeights[0].weight).toBeLessThan(bellaWeights[2].weight);
+      expect(bellaWeights[0].weightGrams).toBeLessThan(bellaWeights[2].weightGrams);
       
       // 5. Generate performance report
       const bellaReport = PerformanceReportService.generateIndividualReport(
@@ -290,12 +310,11 @@ describe('Critical User Flows - Integration Tests', () => {
       const breeding = litters.find(l => l.id === 'litter-001')!;
       expect(breeding.motherId).toBe('doe-001');
       expect(breeding.fatherId).toBe('buck-001');
-      expect(breeding.breedingDate).toBe('2024-05-01');
       
       // 3. Record kindling
       expect(breeding.kindlingDate).toBe('2024-06-01');
-      expect(breeding.kindlingCount).toBe(8);
-      expect(breeding.aliveCount).toBe(7);
+      expect(breeding.bornAlive).toBe(8);
+      expect(breeding.stillborn).toBe(1);
       
       // 4. Track offspring
       const offspring = animals.filter(a => a.motherId === 'doe-001');
@@ -309,9 +328,8 @@ describe('Critical User Flows - Integration Tests', () => {
     it('should predict and track expected kindlings', () => {
       // Current pregnancy
       const currentPregnancy = litters.find(l => l.id === 'litter-003')!;
-      expect(currentPregnancy.breedingDate).toBe('2024-08-01');
-      expect(currentPregnancy.expectedKindlingDate).toBe('2024-09-01');
-      expect(currentPregnancy.kindlingDate).toBeUndefined(); // Not yet kindled
+      expect(currentPregnancy.kindlingDate).toBe('2024-09-01'); // Expected kindling date
+      expect(currentPregnancy.bornAlive).toBe(0); // Not yet kindled
       
       const stats = StatisticsService.calculateReproductionStats(animals, litters);
       expect(stats.kindlingsThisMonth).toBeGreaterThanOrEqual(0);
@@ -324,7 +342,7 @@ describe('Critical User Flows - Integration Tests', () => {
       const treatment = treatments.find(t => t.id === 't001')!;
       expect(treatment.animalId).toBe('doe-001');
       expect(treatment.product).toBe('Penicillin');
-      expect(treatment.withdrawalTime).toBe(14);
+      expect(treatment.withdrawalUntil).toBe('2024-01-29');
       
       // 2. Calculate health statistics (simplified)
       const totalTreatments = treatments.length;
@@ -340,6 +358,9 @@ describe('Critical User Flows - Integration Tests', () => {
 
     it('should identify animals under active withdrawal', () => {
       // Create a recent treatment with active withdrawal
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 30); // 30 days from now
+      
       const recentTreatment: Treatment = {
         id: 't004',
         animalId: 'kit-001',
@@ -347,7 +368,7 @@ describe('Critical User Flows - Integration Tests', () => {
         product: 'Antibiotics',
         dose: '1ml',
         route: Route.IM,
-        withdrawalTime: 30,
+        withdrawalUntil: futureDate.toISOString().split('T')[0], // 30 days from now
         notes: 'Active treatment',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -366,12 +387,9 @@ describe('Critical User Flows - Integration Tests', () => {
   describe('Data Export and Reporting Flow', () => {
     it('should export data in multiple formats', async () => {
       // Create AppState structure with correct weight field names
-      const weightRecordsForExport = weights.map(w => ({
-        ...w,
-        weightGrams: w.weight // Convert weight to weightGrams for export
-      }));
+      const weightRecordsForExport = weights; // Weights already have weightGrams property
       
-      const appState = {
+      const appState: AppState = {
         animals,
         litters,
         weights: weightRecordsForExport,
@@ -438,7 +456,7 @@ describe('Critical User Flows - Integration Tests', () => {
         identifier: `QR${i.toString().padStart(3, '0')}`
       }));
       
-      const largeAppState = {
+      const largeAppState: AppState = {
         animals: largeAnimalSet,
         litters: [],
         weights: [],
@@ -520,16 +538,40 @@ describe('Critical User Flows - Integration Tests', () => {
   });
 
   describe('Data Persistence Flow', () => {
-    it('should maintain data integrity across save/load operations', async () => {
+    it('should maintain data integrity across save/load operations', () => {
       // 1. Save all data
-      await storageService.save('animals', animals);
-      await storageService.save('litters', litters);
-      await storageService.save('weights', weights);
-      await storageService.save('treatments', treatments);
+      const testState: AppState = {
+        animals,
+        litters,
+        weights,
+        treatments,
+        breedings: [],
+        mortalities: [],
+        cages: [],
+        tags: [],
+        performanceMetrics: [],
+        goals: [],
+        goalAchievements: [],
+        settings: {
+          theme: 'light',
+          weightUnit: 'g',
+          enableQR: true,
+          locale: 'fr-FR',
+          schemaVersion: 1,
+          gestationDuration: 31,
+          weaningDuration: 28,
+          reproductionReadyDuration: 90,
+          slaughterReadyDuration: 70,
+          exportFormat: 'json',
+          includeImages: false
+        }
+      };
+      
+      storageService.save(testState);
       
       // 2. Load and verify basic structure
-      const loadedData = await storageService.load('animals');
-      expect(loadedData).toBeDefined();
+      const loadedData = storageService.load();
+      expect(loadedData.animals).toBeDefined();
       
       // 3. Verify relationships are maintained
       const doe = animals.find(a => a.id === 'doe-001')!;
@@ -537,19 +579,19 @@ describe('Critical User Flows - Integration Tests', () => {
       expect(offspring).toHaveLength(2);
     });
 
-    it('should handle data corruption gracefully', async () => {
+    it('should handle data corruption gracefully', () => {
       // Simulate corrupted data
-      window.localStorage.setItem('garenne_animals', 'invalid-json');
+      window.localStorage.setItem('rabbit-app-v1', 'invalid-json');
       
-      const result = await storageService.load('animals');
-      expect(result).toBeDefined(); // Should not throw and return something
+      const result = storageService.load();
+      expect(result).toBeDefined(); // Should not throw and return default state
     });
   });
 
   describe('Performance and Statistics Integration', () => {
     it('should calculate farm-wide metrics accurately', () => {
       // 1. Overall farm statistics
-      const overview = StatisticsService.calculateOverview(animals, litters, weights);
+      const overview = StatisticsService.calculateOverview(animals, weights, litters);
       
       expect(overview.totalAnimals).toBe(6);
       expect(overview.reproductors).toBe(3);

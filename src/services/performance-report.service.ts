@@ -167,7 +167,7 @@ export class PerformanceReportService {
 
   private static calculateReproductionPerformance(animal: Animal, litters: Litter[]) {
     const totalLitters = litters.length;
-    const totalOffspring = litters.reduce((sum, litter) => sum + (litter.kindlingCount || 0), 0);
+    const totalOffspring = litters.reduce((sum, litter) => sum + (litter.bornAlive || 0), 0);
     const averageLitterSize = totalLitters > 0 ? totalOffspring / totalLitters : 0;
     
     // Get last litter date
@@ -212,8 +212,8 @@ export class PerformanceReportService {
 
     // Sort weights by date
     const sortedWeights = weights.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    const currentWeight = sortedWeights[sortedWeights.length - 1].weight;
-    const firstWeight = sortedWeights[0].weight;
+    const currentWeight = sortedWeights[sortedWeights.length - 1].weightGrams;
+    const firstWeight = sortedWeights[0].weightGrams;
     const weightGain = currentWeight - firstWeight;
 
     // Calculate daily weight gain
@@ -257,17 +257,14 @@ export class PerformanceReportService {
 
     // Check withdrawal status
     const activeTreatments = treatments.filter(t => {
-      if (!t.withdrawalTime) return false;
-      const withdrawalEnd = new Date(t.date);
-      withdrawalEnd.setDate(withdrawalEnd.getDate() + t.withdrawalTime);
-      return withdrawalEnd > new Date();
+      if (!t.withdrawalUntil) return false;
+      return new Date(t.withdrawalUntil) > new Date();
     });
 
     const withdrawalStatus = activeTreatments.length > 0 ? 'active' : 'none';
     const withdrawalEndsAt = activeTreatments.length > 0
       ? activeTreatments.reduce((latest, t) => {
-          const withdrawalEnd = new Date(t.date);
-          withdrawalEnd.setDate(withdrawalEnd.getDate() + t.withdrawalTime!);
+          const withdrawalEnd = new Date(t.withdrawalUntil!);
           return withdrawalEnd > latest ? withdrawalEnd : latest;
         }, new Date()).toISOString()
       : undefined;
@@ -378,7 +375,7 @@ export class PerformanceReportService {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .map(w => ({
         date: w.date,
-        weight: w.weight
+        weight: w.weightGrams
       }));
 
     // Reproduction trend (for females)
@@ -388,7 +385,7 @@ export class PerformanceReportService {
           .sort((a, b) => new Date(a.kindlingDate!).getTime() - new Date(b.kindlingDate!).getTime())
           .map(l => ({
             date: l.kindlingDate!,
-            litterSize: l.kindlingCount || 0
+            litterSize: l.bornAlive || 0
           }))
       : undefined;
 
@@ -417,7 +414,7 @@ export class PerformanceReportService {
     const avgWeights = similarAnimals.map(a => {
       const animalWeights = allWeights.filter(w => w.animalId === a.id);
       return animalWeights.length > 0
-        ? animalWeights[animalWeights.length - 1].weight
+        ? animalWeights[animalWeights.length - 1].weightGrams
         : 0;
     }).filter(w => w > 0);
 
@@ -435,7 +432,7 @@ export class PerformanceReportService {
     if (reproductionPerformance) {
       const avgLitterSizes = similarAnimals.map(a => {
         const animalLitters = allLitters.filter(l => l.motherId === a.id);
-        const totalOffspring = animalLitters.reduce((sum, l) => sum + (l.kindlingCount || 0), 0);
+        const totalOffspring = animalLitters.reduce((sum, l) => sum + (l.bornAlive || 0), 0);
         return animalLitters.length > 0 ? totalOffspring / animalLitters.length : 0;
       }).filter(s => s > 0);
 
@@ -455,7 +452,7 @@ export class PerformanceReportService {
         const animalWeights = allWeights.filter(w => w.animalId === a.id);
         if (animalWeights.length < 2) return 0;
         const sorted = animalWeights.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        const weightGain = sorted[sorted.length - 1].weight - sorted[0].weight;
+        const weightGain = sorted[sorted.length - 1].weightGrams - sorted[0].weightGrams;
         const days = differenceInDays(parseISO(sorted[sorted.length - 1].date), parseISO(sorted[0].date));
         return days > 0 ? weightGain / days : 0;
       }).filter(r => r > 0);
@@ -473,7 +470,7 @@ export class PerformanceReportService {
     const performanceScores = similarAnimals.map(a => {
       // This is a simplified ranking - in real implementation would calculate full performance scores
       const weights = allWeights.filter(w => w.animalId === a.id);
-      return weights.length > 0 ? weights[weights.length - 1].weight : 0;
+      return weights.length > 0 ? weights[weights.length - 1].weightGrams : 0;
     });
 
     performanceScores.push(currentWeight);

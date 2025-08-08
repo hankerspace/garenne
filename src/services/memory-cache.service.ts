@@ -25,7 +25,7 @@ export class MemoryCache<T = any> {
   private readonly maxSize: number;
   private readonly useLRU: boolean;
 
-  constructor(config: CacheConfig = {});
+  constructor(config?: CacheConfig);
   constructor(maxSize: number);
   constructor(configOrMaxSize: CacheConfig | number = {}) {
     if (typeof configOrMaxSize === 'number') {

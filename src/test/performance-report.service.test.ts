@@ -54,9 +54,9 @@ describe('PerformanceReportService', () => {
         id: 'litter-1',
         motherId: 'animal-1',
         fatherId: 'animal-2',
-        breedingDate: '2024-05-01',
         kindlingDate: '2024-06-01',
-        kindlingCount: 8,
+        bornAlive: 8,
+        stillborn: 0,
         createdAt: '2024-05-01T00:00:00Z',
         updatedAt: '2024-06-01T00:00:00Z'
       },
@@ -64,9 +64,9 @@ describe('PerformanceReportService', () => {
         id: 'litter-2',
         motherId: 'animal-1',
         fatherId: 'animal-2',
-        breedingDate: '2024-03-01',
         kindlingDate: '2024-04-01',
-        kindlingCount: 7,
+        bornAlive: 7,
+        stillborn: 0,
         createdAt: '2024-03-01T00:00:00Z',
         updatedAt: '2024-04-01T00:00:00Z'
       }
@@ -75,20 +75,20 @@ describe('PerformanceReportService', () => {
     // Create sample weight records
     weights = [
       // Bella (female reproducer) weights
-      { id: 'w1', animalId: 'animal-1', weight: 3000, date: '2024-01-01', createdAt: '2024-01-01T00:00:00Z' },
-      { id: 'w2', animalId: 'animal-1', weight: 3200, date: '2024-06-01', createdAt: '2024-06-01T00:00:00Z' },
-      { id: 'w3', animalId: 'animal-1', weight: 3400, date: '2024-09-01', createdAt: '2024-09-01T00:00:00Z' },
+      { id: 'w1', animalId: 'animal-1', weightGrams: 3000, date: '2024-01-01', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+      { id: 'w2', animalId: 'animal-1', weightGrams: 3200, date: '2024-06-01', createdAt: '2024-06-01T00:00:00Z', updatedAt: '2024-06-01T00:00:00Z' },
+      { id: 'w3', animalId: 'animal-1', weightGrams: 3400, date: '2024-09-01', createdAt: '2024-09-01T00:00:00Z', updatedAt: '2024-09-01T00:00:00Z' },
       
       // Max (male reproducer) weights
-      { id: 'w4', animalId: 'animal-2', weight: 3500, date: '2023-06-01', createdAt: '2023-06-01T00:00:00Z' },
-      { id: 'w5', animalId: 'animal-2', weight: 3700, date: '2023-12-01', createdAt: '2023-12-01T00:00:00Z' },
-      { id: 'w6', animalId: 'animal-2', weight: 3800, date: '2024-06-01', createdAt: '2024-06-01T00:00:00Z' },
+      { id: 'w4', animalId: 'animal-2', weightGrams: 3500, date: '2023-06-01', createdAt: '2023-06-01T00:00:00Z', updatedAt: '2023-06-01T00:00:00Z' },
+      { id: 'w5', animalId: 'animal-2', weightGrams: 3700, date: '2023-12-01', createdAt: '2023-12-01T00:00:00Z', updatedAt: '2023-12-01T00:00:00Z' },
+      { id: 'w6', animalId: 'animal-2', weightGrams: 3800, date: '2024-06-01', createdAt: '2024-06-01T00:00:00Z', updatedAt: '2024-06-01T00:00:00Z' },
       
       // Junior (growing animal) weights
-      { id: 'w7', animalId: 'animal-3', weight: 100, date: '2024-08-01', createdAt: '2024-08-01T00:00:00Z' },
-      { id: 'w8', animalId: 'animal-3', weight: 700, date: '2024-08-15', createdAt: '2024-08-15T00:00:00Z' },
-      { id: 'w9', animalId: 'animal-3', weight: 1400, date: '2024-09-01', createdAt: '2024-09-01T00:00:00Z' },
-      { id: 'w10', animalId: 'animal-3', weight: 2000, date: '2024-09-15', createdAt: '2024-09-15T00:00:00Z' }
+      { id: 'w7', animalId: 'animal-3', weightGrams: 100, date: '2024-08-01', createdAt: '2024-08-01T00:00:00Z', updatedAt: '2024-08-01T00:00:00Z' },
+      { id: 'w8', animalId: 'animal-3', weightGrams: 700, date: '2024-08-15', createdAt: '2024-08-15T00:00:00Z', updatedAt: '2024-08-15T00:00:00Z' },
+      { id: 'w9', animalId: 'animal-3', weightGrams: 1400, date: '2024-09-01', createdAt: '2024-09-01T00:00:00Z', updatedAt: '2024-09-01T00:00:00Z' },
+      { id: 'w10', animalId: 'animal-3', weightGrams: 2000, date: '2024-09-15', createdAt: '2024-09-15T00:00:00Z', updatedAt: '2024-09-15T00:00:00Z' }
     ];
 
     // Create sample treatments
@@ -100,7 +100,7 @@ describe('PerformanceReportService', () => {
         product: 'Antibiotics',
         dose: '5ml',
         route: Route.IM,
-        withdrawalTime: 14,
+        withdrawalUntil: '2024-01-29', // 14 days from treatment date
         notes: 'Respiratory infection treatment',
         createdAt: '2024-01-15T00:00:00Z',
         updatedAt: '2024-01-15T00:00:00Z'
@@ -112,7 +112,6 @@ describe('PerformanceReportService', () => {
         product: 'Vitamins',
         dose: '2ml',
         route: Route.Oral,
-        withdrawalTime: 0,
         notes: 'Growth supplement',
         createdAt: '2024-08-15T00:00:00Z',
         updatedAt: '2024-08-15T00:00:00Z'
@@ -500,8 +499,8 @@ describe('PerformanceReportService', () => {
     it('should handle litters without kindling data', () => {
       const littersWithoutKindling = litters.map(l => ({
         ...l,
-        kindlingDate: undefined,
-        kindlingCount: undefined
+        kindlingDate: '' as string, // Empty string instead of undefined to maintain type
+        bornAlive: 0
       }));
 
       const report = PerformanceReportService.generateIndividualReport(

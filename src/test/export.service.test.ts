@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ExportService } from '../services/export.service';
-import { AppState, Animal, WeightRecord, Litter, Treatment, Cage, Tag, Status, Sex } from '../models/types';
+import { AppState, Animal, WeightRecord, Litter, Treatment, Cage, Tag, Status, Sex, Route, AppSettings } from '../models/types';
 
 // Mock I18nService
 vi.mock('../services/i18n.service', () => ({
@@ -111,7 +111,7 @@ describe('ExportService', () => {
       product: 'Antibiotic',
       lotNumber: 'LOT123',
       dose: '5ml',
-      route: 'Oral',
+      route: Route.Oral,
       reason: 'Infection',
       withdrawalUntil: '2024-02-05',
       notes: 'Treatment notes',
@@ -125,14 +125,18 @@ describe('ExportService', () => {
       description: 'Large breeding cage',
       capacity: 2,
       location: 'Block A',
-      notes: 'Cage notes'
+      notes: 'Cage notes',
+      createdAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z'
     };
 
     sampleTag = {
       id: 'tag-1',
       name: 'Breeding Stock',
       color: '#FF5722',
-      description: 'Animals for breeding'
+      description: 'Animals for breeding',
+      createdAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z'
     };
 
     sampleAppState = {
@@ -145,13 +149,21 @@ describe('ExportService', () => {
       breedings: [],
       mortalities: [],
       performanceMetrics: [],
+      goals: [],
+      goalAchievements: [],
       settings: {
         theme: 'light',
+        weightUnit: 'g',
+        enableQR: true,
+        locale: 'fr-FR',
+        schemaVersion: 1,
         gestationDuration: 31,
-        weaningAge: 28,
-        reproductionRestDays: 42,
-        slaughterAge: 84
-      }
+        weaningDuration: 28,
+        reproductionReadyDuration: 90,
+        slaughterReadyDuration: 70,
+        exportFormat: 'json',
+        includeImages: false
+      } as AppSettings
     };
   });
 
@@ -181,12 +193,20 @@ describe('ExportService', () => {
         breedings: [],
         mortalities: [],
         performanceMetrics: [],
+        goals: [],
+        goalAchievements: [],
         settings: {
           theme: 'light',
           gestationDuration: 31,
-          weaningAge: 28,
-          reproductionRestDays: 42,
-          slaughterAge: 84
+          weaningDuration: 28,
+          reproductionReadyDuration: 90,
+          slaughterReadyDuration: 70,
+          weightUnit: 'g',
+          enableQR: true,
+          locale: 'fr-FR',
+          schemaVersion: 1,
+          exportFormat: 'json',
+          includeImages: false
         }
       };
 
@@ -252,12 +272,20 @@ describe('ExportService', () => {
         breedings: [],
         mortalities: [],
         performanceMetrics: [],
+        goals: [],
+        goalAchievements: [],
         settings: {
           theme: 'light',
           gestationDuration: 31,
-          weaningAge: 28,
-          reproductionRestDays: 42,
-          slaughterAge: 84
+          weaningDuration: 28,
+          reproductionReadyDuration: 90,
+          slaughterReadyDuration: 70,
+          weightUnit: 'g',
+          enableQR: true,
+          locale: 'fr-FR',
+          schemaVersion: 1,
+          exportFormat: 'json',
+          includeImages: false
         }
       };
 

@@ -138,8 +138,8 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ## 🚀 Nouvelles Fonctionnalités
 
 ### Gestion des Animaux
-- [ ] **Fonctionnalités avancées**
-  - [ ] Système de recherche intelligent avec suggestions et filtres sauvegardés
+- [x] **Fonctionnalités avancées**
+  - [x] Système de recherche intelligent avec suggestions et filtres sauvegardés
   - [ ] Import/export en lot avec validation et preview
   - [ ] Système de notes vocales pour les observations terrain
   - [ ] Génération automatique de rapports de performance individuels
@@ -184,13 +184,16 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 
 ### Couverture de Tests
 - [x] **Étendre la suite de tests**
-  - [x] État actuel: 13 fichiers de test, 124 tests passants (amélioration: +6 fichiers, +58 tests)
+  - [x] État actuel: 17 fichiers de test, 167 tests passants (amélioration: +4 fichiers, +43 tests)
   - [x] Ajout de tests pour QRCodeDisplay component (7 tests)
   - [x] Ajout de tests pour StorageService (7 tests)
   - [x] Ajout de tests pour le store modulaire (10 tests)
   - [x] Ajout de tests pour CacheService (21 tests)
   - [x] Ajout de tests pour ErrorInterceptorService (17 tests)
-  - [ ] Viser 90% de couverture de code (actuellement ~50%, objectif long terme)
+  - [x] Ajout de tests pour QRCodeService (9 tests)
+  - [x] Ajout de tests pour BackupService (18 tests)
+  - [x] Ajout de tests pour ImageUtils (13 tests)
+  - [ ] Viser 90% de couverture de code (actuellement ~47%, amélioration de 4% avec 3 nouveaux services couverts)
   - [ ] Tests d'intégration pour les flux critiques
   - [ ] Tests end-to-end avec Playwright
   - [ ] Tests de régression visuelle

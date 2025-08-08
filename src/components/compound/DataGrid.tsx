@@ -14,6 +14,8 @@ import {
   TableCell,
   IconButton,
   Tooltip,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import {
   ViewList as ListIcon,
@@ -43,6 +45,7 @@ export interface DataGridProps {
 
 /**
  * Reusable data grid with list/grid view toggle
+ * Automatically switches to grid view on mobile for better UX
  */
 export const DataGrid = ({
   data,
@@ -56,10 +59,15 @@ export const DataGrid = ({
   title,
   actions,
 }: DataGridProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const showViewToggle = onViewModeChange && renderCard && columns.length > 0;
+  
+  // Auto-switch to grid view on mobile if available
+  const effectiveViewMode = isMobile && renderCard ? 'grid' : viewMode;
 
   const renderLoading = () => {
-    if (viewMode === 'grid') {
+    if (effectiveViewMode === 'grid') {
       return (
         <Grid container spacing={2}>
           {Array.from({ length: 6 }).map((_, index) => (
@@ -133,7 +141,29 @@ export const DataGrid = ({
   );
 
   const renderListView = () => (
-    <TableContainer component={Paper}>
+    <TableContainer 
+      component={Paper}
+      sx={{
+        // Add horizontal scroll for mobile tables
+        overflowX: 'auto',
+        // Ensure table doesn't break layout on small screens
+        '& .MuiTable-root': {
+          minWidth: { xs: '600px', sm: 'auto' },
+        },
+        // Improve table readability on mobile
+        '@media (max-width: 600px)': {
+          '& .MuiTableCell-head': {
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            padding: '8px',
+          },
+          '& .MuiTableCell-body': {
+            fontSize: '0.75rem',
+            padding: '8px',
+          },
+        },
+      }}
+    >
       <Table>
         <TableHead>
           <TableRow>
@@ -142,6 +172,13 @@ export const DataGrid = ({
                 key={col.key}
                 style={{ width: col.width }}
                 sortDirection={false}
+                sx={{
+                  // Ensure headers are sticky for long tables
+                  position: 'sticky',
+                  top: 0,
+                  backgroundColor: 'background.paper',
+                  zIndex: 1,
+                }}
               >
                 {col.label}
               </TableCell>
@@ -192,6 +229,7 @@ export const DataGrid = ({
                     onClick={() => onViewModeChange?.('grid')}
                     color={viewMode === 'grid' ? 'primary' : 'default'}
                     aria-label="Vue grille"
+                    disabled={isMobile && !renderCard}
                   >
                     <GridIcon />
                   </IconButton>
@@ -202,6 +240,7 @@ export const DataGrid = ({
                     onClick={() => onViewModeChange?.('list')}
                     color={viewMode === 'list' ? 'primary' : 'default'}
                     aria-label="Vue liste"
+                    disabled={isMobile && !!renderCard}
                   >
                     <ListIcon />
                   </IconButton>
@@ -217,7 +256,7 @@ export const DataGrid = ({
         renderLoading()
       ) : data.length === 0 ? (
         renderEmpty()
-      ) : viewMode === 'grid' ? (
+      ) : effectiveViewMode === 'grid' ? (
         renderGridView()
       ) : (
         renderListView()

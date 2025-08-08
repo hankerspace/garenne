@@ -75,17 +75,17 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Ajouter des animations d'ouverture/fermeture
 
 ### Responsive Design
-- [ ] **Optimiser l'expérience mobile**
-  - [ ] Vérifier et corriger l'affichage sur toutes les tailles d'écran
-  - [ ] Optimiser les tableaux pour mobile (scroll horizontal, cards)
-  - [ ] Améliorer l'accessibilité tactile (taille des boutons)
-  - [ ] Tester la navigation avec un seul doigt
+- [x] **Optimiser l'expérience mobile**
+  - [x] Vérifier et corriger l'affichage sur toutes les tailles d'écran
+  - [x] Optimiser les tableaux pour mobile (scroll horizontal, cards)
+  - [x] Améliorer l'accessibilité tactile (taille des boutons)
+  - [x] Tester la navigation avec un seul doigt
 
-- [ ] **Améliorer l'expérience desktop**
-  - [ ] Optimiser l'utilisation de l'espace pour les grands écrans
-  - [ ] Implémenter des layouts multi-colonnes adaptés
-  - [ ] Ajouter des tooltips et des raccourcis clavier
-  - [ ] Créer des vues liste/grille interchangeables
+- [x] **Améliorer l'expérience desktop**
+  - [x] Optimiser l'utilisation de l'espace pour les grands écrans
+  - [x] Implémenter des layouts multi-colonnes adaptés
+  - [x] Ajouter des tooltips et des raccourcis clavier
+  - [x] Créer des vues liste/grille interchangeables
 
 ### Accessibilité
 - [x] **Conformité WCAG 2.1**
@@ -127,13 +127,13 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Créer des hooks custom pour la logique partagée (useLocalStorage, useDebounce, useAsyncState)
   - [x] Extraire les constantes dans des fichiers dédiés
   - [x] Factoriser les utilitaires de formatage et validation
-  - [ ] Créer des composants génériques pour les formulaires
+  - [x] Créer des composants génériques pour les formulaires
 
 - [x] **Améliorer la réutilisabilité**
   - [x] Créer une bibliothèque de composants UI réutilisables (layouts, compound, dialogs, images)
   - [x] Implémenter des patterns composés (Compound Components) (SearchBar, FilterPanel, DataGrid)
   - [x] Créer des hooks pour les interactions communes (useAsyncState, useStorage)
-  - [ ] Standardiser les patterns de gestion d'état
+  - [x] Standardiser les patterns de gestion d'état
 
 ## 🚀 Nouvelles Fonctionnalités
 

@@ -132,33 +132,67 @@ function App() {
 
         {/* Bottom Navigation */}
         <Paper 
-          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} 
+          sx={{ 
+            position: 'fixed', 
+            bottom: 0, 
+            left: 0, 
+            right: 0,
+            zIndex: 1000,
+          }} 
           elevation={3}
         >
           <BottomNavigation
             value={navigationValue}
             onChange={handleNavigationChange}
             showLabels
+            sx={{
+              // Prevent overflow on small screens
+              '& .MuiBottomNavigationAction-root': {
+                minWidth: 'auto',
+                flex: 1,
+                maxWidth: 'none',
+                // Hide labels on very small screens to prevent overflow
+                '@media (max-width: 360px)': {
+                  '& .MuiBottomNavigationAction-label': {
+                    display: 'none',
+                  },
+                },
+              },
+              // Ensure good spacing between items
+              '& .MuiBottomNavigationAction-label': {
+                fontSize: { xs: '0.625rem', sm: '0.75rem' },
+                marginTop: '4px',
+                // Truncate long labels
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
+            }}
           >
             <BottomNavigationAction 
               label={t('nav.dashboard')} 
               icon={<HomeIcon />} 
+              aria-label={t('nav.dashboard')}
             />
             <BottomNavigationAction 
               label={t('nav.animals')} 
               icon={<PetsIcon />} 
+              aria-label={t('nav.animals')}
             />
             <BottomNavigationAction 
               label={t('nav.cages')} 
               icon={<CageIcon />} 
+              aria-label={t('nav.cages')}
             />
             <BottomNavigationAction 
               label={t('nav.reproduction')} 
               icon={<ReproductionIcon />} 
+              aria-label={t('nav.reproduction')}
             />
             <BottomNavigationAction 
               label={t('nav.settings')} 
               icon={<SettingsIcon />} 
+              aria-label={t('nav.settings')}
             />
           </BottomNavigation>
         </Paper>

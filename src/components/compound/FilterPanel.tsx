@@ -12,6 +12,7 @@ import {
   Close as CloseIcon,
   FilterList as FilterIcon,
 } from '@mui/icons-material';
+import { ANIMATION_CONSTANTS } from '../../constants';
 
 export interface FilterPanelProps {
   open: boolean;
@@ -39,7 +40,7 @@ export const FilterPanel = ({
   onClearAll,
 }: FilterPanelProps) => {
   return (
-    <Collapse in={open} timeout={300}>
+    <Collapse in={open} timeout={ANIMATION_CONSTANTS.COLLAPSE_TIMEOUT}>
       <Paper
         elevation={1}
         sx={{

@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { TextField, TextFieldProps, InputAdornment, IconButton } from '@mui/material';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 import { useAccessibility, useScreenReaderAnnouncement } from '../hooks/useAccessibility';
+import { ANIMATION_CONSTANTS } from '../constants';
 
 export interface AccessibleSearchProps extends Omit<TextFieldProps, 'onChange'> {
   /** Valeur de recherche */
@@ -51,7 +52,7 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
       // Délai pour éviter trop d'annonces pendant la saisie
       const timeoutId = setTimeout(() => {
         announce(announcement, 'polite');
-      }, 500);
+      }, ANIMATION_CONSTANTS.SEARCH_DEBOUNCE_DELAY);
 
       return () => clearTimeout(timeoutId);
     }

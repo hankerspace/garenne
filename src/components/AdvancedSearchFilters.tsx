@@ -60,11 +60,15 @@ export const AdvancedSearchFilters: React.FC<AdvancedSearchFiltersProps> = ({
   
   // Update filters when debounced query changes
   React.useEffect(() => {
-    onFiltersChange({
-      ...filters,
-      query: debouncedQuery || undefined,
-    });
-  }, [debouncedQuery, filters, onFiltersChange]);
+    const normalizedDebounced = debouncedQuery || undefined;
+    if (filters.query !== normalizedDebounced) {
+      onFiltersChange({
+        ...filters,
+        query: normalizedDebounced,
+      });
+    }
+    // Only depend on scalar values to avoid loops from object identity changes
+  }, [debouncedQuery, filters.query, onFiltersChange]);
   
   // Update local query when external filters change
   React.useEffect(() => {

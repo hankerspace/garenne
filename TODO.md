@@ -60,17 +60,17 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Implémenter des variants consistants pour tous les composants
   - [x] Intégrer les tokens dans le système de thème MUI
 
-- [ ] **Améliorer la navigation**
-  - [ ] Optimiser la navigation bottom pour mobile (débordement potentiel)
-  - [ ] Ajouter des breadcrumbs pour la navigation profonde
-  - [ ] Implémenter un système de raccourcis clavier
-  - [ ] Créer des transitions fluides entre les pages
+- [x] **Améliorer la navigation**
+  - [x] Optimiser la navigation bottom pour mobile (débordement potentiel)
+  - [x] Ajouter des breadcrumbs pour la navigation profonde
+  - [x] Implémenter un système de raccourcis clavier
+  - [x] Créer des transitions fluides entre les pages
 
 - [x] **Harmoniser les modales et dialogues**
   - [x] Créer des composants Modal et Dialog réutilisables (ConfirmDialog, LoadingDialog)
   - [x] Standardiser les actions (Annuler/Confirmer) et leurs positions
   - [x] Implémenter une gestion cohérente des états de chargement
-  - [ ] Ajouter des animations d'ouverture/fermeture
+  - [x] Ajouter des animations d'ouverture/fermeture
 
 ### Responsive Design
 - [ ] **Optimiser l'expérience mobile**
@@ -86,12 +86,12 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [ ] Créer des vues liste/grille interchangeables
 
 ### Accessibilité
-- [ ] **Conformité WCAG 2.1**
-  - [ ] Ajouter des labels ARIA appropriés sur tous les composants interactifs
-  - [ ] Améliorer la navigation au clavier (focus visible, ordre logique)
-  - [ ] Implémenter un support complet des lecteurs d'écran
-  - [ ] Assurer un contraste suffisant dans tous les thèmes
-  - [ ] Ajouter des alternatives textuelles pour tous les éléments visuels
+- [x] **Conformité WCAG 2.1**
+  - [x] Ajouter des labels ARIA appropriés sur tous les composants interactifs
+  - [x] Améliorer la navigation au clavier (focus visible, ordre logique)
+  - [x] Implémenter un support complet des lecteurs d'écran
+  - [x] Assurer un contraste suffisant dans tous les thèmes
+  - [x] Ajouter des alternatives textuelles pour tous les éléments visuels
 
 ## ⚡ Factorisation et Optimisation
 
@@ -123,8 +123,8 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
 ### Factorisation du Code
 - [x] **Éliminer la duplication**
   - [x] Créer des hooks custom pour la logique partagée (useLocalStorage, useDebounce, useAsyncState)
-  - [ ] Extraire les constantes dans des fichiers dédiés
-  - [ ] Factoriser les utilitaires de formatage et validation
+  - [x] Extraire les constantes dans des fichiers dédiés
+  - [x] Factoriser les utilitaires de formatage et validation
   - [ ] Créer des composants génériques pour les formulaires
 
 - [x] **Améliorer la réutilisabilité**

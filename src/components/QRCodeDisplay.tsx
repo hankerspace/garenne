@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, CircularProgress, Alert } from '@mui/material';
 import { Animal } from '../models/types';
 import { QRCodeService } from '../services/qrcode.service';
+import { QR_CODE_SIZES } from '../constants';
 
 interface QRCodeDisplayProps {
   animal: Animal;
@@ -18,11 +19,7 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const sizeMap = {
-    small: 80,
-    medium: 120,
-    large: 200
-  };
+  const sizeMap = QR_CODE_SIZES;
 
   useEffect(() => {
     const generateQRCode = async () => {

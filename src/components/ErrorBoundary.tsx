@@ -165,7 +165,7 @@ export function RouterErrorBoundary() {
 
     logError(e, undefined, 'RouterErrorBoundary');
     lastLoggedRef.current = errorKey;
-  }, [errorKey]);
+  }, [errorKey, error]);
 
   return <ErrorFallback error={{ message: errorMessage, stack: errorDetails }} />;
 }

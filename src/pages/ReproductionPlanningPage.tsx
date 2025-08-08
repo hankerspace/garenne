@@ -480,12 +480,13 @@ const ReproductionPlanningPage: React.FC = () => {
             {activeBreeders
               .filter((a: Animal) => a.sex === Sex.Female)
               .filter((female: Animal) => {
-                // Filter out females with recent breedings (within 35 days)
-                const hasRecentBreeding = breedings.some((b: Breeding) => 
-                  b.femaleId === female.id && 
-                  getDifferenceInDays(new Date().toISOString().split('T')[0], b.date) <= 35
+                // Filter out females with recent breedings (within 35 days) that are active (pregnant or unknown)
+                const hasBlockingRecentBreeding = breedings.some((b: Breeding) =>
+                  b.femaleId === female.id &&
+                  getDifferenceInDays(new Date().toISOString().split('T')[0], b.date) <= 35 &&
+                  (b.diagnosis === 'PREGNANT' || b.diagnosis === 'UNKNOWN')
                 );
-                return !hasRecentBreeding;
+                return !hasBlockingRecentBreeding;
               })
               .map((female: Animal) => (
                 <Grid item xs={12} sm={6} md={4} key={female.id}>

@@ -68,6 +68,19 @@ export const lightTheme: Theme = createTheme({
           borderRadius: borderRadius.base,
           textTransform: 'none',
           fontWeight: typography.fontWeight.semibold,
+          // Ensure minimum touch target size (44px per WCAG guidelines)
+          minHeight: '44px',
+          '@media (max-width: 600px)': {
+            minHeight: '48px', // Larger touch targets on mobile
+            fontSize: '0.875rem',
+          },
+        },
+        sizeSmall: {
+          minHeight: '36px',
+          '@media (max-width: 600px)': {
+            minHeight: '44px',
+            padding: '8px 16px',
+          },
         },
       },
     },
@@ -75,6 +88,48 @@ export const lightTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: borderRadius.lg,
+          // Ensure good touch target for FAB
+          width: '56px',
+          height: '56px',
+          '@media (max-width: 600px)': {
+            width: '60px',
+            height: '60px',
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          // Ensure minimum touch target for icon buttons
+          minHeight: '44px',
+          minWidth: '44px',
+          '@media (max-width: 600px)': {
+            minHeight: '48px',
+            minWidth: '48px',
+          },
+        },
+        sizeSmall: {
+          minHeight: '36px',
+          minWidth: '36px',
+          '@media (max-width: 600px)': {
+            minHeight: '44px',
+            minWidth: '44px',
+          },
+        },
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          // Ensure good touch targets for bottom navigation
+          minHeight: '56px',
+          '& .MuiBottomNavigationAction-label': {
+            fontSize: '0.75rem',
+            '@media (max-width: 480px)': {
+              fontSize: '0.625rem', // Smaller text on very small screens
+            },
+          },
         },
       },
     },
@@ -146,6 +201,19 @@ export const darkTheme: Theme = createTheme({
           borderRadius: borderRadius.base,
           textTransform: 'none',
           fontWeight: typography.fontWeight.semibold,
+          // Ensure minimum touch target size (44px per WCAG guidelines)
+          minHeight: '44px',
+          '@media (max-width: 600px)': {
+            minHeight: '48px', // Larger touch targets on mobile
+            fontSize: '0.875rem',
+          },
+        },
+        sizeSmall: {
+          minHeight: '36px',
+          '@media (max-width: 600px)': {
+            minHeight: '44px',
+            padding: '8px 16px',
+          },
         },
       },
     },
@@ -153,6 +221,48 @@ export const darkTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: borderRadius.lg,
+          // Ensure good touch target for FAB
+          width: '56px',
+          height: '56px',
+          '@media (max-width: 600px)': {
+            width: '60px',
+            height: '60px',
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          // Ensure minimum touch target for icon buttons
+          minHeight: '44px',
+          minWidth: '44px',
+          '@media (max-width: 600px)': {
+            minHeight: '48px',
+            minWidth: '48px',
+          },
+        },
+        sizeSmall: {
+          minHeight: '36px',
+          minWidth: '36px',
+          '@media (max-width: 600px)': {
+            minHeight: '44px',
+            minWidth: '44px',
+          },
+        },
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          // Ensure good touch targets for bottom navigation
+          minHeight: '56px',
+          '& .MuiBottomNavigationAction-label': {
+            fontSize: '0.75rem',
+            '@media (max-width: 480px)': {
+              fontSize: '0.625rem', // Smaller text on very small screens
+            },
+          },
         },
       },
     },

@@ -7,6 +7,8 @@ import {
   Typography,
   Avatar,
   Chip,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import {
   Female as FemaleIcon,
@@ -20,6 +22,7 @@ import { calculateAgeText } from '../utils/dates';
 import { useTranslation } from '../hooks/useTranslation';
 import { AccessibleButton } from './AccessibleButton';
 import { AccessibleCard } from './AccessibleCard';
+import { EnhancedTooltip } from './TooltipProvider';
 
 interface AnimalCardProps {
   animal: Animal;
@@ -33,6 +36,8 @@ export const AnimalCard = ({ animal, index, cages, tags, onMarkConsumed }: Anima
   const navigate = useNavigate();
   const { t } = useTranslation();
   const state = useAppStore();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const getStatusColor = (status: Status) => {
     switch (status) {
@@ -149,46 +154,83 @@ export const AnimalCard = ({ animal, index, cages, tags, onMarkConsumed }: Anima
       
       <CardActions sx={{ 
         flexWrap: { xs: 'wrap', sm: 'nowrap' },
-        gap: { xs: 0.5, sm: 1 }
+        gap: { xs: 0.5, sm: 1 },
+        // Better spacing on mobile
+        padding: { xs: '8px', sm: '16px' },
       }}>
-        <AccessibleButton 
-          size="small" 
-          onClick={() => navigate(`/animals/${animal.id}`)}
-          ariaLabel={`Voir les détails de ${animal.name || animal.identifier}`}
-          sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+        <EnhancedTooltip 
+          title="Voir les détails de l'animal"
+          shortcut="Enter"
         >
-          Détails
-        </AccessibleButton>
-        <AccessibleButton 
-          size="small" 
-          color="secondary"
-          onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
-          ariaLabel={`Peser ${animal.name || animal.identifier}`}
-          sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-        >
-          Peser
-        </AccessibleButton>
-        <AccessibleButton 
-          size="small" 
-          color="primary"
-          onClick={() => navigate(`/animals/${animal.id}/edit`)}
-          ariaLabel={`Modifier ${animal.name || animal.identifier}`}
-          sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-        >
-          {t('common.edit')}
-        </AccessibleButton>
-        {animal.status === Status.Grow && (
           <AccessibleButton 
-            size="small" 
-            color="error"
-            onClick={() => onMarkConsumed(animal.id)}
-            ariaLabel={`Marquer ${animal.name || animal.identifier} comme consommé`}
-            tooltip="Cette action est irréversible"
-            isDestructive
-            sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+            size={isMobile ? "medium" : "small"}
+            onClick={() => navigate(`/animals/${animal.id}`)}
+            ariaLabel={`Voir les détails de ${animal.name || animal.identifier}`}
+            sx={{ 
+              fontSize: { xs: '0.875rem', sm: '0.875rem' },
+              flex: { xs: '1 1 auto', sm: '0 0 auto' },
+            }}
           >
-            {t('animals.markConsumed')}
+            Détails
           </AccessibleButton>
+        </EnhancedTooltip>
+        
+        <EnhancedTooltip 
+          title="Ajouter une pesée"
+          shortcut="W"
+        >
+          <AccessibleButton 
+            size={isMobile ? "medium" : "small"}
+            color="secondary"
+            onClick={() => navigate(`/animals/${animal.id}?tab=weights`)}
+            ariaLabel={`Peser ${animal.name || animal.identifier}`}
+            sx={{ 
+              fontSize: { xs: '0.875rem', sm: '0.875rem' },
+              flex: { xs: '1 1 auto', sm: '0 0 auto' },
+            }}
+          >
+            Peser
+          </AccessibleButton>
+        </EnhancedTooltip>
+        
+        <EnhancedTooltip 
+          title="Modifier l'animal"
+          shortcut="E"
+        >
+          <AccessibleButton 
+            size={isMobile ? "medium" : "small"}
+            color="primary"
+            onClick={() => navigate(`/animals/${animal.id}/edit`)}
+            ariaLabel={`Modifier ${animal.name || animal.identifier}`}
+            sx={{ 
+              fontSize: { xs: '0.875rem', sm: '0.875rem' },
+              flex: { xs: '1 1 auto', sm: '0 0 auto' },
+            }}
+          >
+            {t('common.edit')}
+          </AccessibleButton>
+        </EnhancedTooltip>
+        
+        {animal.status === Status.Grow && (
+          <EnhancedTooltip 
+            title="Marquer comme consommé (action irréversible)"
+            shortcut="Delete"
+          >
+            <AccessibleButton 
+              size={isMobile ? "medium" : "small"}
+              color="error"
+              onClick={() => onMarkConsumed(animal.id)}
+              ariaLabel={`Marquer ${animal.name || animal.identifier} comme consommé`}
+              tooltip="Cette action est irréversible"
+              isDestructive
+              sx={{ 
+                fontSize: { xs: '0.875rem', sm: '0.875rem' },
+                flex: { xs: '1 1 100%', sm: '0 0 auto' },
+              }}
+            >
+              {t('animals.markConsumed')}
+            </AccessibleButton>
+          </EnhancedTooltip>
         )}
       </CardActions>
     </AccessibleCard>

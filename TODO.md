@@ -117,7 +117,6 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Créer l'infrastructure pour React.memo stratégique sur les composants coûteux
   - [x] Créer des hooks d'optimisation (useMemo et useCallback avancés)
   - [x] Créer des hooks de monitoring de performance (useRenderPerformance)
-  - [ ] Implémenter le scroll virtuel pour les listes longues
   - [x] Debouncer les fonctions de recherche et filtres
   - [x] Créer un système de cache in-memory pour les calculs coûteux
 
@@ -133,13 +132,6 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Implémenter des patterns composés (Compound Components) (SearchBar, FilterPanel, DataGrid)
   - [x] Créer des hooks pour les interactions communes (useAsyncState, useStorage)
   - [ ] Standardiser les patterns de gestion d'état
-
-### Storage et Données
-- [ ] **Optimiser le stockage local**
-  - [ ] Implémenter une compression plus efficace des données
-  - [ ] Créer un système de migration automatique des données
-  - [ ] Ajouter une validation et nettoyage des données corrompues
-  - [ ] Implémenter un système de cache multi-niveaux
 
 ## 🚀 Nouvelles Fonctionnalités
 
@@ -219,20 +211,6 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [ ] Vidéos tutoriels pour les fonctionnalités complexes
   - [ ] FAQ et résolution de problèmes courants
   - [ ] Changelog détaillé avec migration guides
-
-## 🔒 Sécurité et Conformité
-
-### Sécurité des Données
-- [ ] **Chiffrement et Protection**
-  - [ ] Validation stricte des données entrantes
-  - [ ] Protection contre l'injection et XSS
-  - [ ] Audit trail pour les modifications importantes
-
-- [ ] **Conformité Réglementaire**
-  - [ ] Conformité RGPD pour la protection des données
-  - [ ] Respect des réglementations d'élevage locales
-  - [ ] Traçabilité selon les normes vétérinaires
-  - [ ] Export conforme aux obligations déclaratives
 
 ## 🌍 Internationalisation et Localisation
 

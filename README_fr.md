@@ -511,6 +511,32 @@ const backup = exportData(); // JSON string
 const csvData = exportToCSV(animals); // Export CSV
 const excelData = exportToExcel(animals); // Export Excel
 importData(backup); // Restore from backup
+
+// Nouveaux services - Objectifs et alertes
+const goal = addGoal({
+  title: "Augmenter le poids moyen",
+  type: GoalType.GROWTH,
+  targetValue: 2500,
+  period: GoalPeriod.MONTHLY,
+  deadline: "2024-12-31"
+});
+
+// Système d'alertes configurables
+const alert = AlertingService.getInstance().createAlert({
+  title: "Délai d'attente expiré",
+  message: "Le traitement de Fluffy est terminé",
+  severity: "medium",
+  actions: [{ label: "Voir détails", action: () => navigate(`/animals/${animal.id}`) }]
+});
+
+// Rapports de performance individuels
+const report = PerformanceReportService.generateReport(animal.id);
+console.log(report.performance.overallScore); // Score 0-100
+console.log(report.performance.recommendations); // Conseils personnalisés
+
+// Services de cache et monitoring
+CacheService.getInstance().set('animals-stats', kpis, 300000); // Cache 5min
+const metrics = MetricsMonitoringService.getInstance().getMetrics();
 ```
 
 #### Sélecteurs Utiles

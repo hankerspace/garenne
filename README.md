@@ -328,6 +328,106 @@ npm run test:coverage     # Detailed coverage report
 - **[Contribution Guide](CONTRIBUTING.md)** - Development workflow and standards
 - **[Deployment Guide](DEPLOYMENT.md)** - Production deployment instructions
 
+### Quick API Reference
+
+#### Main Store Actions
+```typescript
+// Animal management
+const animal = addAnimal({ name: "Fluffy", sex: Sex.Female, status: Status.Grow });
+updateAnimal(animal.id, { status: Status.Reproducer, cage: "A1" });
+consumeAnimal(animal.id, { consumedDate: "2024-01-01", consumedWeight: 2500 });
+deleteAnimal(animal.id);
+
+// Weighings with quick entry
+const weight = addWeight({ animalId: animal.id, weight: 1200, date: "2024-01-01" });
+quickAddWeight(animal.id, 1300); // Quick entry with current date
+
+// Treatments with quick entry
+const treatment = addTreatment({
+  animalId: animal.id,
+  product: "RHD Vaccination",
+  withdrawalUntil: "2024-02-01"
+});
+quickAddTreatment(animal.id, "Dewormer"); // Quick entry
+
+// Litters with estimated weaning
+const litter = addLitter({
+  motherId: animal.id,
+  kindlingDate: "2024-01-01",
+  bornAlive: 8,
+  estimatedWeaningDate: "2024-01-29" // Calculated automatically
+});
+
+// Cage and tag management
+const cage = addCage({ name: "A1", capacity: 1, location: "Building A" });
+const tag = addTag({ name: "Elite Breeder", color: "#4CAF50" });
+addTagToAnimal(animal.id, tag.id);
+
+// Mortality tracking
+const mortality = addMortality({
+  animalId: animal.id,
+  date: "2024-01-01",
+  suspectedCause: "Disease",
+  necropsy: false
+});
+
+// Export/Import enhanced
+const backup = exportData(); // JSON string
+const csvData = exportToCSV(animals); // CSV export
+const excelData = exportToExcel(animals); // Excel export
+importData(backup); // Restore from backup
+
+// New services - Goals and alerts
+const goal = addGoal({
+  title: "Increase average weight",
+  type: GoalType.GROWTH,
+  targetValue: 2500,
+  period: GoalPeriod.MONTHLY,
+  deadline: "2024-12-31"
+});
+
+// Configurable alerting system
+const alert = AlertingService.getInstance().createAlert({
+  title: "Withdrawal period expired",
+  message: "Fluffy's treatment is completed",
+  severity: "medium",
+  actions: [{ label: "View details", action: () => navigate(`/animals/${animal.id}`) }]
+});
+
+// Individual performance reports
+const report = PerformanceReportService.generateReport(animal.id);
+console.log(report.performance.overallScore); // Score 0-100
+console.log(report.performance.recommendations); // Personalized recommendations
+
+// Cache and monitoring services
+CacheService.getInstance().set('animals-stats', kpis, 300000); // Cache 5min
+const metrics = MetricsMonitoringService.getInstance().getMetrics();
+```
+
+#### Useful Selectors
+```typescript
+// KPIs and statistics
+const kpis = getKPIs(state);              // Main metrics
+const activeAnimals = getActiveAnimals(); // Living animals  
+const breeders = getBreeders();           // Breeding animals
+const consumedAnimals = getConsumedAnimals(); // Consumed animals
+
+// Advanced filters and searches
+const females = getAnimalsByStatus(Status.Reproducer);
+const recent = getRecentWeights(30);      // Last 30 days
+const alerts = getActiveAlerts();         // Active withdrawal alerts
+const cageOccupancy = getCageOccupancy(); // Cage occupancy
+const taggedAnimals = getAnimalsByTag("Elite Breeder");
+
+// Performance metrics
+const performanceMetrics = getPerformanceMetrics(animalId);
+const populationTrends = getPopulationTrends(); // Population charts
+const mortalityStats = getMortalityStatistics(); // Mortality statistics
+const weaningProgress = getWeaningProgress(); // Current weaning
+```
+
+For complete documentation, see [API.md](API.md).
+
 ## 🔒 Security and Data
 
 ### Data Protection

@@ -68,7 +68,7 @@ const ReproductionPlanningPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<'timeline' | 'calendar'>('timeline');
   const [timeRange, setTimeRange] = useState<'week' | 'month' | '3months'>('month');
 
-  const { animals, breedings, litters, settings } = useAppStore();
+  const { animals, breedings, litters, settings, cages } = useAppStore();
   const activeBreeders = getActiveBreeders(useAppStore());
 
   // Calculate all planning events
@@ -480,12 +480,13 @@ const ReproductionPlanningPage: React.FC = () => {
             {activeBreeders
               .filter((a: Animal) => a.sex === Sex.Female)
               .filter((female: Animal) => {
-                // Filter out females with recent breedings (within 35 days)
-                const hasRecentBreeding = breedings.some((b: Breeding) => 
-                  b.femaleId === female.id && 
-                  getDifferenceInDays(new Date().toISOString().split('T')[0], b.date) <= 35
+                // Filter out females with recent breedings (within 35 days) that are active (pregnant or unknown)
+                const hasBlockingRecentBreeding = breedings.some((b: Breeding) =>
+                  b.femaleId === female.id &&
+                  getDifferenceInDays(new Date().toISOString().split('T')[0], b.date) <= 35 &&
+                  (b.diagnosis === 'PREGNANT' || b.diagnosis === 'UNKNOWN')
                 );
-                return !hasRecentBreeding;
+                return !hasBlockingRecentBreeding;
               })
               .map((female: Animal) => (
                 <Grid item xs={12} sm={6} md={4} key={female.id}>
@@ -505,7 +506,7 @@ const ReproductionPlanningPage: React.FC = () => {
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             {female.breed && `${female.breed} • `}
-                            {female.cage && `Cage ${female.cage}`}
+                            {female.cage && `Cage : ${cages.find(c => c.id === female.cage)?.name || 'Cage inconnue'}`}
                           </Typography>
                         </Box>
                       </Box>

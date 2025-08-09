@@ -144,11 +144,11 @@ Analyse complète de l'application Garenne de gestion d'élevage de lapins avec 
   - [x] Génération automatique de rapports de performance individuels
   - [x] Système d'alertes personnalisables (vaccination, reproduction, etc.)
 
-- [ ] **Généalogie avancée**
-  - [ ] Calcul automatique de consanguinité
-  - [ ] Visualisation graphique des lignées sur plusieurs générations
-  - [ ] Recommandations d'accouplements basées sur la génétique
-  - [ ] Export des pedigrees au format PDF
+- [x] **Généalogie avancée**
+  - [x] Calcul automatique de consanguinité
+  - [x] Visualisation graphique des lignées sur plusieurs générations
+  - [x] Recommandations d'accouplements basées sur la génétique
+  - [x] Export des pedigrees au format PDF
 
 ### Reproduction et Élevage
 - [ ] **Planification intelligente**

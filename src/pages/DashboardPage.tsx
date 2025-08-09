@@ -116,7 +116,7 @@ const DashboardPage = () => {
       value: '📊',
       icon: <StatsIcon color="info" />,
       subtitle: t('dashboard.kpis.statisticsSubtitle'),
-      action: () => navigate('/statistics'),
+      action: () => navigate('/statistics/advanced'),
     },
   ];
 

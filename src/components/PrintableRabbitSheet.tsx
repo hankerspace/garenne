@@ -3,12 +3,7 @@ import {
   Box, 
   Typography, 
   Grid, 
-  Paper, 
-  Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow
+  Paper
 } from '@mui/material';
 import { Animal, Sex, Status } from '../models/types';
 import { formatDate, calculateAgeText } from '../utils/dates';
@@ -39,9 +34,9 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
   return (
     <Paper 
       sx={{ 
-        p: 2, 
-        maxWidth: '210mm', 
-        maxHeight: '297mm',
+        p: 1.5, 
+        maxWidth: '105mm', 
+        maxHeight: '148mm',
         margin: 'auto',
         backgroundColor: 'white',
         color: 'black',
@@ -49,117 +44,101 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
         '@media print': {
           boxShadow: 'none',
           margin: 0,
-          padding: '1cm',
-          fontSize: '11pt',
+          padding: '0.5cm',
+          fontSize: '9pt',
           maxHeight: 'none',
           pageBreakInside: 'avoid'
         }
       }}
     >
       {/* Header */}
-      <Box textAlign="center" mb={2} sx={{ '@media print': { mb: 1 } }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ 
+      <Box textAlign="center" mb={1} sx={{ '@media print': { mb: 0.5 } }}>
+        <Typography variant="h5" component="h1" gutterBottom sx={{ 
           fontWeight: 'bold',
-          '@media print': { fontSize: '18pt', mb: 0.5 }
+          '@media print': { fontSize: '14pt', mb: 0.25 }
         }}>
           FICHE LAPIN
         </Typography>
-        <Typography variant="h5" component="h2" color="primary" gutterBottom sx={{
-          '@media print': { fontSize: '16pt', mb: 0.5 }
+        <Typography variant="h6" component="h2" color="primary" gutterBottom sx={{
+          '@media print': { fontSize: '12pt', mb: 0.25 }
         }}>
           {animal.name || 'Sans nom'}
         </Typography>
-        <Typography variant="h6" color="text.secondary" sx={{
-          '@media print': { fontSize: '14pt', mb: 1 }
-        }}>
-          {animal.identifier || 'Aucun identifiant'}
-        </Typography>
+        {animal.identifier && (
+          <Typography variant="body2" color="text.secondary" sx={{
+            '@media print': { fontSize: '10pt', mb: 0.5 }
+          }}>
+            ID: {animal.identifier}
+          </Typography>
+        )}
       </Box>
 
-      <Grid container spacing={2} sx={{ '@media print': { spacing: 1 } }}>
-        {/* Left Column - Animal Information */}
-        <Grid item xs={12} md={8}>
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', borderBottom: '2px solid #1976d2', pb: 1 }}>
-            {t('printableSheet.generalInfo')}
+      {/* Single column layout for A6 */}
+      <Box sx={{ '@media print': { spacing: 0.5 } }}>
+        {/* Essential Information - Compact */}
+        <Box mb={1}>
+          <Grid container spacing={1} sx={{ '@media print': { spacing: 0.25 } }}>
+            <Grid item xs={6}>
+              <Typography variant="body2" sx={{ fontWeight: 'bold', '@media print': { fontSize: '8pt' } }}>
+                {t('animals.sex')}:
+              </Typography>
+              <Typography variant="body2" sx={{ '@media print': { fontSize: '8pt' } }}>
+                {getSexDisplay(animal.sex)}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2" sx={{ fontWeight: 'bold', '@media print': { fontSize: '8pt' } }}>
+                {t('animals.birthDate')}:
+              </Typography>
+              <Typography variant="body2" sx={{ '@media print': { fontSize: '8pt' } }}>
+                {animal.birthDate ? formatDate(animal.birthDate) : t('printableSheet.notSpecified')}
+              </Typography>
+            </Grid>
+            {animal.breed && (
+              <>
+                <Grid item xs={6}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', '@media print': { fontSize: '8pt' } }}>
+                    {t('animals.breed')}:
+                  </Typography>
+                  <Typography variant="body2" sx={{ '@media print': { fontSize: '8pt' } }}>
+                    {animal.breed}
+                  </Typography>
+                </Grid>
+              </>
+            )}
+            {animal.cage && (
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', '@media print': { fontSize: '8pt' } }}>
+                  {t('animals.cage')}:
+                </Typography>
+                <Typography variant="body2" sx={{ '@media print': { fontSize: '8pt' } }}>
+                  {cages.find(c => c.id === animal.cage)?.name || t('printableSheet.unknownCage')}
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Box>
+
+        {/* QR Code - Centered and sized for A6 */}
+        <Box textAlign="center" mt={1}>
+          <Typography variant="body2" gutterBottom sx={{ 
+            fontWeight: 'bold', 
+            '@media print': { fontSize: '9pt', mb: 0.25 } 
+          }}>
+            Code QR
           </Typography>
-          
-          <Table sx={{ mt: 2 }}>
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold', width: '40%' }}>
-                  {t('animals.sex')}
-                </TableCell>
-                <TableCell>{getSexDisplay(animal.sex)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  {t('animals.status')}
-                </TableCell>
-                <TableCell>{getStatusDisplay(animal.status)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  {t('animals.breed')}
-                </TableCell>
-                <TableCell>{animal.breed || t('printableSheet.notSpecified')}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  {t('animals.birthDate')}
-                </TableCell>
-                <TableCell>
-                  {animal.birthDate ? formatDate(animal.birthDate) : t('printableSheet.notSpecified')}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                  {t('animals.cage')}
-                </TableCell>
-                <TableCell>
-                  {animal.cage 
-                    ? (cages.find(c => c.id === animal.cage)?.name || t('printableSheet.unknownCage'))
-                    : t('printableSheet.notSpecified')}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-
-          {animal.notes && (
-            <Box mt={3}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', borderBottom: '2px solid #1976d2', pb: 1 }}>
-                {t('animals.notes')}
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
-                {animal.notes}
-              </Typography>
-            </Box>
-          )}
-        </Grid>
-
-        {/* Right Column - QR Code */}
-        <Grid item xs={12} md={4}>
-          <Box textAlign="center">
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', borderBottom: '2px solid #1976d2', pb: 1 }}>
-              Code QR
-            </Typography>
-            <Box mt={2} display="flex" justifyContent="center">
-              <QRCodeDisplay animal={animal} size="large" variant="print" />
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-              Scannez ce code QR pour accéder rapidement à la fiche de cet animal
-            </Typography>
+          <Box display="flex" justifyContent="center">
+            <QRCodeDisplay animal={animal} size="medium" variant="print" />
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
-      {/* Footer */}
-      <Divider sx={{ my: 4 }} />
-      <Box textAlign="center">
-        <Typography variant="body2" color="text.secondary">
-          {t('printableSheet.generatedOn')} {formatDate(new Date().toISOString())} {t('printableSheet.by')} Garenne
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Application de gestion d'élevage de lapins
+      {/* Compact Footer */}
+      <Box textAlign="center" mt={1} sx={{ '@media print': { mt: 0.5 } }}>
+        <Typography variant="caption" color="text.secondary" sx={{ 
+          '@media print': { fontSize: '7pt' } 
+        }}>
+          {formatDate(new Date().toISOString())} • Garenne
         </Typography>
       </Box>
 
@@ -201,10 +180,10 @@ const PrintableRabbitSheet: React.FC<PrintableRabbitSheetProps> = ({ animal }) =
               height: auto !important;
             }
             
-            /* Page setup for A4 single page */
+            /* Page setup for A6 single page */
             @page {
-              margin: 1.5cm;
-              size: A4;
+              margin: 0.5cm;
+              size: A6;
               background: white;
             }
             

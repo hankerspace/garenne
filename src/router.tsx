@@ -16,6 +16,7 @@ const CageFormPage = lazy(() => import('./pages/Cages/CageFormPage.tsx'));
 const CageVisualizationPage = lazy(() => import('./pages/Cages/CageVisualizationPage.tsx'));
 const TagListPage = lazy(() => import('./pages/Tags/TagListPage.tsx'));
 const StatisticsPage = lazy(() => import('./pages/Statistics/StatisticsPage.tsx'));
+const AdvancedStatisticsPage = lazy(() => import('./pages/Statistics/AdvancedStatisticsPage.tsx'));
 const SettingsPage = lazy(() => import('./pages/Settings/SettingsPage.tsx'));
 const ReproductionPlanningPage = lazy(() => import('./pages/ReproductionPlanningPage.tsx'));
 const GoalsTrackingPage = lazy(() => import('./pages/GoalsTrackingPage.tsx'));
@@ -105,6 +106,11 @@ export const router = createBrowserRouter([
       {
         path: 'statistics',
         element: <LazyRoute><StatisticsPage /></LazyRoute>,
+        errorElement: <RouterErrorBoundary />,
+      },
+      {
+        path: 'statistics/advanced',
+        element: <LazyRoute><AdvancedStatisticsPage /></LazyRoute>,
         errorElement: <RouterErrorBoundary />,
       },
       {

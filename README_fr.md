@@ -42,7 +42,20 @@
 - ✅ **PWA complète** : Installable comme application native, fonctionne hors-ligne
 - ✅ **Accessibilité** : Support lecteurs d'écran et navigation clavier
 
+### 🎯 Analyses Avancées et Suivi d'Objectifs
+- ✅ **Tableaux de bord de performance** : KPIs en temps réel avec graphiques interactifs et analyse de tendances
+- ✅ **Rapports de performance individuels** : Métriques détaillées pour croissance, reproduction et santé
+- ✅ **Système de suivi d'objectifs** : Définir et surveiller les objectifs d'élevage avec calcul automatique de progression
+- ✅ **Alertes configurables** : Notifications intelligentes pour délais d'attente, calendriers de reproduction et anomalies
+- ✅ **Analyses comparatives** : Benchmarking par rapport aux moyennes et données historiques
+- ✅ **Notation automatisée** : Classements de performance et recommandations d'amélioration
+
 ### 🔒 Sécurité et Performance
+- ✅ **Hub d'actions rapides** : Page centralisée pour saisie rapide et tâches courantes
+- ✅ **Modales de saisie express** : Enregistrement rapide de poids, journalisation de traitements et notes de reproduction
+- ✅ **Navigation intelligente** : Fil d'Ariane et raccourcis clavier pour un workflow efficace
+- ✅ **Opérations en lot** : Fonctionnalité d'import par lot avec validation et aperçu
+- ✅ **Recherche intelligente** : Filtrage avancé avec jeux de filtres sauvegardés et correspondance floue
 - ✅ **Stockage local sécurisé** : Données chiffrées et compressées
 - ✅ **Mode hors-ligne** : Fonctionnement complet sans connexion internet
 - ✅ **Performance optimisée** : Chargement rapide, code splitting automatique
@@ -186,14 +199,17 @@ La liste des animaux affiche toutes les informations essentielles avec des optio
 ```
 Stockage Local (LocalStorage + LZ-String compression)
 ├── animals[]           # Registre des animaux avec généalogie et tags
-├── weights[]           # Historique des pesées  
+├── weights[]           # Historique des pesées avec analyses de croissance
 ├── treatments[]        # Traitements et délais d'attente
 ├── litters[]           # Portées avec sevrage automatique estimé
 ├── breedings[]         # Saillies et planning reproduction
 ├── mortalities[]       # Suivi des décès et causes
-├── cages[]             # Gestion des emplacements
-├── tags[]              # Système d'étiquettes personnalisé
+├── cages[]             # Gestion des emplacements et suivi d'occupation
+├── tags[]              # Système d'étiquettes personnalisé avec couleurs
+├── goals[]             # Objectifs d'élevage et suivi de progression
+├── alerts[]            # Alertes configurables et notifications
 ├── performanceMetrics[] # Métriques de performance reproduction
+├── savedFilters[]      # Configurations de filtres sauvegardées par l'utilisateur
 └── settings            # Préférences utilisateur et durées personnalisables
 ```
 
@@ -209,18 +225,32 @@ src/
 │   ├── PrintableRabbitSheet.tsx # Fiches imprimables avec QR code
 │   └── QRCodeDisplay.tsx   # Affichage de codes QR
 ├── 📁 pages/              # Pages principales de l'application
-│   ├── Animals/           # 🐰 Gestion des animaux
+│   ├── Animals/           # 🐰 Gestion des animaux avec généalogie avancée
 │   ├── Litters/           # 👶 Gestion des portées avec sevrage estimé
-│   ├── Statistics/        # 📊 Métriques et performances détaillées
-│   ├── Treatments/        # 💊 Gestion des traitements
+│   ├── Statistics/        # 📊 Métriques et analyses de performance détaillées
+│   ├── Treatments/        # 💊 Gestion des traitements avec suivi des délais d'attente
+│   ├── QuickActionsPage.tsx # ⚡ Hub d'actions rapides pour saisie rapide
+│   ├── GoalsTrackingPage.tsx # 🎯 Suivi des objectifs et buts
+│   ├── DashboardPage.tsx  # 📈 Tableau de bord principal avec KPIs en temps réel
+│   ├── ReproductionPlanningPage.tsx # 📅 Calendrier et planification de reproduction
+│   ├── Tags/              # 🏷️ Gestion des étiquettes et organisation
+│   ├── Cages/             # 🏠 Gestion des cages et occupation
 │   └── Settings/          # ⚙️ Configuration et durées personnalisables
 ├── 📁 services/           # Services métier et génération de données
 │   ├── qrcode.service.ts   # Génération de codes QR
 │   ├── statistics.service.ts # Calculs de performance
-│   ├── search.service.ts   # Recherche avancée
-│   ├── export.service.ts   # Export multi-format
+│   ├── search.service.ts   # Recherche avancée avec correspondance floue
+│   ├── export.service.ts   # Export multi-format (JSON, CSV, Excel)
 │   ├── backup.service.ts   # Sauvegarde et restauration
-│   └── i18n.service.ts     # Support multilingue
+│   ├── i18n.service.ts     # Support multilingue
+│   ├── alerting.service.ts # Alertes intelligentes et notifications
+│   ├── performance-report.service.ts # Analyse de performance individuelle
+│   ├── metrics-monitoring.service.ts # Suivi de métriques en temps réel
+│   ├── genealogy.service.ts # Services de pedigree et arbre généalogique
+│   ├── batch-import.service.ts # Import de données en lot avec validation
+│   ├── cache.service.ts    # Système de cache intelligent
+│   ├── storage-abstraction.service.ts # Abstraction de couche de stockage
+│   └── error-interceptor.service.ts # Gestion d'erreurs avec logique de retry
 ├── 📁 state/             # Store Zustand et sélecteurs
 ├── 📁 utils/             # Utilitaires (dates, validation, storage)
 ├── 📁 models/            # Types TypeScript et interfaces étendues
@@ -377,9 +407,10 @@ describe('MonNouveauType Store', () => {
 ### Testing Strategy
 
 #### Types de Tests
-- **Unit Tests** : Utils, services, store actions (90%+ coverage)
-- **Component Tests** : Rendu, interactions, props (80%+ coverage)  
-- **Integration Tests** : Flows utilisateur complets (70%+ coverage)
+- **Tests Unitaires** : Utils, services, actions de store (95%+ coverage)
+- **Tests de Composants** : Rendu, interactions, props (85%+ coverage)  
+- **Tests d'Intégration** : Flows utilisateur complets (75%+ coverage)
+- **Tests de Services** : Tous les 14+ services avec couverture de test complète
 
 #### Commandes de Test
 ```bash
@@ -480,6 +511,32 @@ const backup = exportData(); // JSON string
 const csvData = exportToCSV(animals); // Export CSV
 const excelData = exportToExcel(animals); // Export Excel
 importData(backup); // Restore from backup
+
+// Nouveaux services - Objectifs et alertes
+const goal = addGoal({
+  title: "Augmenter le poids moyen",
+  type: GoalType.GROWTH,
+  targetValue: 2500,
+  period: GoalPeriod.MONTHLY,
+  deadline: "2024-12-31"
+});
+
+// Système d'alertes configurables
+const alert = AlertingService.getInstance().createAlert({
+  title: "Délai d'attente expiré",
+  message: "Le traitement de Fluffy est terminé",
+  severity: "medium",
+  actions: [{ label: "Voir détails", action: () => navigate(`/animals/${animal.id}`) }]
+});
+
+// Rapports de performance individuels
+const report = PerformanceReportService.generateReport(animal.id);
+console.log(report.performance.overallScore); // Score 0-100
+console.log(report.performance.recommendations); // Conseils personnalisés
+
+// Services de cache et monitoring
+CacheService.getInstance().set('animals-stats', kpis, 300000); // Cache 5min
+const metrics = MetricsMonitoringService.getInstance().getMetrics();
 ```
 
 #### Sélecteurs Utiles
@@ -566,18 +623,25 @@ Les fichiers seront générés dans le dossier `dist/`.
 - [x] 🎨 **Interface responsive** Material Design 3 avec thèmes
 - [x] 💾 **Stockage local robuste** avec compression et validation
 - [x] 📱 **PWA complète** installable et fonctionnant hors-ligne
-- [x] 🧪 **Tests automatisés** avec couverture >80%
+- [x] 🧪 **Tests automatisés** avec couverture >85%
+- [x] 🎯 **Système de suivi d'objectifs** avec surveillance de progression et alertes
+- [x] ⚡ **Hub d'actions rapides** pour optimisation du workflow et saisie rapide
+- [x] 🔔 **Système d'alertes intelligentes** avec seuils configurables et notifications
+- [x] 📈 **Rapports de performance individuels** avec analyses détaillées et recommandations
 
 ### Version 1.0 - Production Ready 
 - [x] 🔄 **Export/Import avancé** : Excel, CSV, formats standards élevage
 - [x] 📈 **Statistiques avancées** : Graphiques de performance, comparaisons
-- [ ] 🔍 **Recherche intelligente** : Filtres complexes, recherche floue
-- [x] 🏷️ **Système d'étiquettes** : Organisation personnalisée
-- [ ] **Visualisation des cages** : représentation graphique des cages avec les animaux dans celles-ci
+- [x] 🔍 **Recherche intelligente** : Filtres complexes, recherche floue avec jeux de filtres sauvegardés
+- [x] 🏷️ **Système d'étiquettes** : Organisation personnalisée avec couleurs et catégories
+- [x] 🎯 **Suivi d'objectifs** : Objectifs d'élevage avec surveillance de progression
+- [x] ⚡ **Actions rapides** : Optimisation de la saisie rapide et du workflow
+- [x] 🔔 **Alertes intelligentes** : Notifications configurables et surveillance
+- [ ] **Visualisation des cages** : Représentation graphique des installations avec emplacements des animaux
 - [x] **Consommation des animaux** : Gestion des animaux "abattus pour consommation" avec statistiques
 - [x] **Performances des animaux** : Mesures de performance de reproduction, taux de survie de la descendance, statistiques de performance
 - [x] 🌐 **Internationalisation** : Support multilingue (FR, EN, ES) de l'application et readme
-- [x] **Personnalisation** : possibilité de configurer précisément dans les paramètres la durée de gestation, durée de sevrage, durée avant reproduction, durée avant abattage, etc.
+- [x] **Personnalisation** : Configuration précise de la durée de gestation, durée de sevrage, intervalles de reproduction, etc.
 
 ### Version 1.1 - Fonctionnalités Avancées 
 - [x] 🧬 **Généalogie avancée** : Arbre interactif avec navigation entre générations

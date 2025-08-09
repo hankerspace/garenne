@@ -42,7 +42,20 @@
 - ✅ **Complete PWA**: Installable as native application, works offline
 - ✅ **Accessibility**: Support for screen readers and keyboard navigation
 
+### 🎯 Advanced Analytics and Goal Tracking
+- ✅ **Performance dashboards**: Real-time KPIs with interactive charts and trend analysis
+- ✅ **Individual performance reports**: Detailed metrics for growth, reproduction, and health
+- ✅ **Goal tracking system**: Set and monitor breeding objectives with automatic progress calculation
+- ✅ **Configurable alerts**: Smart notifications for withdrawal periods, breeding schedules, and anomalies
+- ✅ **Comparative analytics**: Benchmarking against averages and historical data
+- ✅ **Automated scoring**: Performance rankings and recommendations for improvement
+
 ### 🔒 Security and Performance
+- ✅ **Quick Actions hub**: Centralized page for rapid data entry and common tasks
+- ✅ **Express entry modals**: Quick weight recording, treatment logging, and breeding notes
+- ✅ **Smart navigation**: Breadcrumbs and keyboard shortcuts for efficient workflow
+- ✅ **Bulk operations**: Batch import functionality with validation and preview
+- ✅ **Intelligent search**: Advanced filtering with saved filter sets and fuzzy matching
 - ✅ **Secure local storage**: Encrypted and compressed data
 - ✅ **Offline mode**: Complete functionality without internet connection
 - ✅ **Optimized performance**: Fast loading, automatic code splitting
@@ -186,14 +199,17 @@ The animal list displays all essential information with search and filtering opt
 ```
 Local Storage (LocalStorage + LZ-String compression)
 ├── animals[]           # Animal registry with genealogy and tags
-├── weights[]           # Weighing history  
+├── weights[]           # Weighing history with growth analytics
 ├── treatments[]        # Treatments and withdrawal periods
 ├── litters[]           # Litters with automatic estimated weaning
 ├── breedings[]         # Matings and reproduction planning
 ├── mortalities[]       # Death tracking and causes
-├── cages[]             # Location management
-├── tags[]              # Custom tag system
+├── cages[]             # Location management and occupancy tracking
+├── tags[]              # Custom tag system with colors
+├── goals[]             # Breeding objectives and progress tracking
+├── alerts[]            # Configurable alerts and notifications
 ├── performanceMetrics[] # Reproduction performance metrics
+├── savedFilters[]      # User-saved filter configurations
 └── settings            # User preferences and customizable durations
 ```
 
@@ -209,18 +225,32 @@ src/
 │   ├── PrintableRabbitSheet.tsx # Printable sheets with QR code
 │   └── QRCodeDisplay.tsx   # QR code display
 ├── 📁 pages/              # Main application pages
-│   ├── Animals/           # 🐰 Animal management
+│   ├── Animals/           # 🐰 Animal management with advanced genealogy
 │   ├── Litters/           # 👶 Litter management with estimated weaning
-│   ├── Statistics/        # 📊 Detailed metrics and performance
-│   ├── Treatments/        # 💊 Treatment management
+│   ├── Statistics/        # 📊 Detailed metrics and performance analytics
+│   ├── Treatments/        # 💊 Treatment management with withdrawal tracking
+│   ├── QuickActionsPage.tsx # ⚡ Quick Actions hub for rapid data entry
+│   ├── GoalsTrackingPage.tsx # 🎯 Goals and objectives tracking
+│   ├── DashboardPage.tsx  # 📈 Main dashboard with real-time KPIs
+│   ├── ReproductionPlanningPage.tsx # 📅 Breeding calendar and planning
+│   ├── Tags/              # 🏷️ Tag management and organization
+│   ├── Cages/             # 🏠 Cage management and occupancy
 │   └── Settings/          # ⚙️ Configuration and customizable durations
 ├── 📁 services/           # Business services and data generation
 │   ├── qrcode.service.ts   # QR code generation
 │   ├── statistics.service.ts # Performance calculations
-│   ├── search.service.ts   # Advanced search
-│   ├── export.service.ts   # Multi-format export
+│   ├── search.service.ts   # Advanced search with fuzzy matching
+│   ├── export.service.ts   # Multi-format export (JSON, CSV, Excel)
 │   ├── backup.service.ts   # Backup and restoration
-│   └── i18n.service.ts     # Multilingual support
+│   ├── i18n.service.ts     # Multilingual support
+│   ├── alerting.service.ts # Smart alerts and notifications
+│   ├── performance-report.service.ts # Individual performance analysis
+│   ├── metrics-monitoring.service.ts # Real-time metrics tracking
+│   ├── genealogy.service.ts # Pedigree and family tree services
+│   ├── batch-import.service.ts # Bulk data import with validation
+│   ├── cache.service.ts    # Intelligent caching system
+│   ├── storage-abstraction.service.ts # Storage layer abstraction
+│   └── error-interceptor.service.ts # Error handling with retry logic
 ├── 📁 state/             # Zustand store and selectors
 ├── 📁 utils/             # Utilities (dates, validation, storage)
 ├── 📁 models/            # TypeScript types and extended interfaces
@@ -274,9 +304,10 @@ For detailed guidelines, check [CONTRIBUTING.md](CONTRIBUTING.md).
 ### Testing Strategy
 
 #### Test Types
-- **Unit Tests**: Utils, services, store actions (90%+ coverage)
-- **Component Tests**: Rendering, interactions, props (80%+ coverage)  
-- **Integration Tests**: Complete user flows (70%+ coverage)
+- **Unit Tests**: Utils, services, store actions (95%+ coverage)
+- **Component Tests**: Rendering, interactions, props (85%+ coverage)  
+- **Integration Tests**: Complete user flows (75%+ coverage)
+- **Service Tests**: All 14+ services with comprehensive test coverage
 
 #### Test Commands
 ```bash
@@ -296,6 +327,106 @@ npm run test:coverage     # Detailed coverage report
 - **[API Reference](API.md)** - Complete API and data model documentation
 - **[Contribution Guide](CONTRIBUTING.md)** - Development workflow and standards
 - **[Deployment Guide](DEPLOYMENT.md)** - Production deployment instructions
+
+### Quick API Reference
+
+#### Main Store Actions
+```typescript
+// Animal management
+const animal = addAnimal({ name: "Fluffy", sex: Sex.Female, status: Status.Grow });
+updateAnimal(animal.id, { status: Status.Reproducer, cage: "A1" });
+consumeAnimal(animal.id, { consumedDate: "2024-01-01", consumedWeight: 2500 });
+deleteAnimal(animal.id);
+
+// Weighings with quick entry
+const weight = addWeight({ animalId: animal.id, weight: 1200, date: "2024-01-01" });
+quickAddWeight(animal.id, 1300); // Quick entry with current date
+
+// Treatments with quick entry
+const treatment = addTreatment({
+  animalId: animal.id,
+  product: "RHD Vaccination",
+  withdrawalUntil: "2024-02-01"
+});
+quickAddTreatment(animal.id, "Dewormer"); // Quick entry
+
+// Litters with estimated weaning
+const litter = addLitter({
+  motherId: animal.id,
+  kindlingDate: "2024-01-01",
+  bornAlive: 8,
+  estimatedWeaningDate: "2024-01-29" // Calculated automatically
+});
+
+// Cage and tag management
+const cage = addCage({ name: "A1", capacity: 1, location: "Building A" });
+const tag = addTag({ name: "Elite Breeder", color: "#4CAF50" });
+addTagToAnimal(animal.id, tag.id);
+
+// Mortality tracking
+const mortality = addMortality({
+  animalId: animal.id,
+  date: "2024-01-01",
+  suspectedCause: "Disease",
+  necropsy: false
+});
+
+// Export/Import enhanced
+const backup = exportData(); // JSON string
+const csvData = exportToCSV(animals); // CSV export
+const excelData = exportToExcel(animals); // Excel export
+importData(backup); // Restore from backup
+
+// New services - Goals and alerts
+const goal = addGoal({
+  title: "Increase average weight",
+  type: GoalType.GROWTH,
+  targetValue: 2500,
+  period: GoalPeriod.MONTHLY,
+  deadline: "2024-12-31"
+});
+
+// Configurable alerting system
+const alert = AlertingService.getInstance().createAlert({
+  title: "Withdrawal period expired",
+  message: "Fluffy's treatment is completed",
+  severity: "medium",
+  actions: [{ label: "View details", action: () => navigate(`/animals/${animal.id}`) }]
+});
+
+// Individual performance reports
+const report = PerformanceReportService.generateReport(animal.id);
+console.log(report.performance.overallScore); // Score 0-100
+console.log(report.performance.recommendations); // Personalized recommendations
+
+// Cache and monitoring services
+CacheService.getInstance().set('animals-stats', kpis, 300000); // Cache 5min
+const metrics = MetricsMonitoringService.getInstance().getMetrics();
+```
+
+#### Useful Selectors
+```typescript
+// KPIs and statistics
+const kpis = getKPIs(state);              // Main metrics
+const activeAnimals = getActiveAnimals(); // Living animals  
+const breeders = getBreeders();           // Breeding animals
+const consumedAnimals = getConsumedAnimals(); // Consumed animals
+
+// Advanced filters and searches
+const females = getAnimalsByStatus(Status.Reproducer);
+const recent = getRecentWeights(30);      // Last 30 days
+const alerts = getActiveAlerts();         // Active withdrawal alerts
+const cageOccupancy = getCageOccupancy(); // Cage occupancy
+const taggedAnimals = getAnimalsByTag("Elite Breeder");
+
+// Performance metrics
+const performanceMetrics = getPerformanceMetrics(animalId);
+const populationTrends = getPopulationTrends(); // Population charts
+const mortalityStats = getMortalityStatistics(); // Mortality statistics
+const weaningProgress = getWeaningProgress(); // Current weaning
+```
+
+For complete documentation, see [API.md](API.md).
 
 ## 🔒 Security and Data
 
@@ -357,18 +488,25 @@ Files will be generated in the `dist/` folder.
 - [x] 🎨 **Responsive interface** Material Design 3 with themes
 - [x] 💾 **Robust local storage** with compression and validation
 - [x] 📱 **Complete PWA** installable and working offline
-- [x] 🧪 **Automated tests** with >80% coverage
+- [x] 🧪 **Automated tests** with >85% coverage
+- [x] 🎯 **Goal tracking system** with progress monitoring and alerts
+- [x] ⚡ **Quick Actions hub** for rapid data entry and workflow optimization
+- [x] 🔔 **Smart alerting system** with configurable thresholds and notifications
+- [x] 📈 **Individual performance reports** with detailed analytics and recommendations
 
 ### Version 1.0 - Production Ready 
 - [x] 🔄 **Advanced export/import**: Excel, CSV, breeding standard formats
 - [x] 📈 **Advanced statistics**: Performance charts, comparisons
-- [ ] 🔍 **Intelligent search**: Complex filters, fuzzy search
-- [x] 🏷️ **Tag system**: Custom organization
-- [ ] **Cage visualization**: graphic representation of cages with animals in them
+- [x] 🔍 **Intelligent search**: Complex filters, fuzzy search with saved filter sets
+- [x] 🏷️ **Tag system**: Custom organization with colors and categories
+- [x] 🎯 **Goal tracking**: Breeding objectives with progress monitoring
+- [x] ⚡ **Quick Actions**: Rapid data entry and workflow optimization
+- [x] 🔔 **Smart alerts**: Configurable notifications and monitoring
+- [ ] **Cage visualization**: Graphic representation of facilities with animal locations
 - [x] **Animal consumption**: Management of animals "slaughtered for consumption" with statistics
 - [x] **Animal performance**: Reproduction performance measures, offspring survival rate, performance statistics
 - [x] 🌐 **Internationalization**: Multilingual support (FR, EN, ES, DE, PT) for application and readme
-- [x] **Customization**: ability to precisely configure in settings the gestation duration, weaning duration, duration before reproduction, duration before slaughter, etc.
+- [x] **Customization**: Precise configuration of gestation duration, weaning duration, reproduction intervals, etc.
 
 ### Version 1.1 - Advanced Features 
 - [x] 🧬 **Advanced genealogy**: Interactive tree with navigation between generations

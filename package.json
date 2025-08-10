@@ -2,7 +2,7 @@
   "name": "garenne",
   "description": "Application moderne de gestion d'élevage de lapins avec React, TypeScript et Material-UI",
   "private": true,
-  "version": "0.8.0-beta",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

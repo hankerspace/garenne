@@ -37,17 +37,11 @@ describe('Print Utils', () => {
       origin: 'PURCHASED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      consumedAt: undefined,
-      weaningAt: undefined,
-      birthWeight: undefined,
       fatherId: undefined,
       motherId: undefined,
       cage: undefined,
       notes: undefined,
-      color: undefined,
       tags: [],
-      acquisitionPrice: undefined,
-      isArchived: false,
     };
 
     printRabbitSheet(testAnimal);
@@ -92,17 +86,11 @@ describe('Print Utils', () => {
       origin: 'PURCHASED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      consumedAt: undefined,
-      weaningAt: undefined,
-      birthWeight: undefined,
       fatherId: undefined,
       motherId: undefined,
       cage: undefined,
       notes: undefined,
-      color: undefined,
       tags: [],
-      acquisitionPrice: undefined,
-      isArchived: false,
     };
 
     printRabbitSheet(testAnimal);
@@ -127,17 +115,11 @@ describe('Print Utils', () => {
       origin: 'BORN_HERE',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      consumedAt: undefined,
-      weaningAt: undefined,
-      birthWeight: undefined,
       fatherId: undefined,
       motherId: undefined,
       cage: undefined,
       notes: undefined,
-      color: undefined,
       tags: [],
-      acquisitionPrice: undefined,
-      isArchived: false,
     };
 
     printRabbitSheet(testAnimal);
@@ -180,17 +162,11 @@ describe('Print Utils', () => {
       origin: 'PURCHASED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      consumedAt: undefined,
-      weaningAt: undefined,
-      birthWeight: undefined,
       fatherId: undefined,
       motherId: undefined,
       cage: undefined,
       notes: undefined,
-      color: undefined,
       tags: [],
-      acquisitionPrice: undefined,
-      isArchived: false,
     };
 
     // Should not throw an error

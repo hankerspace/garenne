@@ -45,11 +45,12 @@ import { useAppStore } from '../../state/store';
 import { Sex, Status, Breeding } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
 import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
-import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, PrintableRabbitSheet, MortalityModal, QuickWeightModal, QuickTreatmentModal } from '../../components/LazyComponents';
+import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, MortalityModal, QuickWeightModal, QuickTreatmentModal } from '../../components/LazyComponents';
 import { LitterModal } from '../../components/modals/LitterModal';
 import { AdvancedGenealogyTree } from '../../components/AdvancedGenealogyTree';
 import { MatingRecommendations } from '../../components/MatingRecommendations';
 import { PedigreePDFService } from '../../services/pedigree-pdf.service';
+import { printRabbitSheet } from '../../utils/print.utils';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -96,7 +97,6 @@ const AnimalDetailPage = () => {
   const [breedingModalOpen, setBreedingModalOpen] = useState(false);
   const [litterModalOpen, setLitterModalOpen] = useState(false);
   const [mortalityModalOpen, setMortalityModalOpen] = useState(false);
-  const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const [selectedBreeding, setSelectedBreeding] = useState<Breeding | null>(null);
   const [breedingToDelete, setBreedingToDelete] = useState<Breeding | null>(null);
   const [breedingMenuAnchor, setBreedingMenuAnchor] = useState<null | HTMLElement>(null);
@@ -174,16 +174,10 @@ const AnimalDetailPage = () => {
   };
 
   const handlePrint = () => {
-    setPrintDialogOpen(true);
-  };
-
-  const handlePrintConfirm = () => {
-    // Don't close the dialog immediately, let the print happen first
-    setTimeout(() => {
-      window.print();
-      // Close dialog after printing
-      setPrintDialogOpen(false);
-    }, 100);
+    // Use the new dedicated print function instead of the dialog
+    if (animal) {
+      printRabbitSheet(animal);
+    }
   };
 
   const handleExportPedigree = async (animal: any) => {
@@ -748,33 +742,6 @@ const AnimalDetailPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Print Dialog */}
-      <Dialog
-        open={printDialogOpen}
-        onClose={() => setPrintDialogOpen(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          <Box display="flex" alignItems="center" gap={1}>
-            <PrintIcon />
-            Aperçu de la fiche à imprimer
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          <PrintableRabbitSheet animal={animal} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setPrintDialogOpen(false)}>
-            Annuler
-          </Button>
-          <Button onClick={handlePrintConfirm} variant="contained" startIcon={<PrintIcon />}>
-            Imprimer
-          </Button>
-        </DialogActions>
-      </Dialog>
-
 
     </Container>
   );

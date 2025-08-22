@@ -37,6 +37,11 @@ interface AppStore extends AppState {
   updateTreatment: (id: string, updates: Partial<Treatment>) => void;
   deleteTreatment: (id: string) => void;
   
+  // HealthLog actions
+  addHealthLog: (healthLog: Omit<HealthLog, 'id' | 'createdAt' | 'updatedAt'>) => HealthLog;
+  updateHealthLog: (id: string, updates: Partial<HealthLog>) => void;
+  deleteHealthLog: (id: string) => void;
+
   // Mortality actions
   addMortality: (mortality: Omit<Mortality, 'id' | 'createdAt' | 'updatedAt'>) => Mortality;
   updateMortality: (id: string, updates: Partial<Mortality>) => void;
@@ -85,6 +90,7 @@ export const useAppStore = create<AppStore>()(
     litters: [],
     weights: [],
     treatments: [],
+    healthLogs: [],
     mortalities: [],
     cages: [],
     tags: [],
@@ -162,6 +168,7 @@ export const useAppStore = create<AppStore>()(
         litters: state.litters.filter(l => l.motherId !== id && l.fatherId !== id),
         weights: state.weights.filter(w => w.animalId !== id),
         treatments: state.treatments.filter(t => t.animalId !== id),
+        healthLogs: state.healthLogs.filter(h => h.animalId !== id),
         mortalities: state.mortalities.filter(m => m.animalId !== id),
       }));
       get().saveData();
@@ -324,6 +331,42 @@ export const useAppStore = create<AppStore>()(
     deleteTreatment: (id) => {
       set((state) => ({
         treatments: state.treatments.filter(treatment => treatment.id !== id),
+      }));
+      get().saveData();
+    },
+
+    // HealthLog actions
+    addHealthLog: (healthLogData) => {
+      const now = generateTimestamp();
+      const healthLog: HealthLog = {
+        ...healthLogData,
+        id: generateId(),
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      set((state) => ({
+        healthLogs: [...state.healthLogs, healthLog],
+      }));
+
+      get().saveData();
+      return healthLog;
+    },
+
+    updateHealthLog: (id, updates) => {
+      set((state) => ({
+        healthLogs: state.healthLogs.map(log =>
+          log.id === id
+            ? { ...log, ...updates, updatedAt: generateTimestamp() }
+            : log
+        ),
+      }));
+      get().saveData();
+    },
+
+    deleteHealthLog: (id) => {
+      set((state) => ({
+        healthLogs: state.healthLogs.filter(log => log.id !== id),
       }));
       get().saveData();
     },
@@ -663,6 +706,7 @@ export const useAppStore = create<AppStore>()(
         litters: [],
         weights: [],
         treatments: [],
+        healthLogs: [],
         mortalities: [],
         cages: [],
         tags: [],

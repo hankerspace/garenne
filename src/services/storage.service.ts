@@ -31,6 +31,7 @@ const defaultState: AppState = {
   litters: [],
   weights: [],
   treatments: [],
+  healthLogs: [],
   mortalities: [],
   cages: [],
   tags: [],
@@ -142,6 +143,7 @@ export class MigrationService {
         // Ensure new arrays exist
         cages: stateObj?.cages || [],
         tags: stateObj?.tags || [],
+        healthLogs: stateObj?.healthLogs || [],
         performanceMetrics: stateObj?.performanceMetrics || [],
         settings: {
           ...defaultSettings,

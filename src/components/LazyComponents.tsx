@@ -27,6 +27,10 @@ export const QuickTreatmentModal = lazy(() =>
   import('./modals/QuickTreatmentModal.tsx').then(module => ({ default: module.QuickTreatmentModal }))
 );
 
+export const HealthLogModal = lazy(() =>
+  import('./modals/HealthLogModal').then(module => ({ default: module.HealthLogModal }))
+);
+
 export const MortalityModal = lazy(() => 
   import('./modals/MortalityModal.tsx').then(module => ({ default: module.MortalityModal }))
 );
@@ -61,6 +65,7 @@ export const LazyComponents = {
   LitterModal,
   BreedingModal,
   QuickTreatmentModal,
+  HealthLogModal,
   MortalityModal,
   QuickWeightModal,
   

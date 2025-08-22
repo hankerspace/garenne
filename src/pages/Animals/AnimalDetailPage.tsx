@@ -44,8 +44,8 @@ import {
 import { useAppStore } from '../../state/store';
 import { Sex, Status, Breeding } from '../../models/types';
 import { calculateAgeText, formatDate } from '../../utils/dates';
-import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById } from '../../state/selectors';
-import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, MortalityModal, QuickWeightModal, QuickTreatmentModal } from '../../components/LazyComponents';
+import { getAnimalActiveTreatments, getAnimalWeights, getAnimalTreatments, getFemaleBreedings, getAnimalById, getAnimalHealthLogs } from '../../state/selectors';
+import { BreedingModal, WeightChart, GenealogyTree, QRCodeDisplay, MortalityModal, QuickWeightModal, QuickTreatmentModal, HealthLogModal } from '../../components/LazyComponents';
 import { LitterModal } from '../../components/modals/LitterModal';
 import { AdvancedGenealogyTree } from '../../components/AdvancedGenealogyTree';
 import { MatingRecommendations } from '../../components/MatingRecommendations';
@@ -96,6 +96,7 @@ const AnimalDetailPage = () => {
   const [treatmentModalOpen, setTreatmentModalOpen] = useState(false);
   const [breedingModalOpen, setBreedingModalOpen] = useState(false);
   const [litterModalOpen, setLitterModalOpen] = useState(false);
+  const [healthLogModalOpen, setHealthLogModalOpen] = useState(false);
   const [mortalityModalOpen, setMortalityModalOpen] = useState(false);
   const [selectedBreeding, setSelectedBreeding] = useState<Breeding | null>(null);
   const [breedingToDelete, setBreedingToDelete] = useState<Breeding | null>(null);
@@ -116,6 +117,7 @@ const AnimalDetailPage = () => {
   
   const weights = getAnimalWeights(state, id || '');
   const treatments = getAnimalTreatments(state, id || '');
+  const healthLogs = getAnimalHealthLogs(state, id || '');
   const activeTreatments = getAnimalActiveTreatments(state, id || '');
   
   // Get breedings for this animal (female only for now, as males can have many partners)
@@ -583,6 +585,7 @@ const AnimalDetailPage = () => {
 
         {/* Health Tab */}
         <TabPanel value={tabValue} index={3}>
+          {/* Treatments Section */}
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
             <Typography variant="h6">
               Traitements ({treatments.length})
@@ -633,6 +636,45 @@ const AnimalDetailPage = () => {
               ))}
             </List>
           )}
+
+          <Divider sx={{ my: 4 }} />
+
+          {/* Health Log Section */}
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h6">
+              Historique de santé ({healthLogs.length})
+            </Typography>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              size="small"
+              onClick={() => setHealthLogModalOpen(true)}
+            >
+              Nouvelle observation
+            </Button>
+          </Box>
+
+          {healthLogs.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              Aucune observation enregistrée
+            </Typography>
+          ) : (
+            <List>
+              {healthLogs.map((log) => (
+                <ListItem key={log.id} divider>
+                  <ListItemText
+                    primary={log.observation}
+                    secondary={`${formatDate(log.date)}${log.notes ? ` - ${log.notes}` : ''}`}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" size="small">
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          )}
         </TabPanel>
 
         {/* Advanced Genealogy Tab */}
@@ -673,6 +715,15 @@ const AnimalDetailPage = () => {
           preselectedAnimal={animal}
         />
       </Suspense>
+      {animal && (
+        <Suspense fallback={<div>Chargement...</div>}>
+          <HealthLogModal
+            open={healthLogModalOpen}
+            onClose={() => setHealthLogModalOpen(false)}
+            animal={animal}
+          />
+        </Suspense>
+      )}
       <BreedingModal
         open={breedingModalOpen}
         onClose={() => setBreedingModalOpen(false)}

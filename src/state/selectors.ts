@@ -71,6 +71,13 @@ export const getAnimalTreatments = (state: AppState, animalId: string) =>
     .filter(treatment => treatment.animalId === animalId)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+export const getAnimalHealthLogs = (state: AppState, animalId: string) => {
+  if (!state.healthLogs) return [];
+  return state.healthLogs
+    .filter(h => h.animalId === animalId)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+};
+
 export const getActiveTreatments = (state: AppState) =>
   state.treatments.filter(treatment => isWithdrawalActive(treatment.withdrawalUntil));
 

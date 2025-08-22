@@ -18,6 +18,7 @@ export class LocalBackupService implements BackupService {
       litters: state.litters,
       weights: state.weights,
       treatments: state.treatments,
+      healthLogs: state.healthLogs,
       mortalities: state.mortalities,
       cages: state.cages,
       tags: state.tags,
@@ -78,7 +79,7 @@ export class LocalBackupService implements BackupService {
     }
 
     // Validate arrays
-    const arrayFields = ['animals', 'breedings', 'litters', 'weights', 'treatments', 'mortalities'];
+    const arrayFields = ['animals', 'breedings', 'litters', 'weights', 'treatments', 'mortalities']; // healthLogs is optional for backward compatibility
     for (const field of arrayFields) {
       if (!Array.isArray(dataObj[field])) {
         throw new Error(`${field} doit être un tableau`);
@@ -124,6 +125,7 @@ export class LocalBackupService implements BackupService {
     const existingLitters = new Map(currentState.litters.map(l => [l.id, l]));
     const existingWeights = new Map(currentState.weights.map(w => [w.id, w]));
     const existingTreatments = new Map(currentState.treatments.map(t => [t.id, t]));
+    const existingHealthLogs = new Map(currentState.healthLogs.map(h => [h.id, h]));
     const existingMortalities = new Map(currentState.mortalities.map(m => [m.id, m]));
     const existingCages = new Map(currentState.cages.map(c => [c.id, c]));
     const existingTags = new Map(currentState.tags.map(t => [t.id, t]));
@@ -151,6 +153,10 @@ export class LocalBackupService implements BackupService {
       existingTreatments.set(treatment.id, treatment);
     });
 
+    (backupData.healthLogs || []).forEach(healthLog => {
+      existingHealthLogs.set(healthLog.id, healthLog);
+    });
+
     backupData.mortalities.forEach(mortality => {
       existingMortalities.set(mortality.id, mortality);
     });
@@ -174,6 +180,7 @@ export class LocalBackupService implements BackupService {
       litters: Array.from(existingLitters.values()),
       weights: Array.from(existingWeights.values()),
       treatments: Array.from(existingTreatments.values()),
+      healthLogs: Array.from(existingHealthLogs.values()),
       mortalities: Array.from(existingMortalities.values()),
       cages: Array.from(existingCages.values()),
       tags: Array.from(existingTags.values()),
@@ -195,6 +202,7 @@ export class LocalBackupService implements BackupService {
       litters: backupData.litters,
       weights: backupData.weights,
       treatments: backupData.treatments,
+      healthLogs: backupData.healthLogs || [],
       mortalities: backupData.mortalities,
       cages: backupData.cages || [],
       tags: backupData.tags || [],

@@ -40,6 +40,7 @@ describe('LocalBackupService', () => {
       litters: [],
       weights: [],
       treatments: [],
+      healthLogs: [],
       mortalities: [],
       cages: [],
       tags: [],

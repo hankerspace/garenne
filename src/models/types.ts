@@ -237,22 +237,34 @@ export interface BackupFile {
   litters: Litter[];
   weights: WeightRecord[];
   treatments: Treatment[];
+  healthLogs?: HealthLog[];
   mortalities: Mortality[];
-  cages: Cage[];
-  tags: Tag[];
-  performanceMetrics: PerformanceMetrics[];
+  cages?: Cage[];
+  tags?: Tag[];
+  performanceMetrics?: PerformanceMetrics[];
   goals?: Goal[];
   goalAchievements?: GoalAchievement[];
   settings: AppSettings;
 }
 
 // Application state interface
+export interface HealthLog {
+  id: UUID;
+  animalId: UUID;
+  date: string; // ISO date string
+  observation: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AppState {
   animals: Animal[];
   breedings: Breeding[];
   litters: Litter[];
   weights: WeightRecord[];
   treatments: Treatment[];
+  healthLogs: HealthLog[];
   mortalities: Mortality[];
   cages: Cage[];
   tags: Tag[];

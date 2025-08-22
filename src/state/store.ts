@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import { AppState, Animal, Breeding, Litter, WeightRecord, Treatment, Mortality, Cage, Tag, PerformanceMetrics, Goal, GoalAchievement, GoalStatus, Status } from '../models/types';
+import { AppState, Animal, Breeding, Litter, WeightRecord, Treatment, Mortality, Cage, Tag, PerformanceMetrics, Goal, GoalAchievement, GoalStatus, Status, HealthLog } from '../models/types';
 import { storageService } from '../services/storage.service';
 import { generateId, generateTimestamp } from '../services/id.service';
 import { createSeedData } from '../utils/seedData';

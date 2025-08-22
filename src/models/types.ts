@@ -237,11 +237,11 @@ export interface BackupFile {
   litters: Litter[];
   weights: WeightRecord[];
   treatments: Treatment[];
-  healthLogs: HealthLog[];
+  healthLogs?: HealthLog[];
   mortalities: Mortality[];
-  cages: Cage[];
-  tags: Tag[];
-  performanceMetrics: PerformanceMetrics[];
+  cages?: Cage[];
+  tags?: Tag[];
+  performanceMetrics?: PerformanceMetrics[];
   goals?: Goal[];
   goalAchievements?: GoalAchievement[];
   settings: AppSettings;

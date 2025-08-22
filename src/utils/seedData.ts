@@ -574,6 +574,7 @@ export const createSeedData = (): AppState => {
     litters,
     weights,
     treatments,
+    healthLogs: [],
     mortalities,
     cages,
     tags,

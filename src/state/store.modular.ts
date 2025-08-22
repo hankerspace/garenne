@@ -18,6 +18,7 @@ type AppStore = AnimalsSlice & BreedingSlice & SettingsSlice & DataSlice & {
   litters: AppState['litters'];
   weights: AppState['weights'];
   treatments: AppState['treatments'];
+  healthLogs: AppState['healthLogs'];
   mortalities: AppState['mortalities'];
   cages: AppState['cages'];
   tags: AppState['tags'];
@@ -75,6 +76,7 @@ export const useAppStoreModular = create<AppStore>()(
     litters: [],
     weights: [],
     treatments: [],
+    healthLogs: [],
     mortalities: [],
     cages: [],
     tags: [],
